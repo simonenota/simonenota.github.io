@@ -497,3 +497,72 @@ section.block::before {
   .strip { background-size: calc(100% - 16px) 7px, calc(100% - 16px) 4px, calc(100% - 16px) 7px, calc(100% - 16px) 4px, auto;
     background-position: 8px 1px, 8px 4px, 8px calc(100% - 1px), 8px calc(100% - 4px), 0 0; }
 }
+
+/* ===================================================================
+   Publications as a stage: the chosen article's picture fills the scene,
+   its title appears large, and the other articles wait as framed cards.
+   Picking a card opens it into the new scene (script in the home page).
+   =================================================================== */
+.stage { position: relative; isolation: isolate; overflow: hidden; display: flex; color: #F6EEDF; background: #120D09;
+  min-height: clamp(600px, 88vh, 860px); }
+.scene { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
+.scene-img, .scene-fly { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; }
+.scene-fly { inset: auto; z-index: 1; will-change: left, top, width, height, filter; }
+.stage::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(90deg, rgb(12 9 6 / .9) 0%, rgb(12 9 6 / .66) 36%, rgb(12 9 6 / .18) 66%, rgb(12 9 6 / .3) 100%),
+              linear-gradient(0deg, rgb(12 9 6 / .75) 0%, transparent 42%); }
+.stage-inner { position: relative; width: 100%; display: grid; grid-template-columns: minmax(0, 600px) minmax(0, 1fr); gap: 40px;
+  align-items: center; padding-block: clamp(48px, 7vh, 80px); }
+.stage-text { display: grid; gap: 56px; }
+.stage .pub { display: block; padding: 0; border: 0; }
+.stage .pub:last-child { border: 0; }
+.stage .pub .venue { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 10px 14px; color: #E6B85C; font-size: 1.02rem; font-weight: 500; letter-spacing: .02em; }
+.stage .pub h3 { margin-top: 14px; font-size: clamp(1.9rem, 3.3vw, 2.95rem); line-height: 1.08; font-weight: 600; color: #FFF8EC;
+  text-wrap: balance; text-shadow: 0 2px 20px rgb(0 0 0 / .45); }
+.stage .pub .sum { margin-top: 18px; max-width: 56ch; color: rgb(246 238 223 / .88); font-size: 1.1rem; }
+.pub-actions { display: flex; align-items: center; gap: 18px; margin-top: 26px; }
+.stage .cover, .stage .pub:nth-child(even) .cover { width: 66px; padding: 4px; rotate: none; flex: none; }
+.stage .btn.pdf { margin: 0; background: #E6B85C; border-color: #E6B85C; color: #1A1208; }
+.stage .btn.pdf:hover { background: #F1CB78; border-color: #F1CB78; }
+.stage :focus-visible { outline-color: #E6B85C; }
+.deck { display: none; }
+
+/* With the script: one article at a time, the others as cards. */
+.stage.on .stage-text { gap: 0; }
+.stage.on .stage-text > .pub { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility 0s linear .3s; }
+.stage.on .stage-text > .pub.is-on { opacity: 1; visibility: visible; transition: opacity .5s ease .3s, visibility 0s; }
+.stage.on .pub > * { translate: 0 16px; transition: translate .7s cubic-bezier(.2, .7, .2, 1); }
+.stage.on .pub.is-on > * { translate: 0 0; }
+.stage.on .pub.is-on > :nth-child(1) { transition-delay: .3s; }
+.stage.on .pub.is-on > :nth-child(2) { transition-delay: .38s; }
+.stage.on .pub.is-on > :nth-child(3) { transition-delay: .46s; }
+.stage.on .pub.is-on > :nth-child(4) { transition-delay: .54s; }
+.stage.on .pub h3 { outline: none; }
+.stage.on .deck { display: flex; gap: 20px; justify-content: flex-end; align-self: end; }
+.card { appearance: none; border: 0; background: none; padding: 0; margin: 0; color: inherit; font: inherit; text-align: left; cursor: pointer;
+  display: flex; flex-direction: column; gap: 8px; width: 164px; flex: none; }
+.card.is-on { display: none; }
+.card-frame { display: block; aspect-ratio: 3 / 4; padding: 6px; border-radius: 2px;
+  background: linear-gradient(135deg, #7E5E22 0%, #E9CF8A 22%, #A97F2F 45%, #F3DE9F 62%, #9A7228 80%, #E2C47C 100%);
+  box-shadow: inset 0 0 0 1px rgb(60 40 10 / .5), 0 26px 40px -18px rgb(0 0 0 / .85); transition: translate .35s ease, box-shadow .35s ease; }
+.card-frame img { display: block; width: 100%; height: 100%; object-fit: cover; box-shadow: 0 0 0 1px rgb(40 25 10 / .6); }
+.card:hover .card-frame, .card:focus-visible .card-frame { translate: 0 -8px; box-shadow: inset 0 0 0 1px rgb(60 40 10 / .5), 0 34px 50px -18px rgb(0 0 0 / .9); }
+.card:focus-visible { outline: none; }
+.card:focus-visible .card-frame { outline: 3px solid #E6B85C; outline-offset: 3px; }
+.card-venue { font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: #E6B85C; }
+.card-title { font-family: var(--font-display); font-size: 1.04rem; line-height: 1.2; color: #FFF8EC;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+@media (max-width: 1180px) { .card { width: 132px; } .stage-inner { gap: 28px; } }
+@media (max-width: 960px) {
+  .stage { min-height: 0; }
+  .stage-inner { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .stage::before { background: linear-gradient(180deg, rgb(12 9 6 / .55) 0%, rgb(12 9 6 / .8) 55%, rgb(12 9 6 / .92) 100%); }
+  .stage.on .deck { justify-content: flex-start; overflow-x: auto; scroll-snap-type: x mandatory; gap: 14px;
+    margin-inline: -20px; padding: 12px 20px 4px; scroll-padding-inline: 20px; scrollbar-width: none; }
+  .stage.on .deck::-webkit-scrollbar { display: none; }
+  .card { width: 128px; scroll-snap-align: start; }
+}
+@media (max-width: 780px) { .stage .pub .sum { font-size: 1rem; } .stage .pub h3 { font-size: 1.75rem; } }
+@media (prefers-reduced-motion: reduce) {
+  .stage.on .stage-text > .pub, .stage.on .stage-text > .pub.is-on, .stage.on .pub > *, .card-frame { transition: none; }
+}

@@ -93,28 +93,44 @@
         <h2>{{ i18n "nav_publications" }}</h2>
         <p>{{ $p.publications.intro | markdownify }}</p>
       </div>
-      <div class="pubs">
-        {{ range sort site.Data.publications.articles "year" "desc" }}
-        <article class="pub">
-          <div class="venue">
-            <span><i>{{ .venue }}</i>, {{ .year }}</span>
-            {{ with index .award $lang }}<span class="award">{{ . }}</span>{{ end }}
-          </div>
-          <div>
+    </div>
+    {{- /* A stage, as in a travel showcase: the chosen article's picture fills the
+         scene, its title appears large, and the other articles wait as framed
+         cards; picking one opens its card into the new scene. Without the script,
+         the articles are simply listed. */}}
+    {{- $arts := sort site.Data.publications.articles "year" "desc" }}
+    <div class="stage" id="stage">
+      <div class="scene" aria-hidden="true">
+        {{- with (index $arts 0).image }}<img class="scene-img" src="{{ . | relURL }}" alt="" width="1024" height="1024">{{ end }}
+      </div>
+      <div class="wrap stage-inner">
+        <div class="stage-text" id="stage-text" aria-live="polite">
+          {{ range $i, $a := $arts }}
+          <article class="pub{{ if eq $i 0 }} is-on{{ end }}" data-i="{{ $i }}">
+            <p class="venue"><span><i>{{ .venue }}</i> · {{ .year }}</span>{{ with index .award $lang }}<span class="award">{{ . }}</span>{{ end }}</p>
             <h3>{{ .title | markdownify }}</h3>
-            {{ with index .summary $lang }}<p>{{ . | markdownify }}</p>{{ end }}
-            {{ with .pdf }}<a class="pdf" href="{{ . }}" target="_blank" rel="noopener">{{ i18n "read_pdf" }}</a>{{ end }}
-          </div>
-          {{- with .pdf }}
-          {{- $cover := replaceRE `^/?papers/(.+)\.pdf$` "/papers/covers/$1.jpg" . }}
-          {{- if fileExists (printf "static%s" $cover) }}
-          <a class="cover" href="{{ . }}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-            <img src="{{ $cover | relURL }}" alt="" width="400" height="560" loading="lazy">
-          </a>
-          {{- end }}
-          {{- end }}
-        </article>
-        {{ end }}
+            {{ with index .summary $lang }}<p class="sum">{{ . | markdownify }}</p>{{ end }}
+            {{- with .pdf }}
+            <div class="pub-actions">
+              {{- $cover := replaceRE `^/?papers/(.+)\.pdf$` "/papers/covers/$1.jpg" . }}
+              {{- if fileExists (printf "static%s" $cover) }}
+              <a class="cover" href="{{ . }}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="{{ $cover | relURL }}" alt="" width="400" height="560" loading="lazy"></a>
+              {{- end }}
+              <a class="btn primary pdf" href="{{ . }}" target="_blank" rel="noopener">{{ i18n "read_pdf" }}</a>
+            </div>
+            {{- end }}
+          </article>
+          {{ end }}
+        </div>
+        <div class="deck" aria-label="{{ i18n "articles_label" }}">
+          {{ range $i, $a := $arts }}
+          <button type="button" class="card{{ if eq $i 0 }} is-on{{ end }}" data-i="{{ $i }}" data-scene="{{ with .image }}{{ . | relURL }}{{ end }}" aria-controls="stage-text">
+            <span class="card-frame">{{ with .image }}<img src="{{ . | relURL }}" alt="" width="1024" height="1024" loading="lazy">{{ end }}</span>
+            <span class="card-venue">{{ .venue }} · {{ .year }}</span>
+            <span class="card-title">{{ .title | markdownify | plainify }}</span>
+          </button>
+          {{ end }}
+        </div>
       </div>
     </div>
   </section>
@@ -179,6 +195,85 @@
         if (!waiting) { waiting = true; requestAnimationFrame(drift); }
       }, { passive: true });
       drift();
+    })();
+  </script>
+  <script>
+    /* Publications stage: picking a card opens it into the scene behind the text. */
+    (function () {
+      var stage = document.getElementById('stage');
+      if (!stage) return;
+      var arts = [].slice.call(stage.querySelectorAll('.stage-text > .pub'));
+      var cards = [].slice.call(stage.querySelectorAll('.card'));
+      var scene = stage.querySelector('.scene'), img = scene.querySelector('.scene-img');
+      if (!img || cards.length < 2 || cards.length !== arts.length) return;
+      var still = !img.animate || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+      var cur = 0, until = 0, driftAnim = null;
+      stage.classList.add('on');
+      arts.forEach(function (a) { var h = a.querySelector('h3'); if (h) h.tabIndex = -1; });
+
+      /* The scene breathes: a slow zoom out after each change. */
+      function drift() {
+        if (still) return;
+        if (driftAnim) driftAnim.cancel();
+        driftAnim = img.animate([{ transform: 'scale(1.08)' }, { transform: 'scale(1)' }], { duration: 9000, easing: 'cubic-bezier(.2,.6,.3,1)', fill: 'both' });
+      }
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { drift(); io.disconnect(); } }, { threshold: 0.25 });
+        io.observe(stage);
+      }
+      /* Load the other scenes in advance, once the page is calm. */
+      setTimeout(function () { cards.forEach(function (c) { var i = new Image(); i.src = c.dataset.scene; }); }, 1500);
+
+      function rel(r, s) { return { left: r.left - s.left, top: r.top - s.top, width: r.width, height: r.height }; }
+
+      function select(i, fromKey) {
+        if (i === cur || performance.now() < until) return;
+        var card = cards[i], url = card.dataset.scene;
+        var s = stage.getBoundingClientRect(), from = rel(card.querySelector('.card-frame img').getBoundingClientRect(), s);
+        var before = cards.map(function (c) { return c.getBoundingClientRect(); });
+        var back = cur;
+        cards[cur].classList.remove('is-on'); card.classList.add('is-on');
+        arts[cur].classList.remove('is-on'); arts[i].classList.add('is-on');
+        cur = i;
+        var h = arts[i].querySelector('h3');
+        if (fromKey && h) h.focus({ preventScroll: true });
+        if (s.top < 0) stage.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' });
+        if (still || !url) { if (url) img.src = url; return; }
+        until = performance.now() + 950;
+
+        /* The card's picture grows out of its frame until it fills the scene. */
+        var fly = document.createElement('img');
+        fly.className = 'scene-fly'; fly.alt = ''; fly.src = url;
+        scene.appendChild(fly);
+        var end = { left: '0px', top: '0px', width: s.width + 'px', height: s.height + 'px', filter: 'blur(0px) saturate(1)', borderRadius: '0px' };
+        fly.animate([
+          { left: from.left + 'px', top: from.top + 'px', width: from.width + 'px', height: from.height + 'px', filter: 'blur(0px) saturate(1)', borderRadius: '2px' },
+          { offset: 0.5, filter: 'blur(7px) saturate(1.15)' },
+          end
+        ], { duration: 950, easing: 'cubic-bezier(.65,0,.25,1)', fill: 'forwards' }).onfinish = function () {
+          img.src = url;
+          var swap = function () { fly.remove(); drift(); };
+          if (img.decode) img.decode().then(swap, swap); else swap();
+        };
+
+        /* The other cards slide to their new places; the one given back returns. */
+        cards.forEach(function (c, k) {
+          if (k === i) return;
+          var r = c.getBoundingClientRect();
+          if (k === back) {
+            c.animate([{ opacity: 0, transform: 'translateY(24px) scale(.92)' }, { opacity: 1, transform: 'none' }],
+              { duration: 600, delay: 450, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'backwards' });
+          } else if (before[k].width) {
+            var dx = before[k].left - r.left, dy = before[k].top - r.top;
+            if (dx || dy) c.animate([{ transform: 'translate(' + dx + 'px,' + dy + 'px)' }, { transform: 'none' }],
+              { duration: 650, easing: 'cubic-bezier(.3,.7,.2,1)' });
+          }
+        });
+      }
+
+      cards.forEach(function (c, k) {
+        c.addEventListener('click', function (e) { select(k, e.detail === 0); });
+      });
     })();
   </script>
   <script>

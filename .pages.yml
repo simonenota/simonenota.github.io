@@ -40,6 +40,7 @@ content:
               - { name: it, label: Italiano, type: text }
           - { name: pdf, label: PDF, type: file, options: { media: papers } }
           - { name: cover_page, label: "Pagina del PDF da mostrare in anteprima (vuoto = la prima)", type: number }
+          - { name: image, label: "Immagine della scena (sfondo quando si sceglie l'articolo; meglio un paesaggio)", type: image, options: { media: images } }
 
   - name: home-en
     label: Pagina principale (inglese)
