@@ -14,7 +14,7 @@
         {{ $cap := index .caption $lang }}
         <li>
           <figure>
-            <img src="{{ .image | relURL }}" alt="{{ $cap }}" width="800" height="800" loading="lazy" decoding="async">
+            <img src="{{ .image | relURL }}" alt="" width="800" height="800" loading="lazy" decoding="async">
             <figcaption>{{ $cap }}</figcaption>
           </figure>
         </li>

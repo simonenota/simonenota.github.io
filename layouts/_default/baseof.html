@@ -35,7 +35,6 @@
       var root = document.documentElement;
       function sync() {
         var dark = root.dataset.theme === "dark";
-        btn.setAttribute("aria-pressed", dark ? "true" : "false");
         btn.querySelector(".label").textContent = dark ? btn.dataset.toLight : btn.dataset.toDark;
       }
       btn.addEventListener("click", function () {
