@@ -26,7 +26,7 @@ research:
 
         Attraverso le lenti critiche di Kant e Wittgenstein, distinguo il trascendentalismo come **posizione metodologica** dall'**idealismo trascendentale** come dottrina metafisica che fa dipendere i tratti necessari della realtà empirica dal nostro punto di vista umano. Studiare le condizioni della nostra conoscenza può darci una comprensione di noi stessi senza una lettura metafisica: una comprensione della metafisica non è necessariamente una comprensione metafisica.
       link_label: "Leggi la mia tesi di dottorato (PDF)"
-      link_url: "https://simonenota.weebly.com/uploads/1/4/1/3/141357793/phd_thesis_-_simone_nota.pdf"
+      link_url: "/papers/phd-thesis.pdf"
     - tag: "Interesse recente"
       color: "amber"
       title: "Assolutismo"
@@ -81,7 +81,6 @@ cv:
 aifun:
   title: "AI Fun"
   text: "Un angolo giocoso del sito: idee filosofiche, dalla civetta di Hegel all'epoché di Husserl, trasformate in immagini con l'IA."
-  url: "https://simonenota.weebly.com/ai-fun.html"
 
 footer:
   affiliation: "Istituto di Filosofia, Zagabria"

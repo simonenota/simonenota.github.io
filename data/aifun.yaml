@@ -1,0 +1,50 @@
+# AI Fun gallery. One entry per picture, in display order.
+# "image" is the file name inside static/images/ai-fun/.
+- image: berkeley-dissipating-the-metaphysical-dust.webp
+  caption: { en: "Berkeley Dissipating the Metaphysical Dust", it: "Berkeley dissipa la polvere metafisica" }
+- image: qbism-2.webp
+  caption: { en: "QBism (inspired by Chris Fuchs)", it: "QBism (ispirato a Chris Fuchs)" }
+- image: g-e-moore-s-hand.webp
+  caption: { en: "G. E. Moore's Hand", it: "La mano di G. E. Moore" }
+- image: cavendish-s-panpsychism.webp
+  caption: { en: "Cavendish's Panpsychism", it: "Il panpsichismo di Cavendish" }
+- image: kierkegaard-s-leap-of-faith.webp
+  caption: { en: "Kierkegaard's Leap of Faith", it: "Il salto della fede di Kierkegaard" }
+- image: russell-is-a-turkey.webp
+  caption: { en: "Russell is a Turkey", it: "Russell è un tacchino" }
+- image: parmenides-at-the-gates-of-night-and-day.webp
+  caption: { en: "Parmenides at the Gates of Day and Night", it: "Parmenide alle porte del Giorno e della Notte" }
+- image: anscombe-playing-a-language-game.webp
+  caption: { en: "Anscombe Playing a Language Game", it: "Anscombe gioca a un gioco linguistico" }
+- image: plato-and-aristotle-just-chillin.webp
+  caption: { en: "Plato and Aristotle Just Chillin'", it: "Platone e Aristotele in relax" }
+- image: schopenhauer-finally-happy.webp
+  caption: { en: "Schopenhauer, Finally Happy", it: "Schopenhauer, finalmente felice" }
+- image: nonsense-on-stilts.webp
+  caption: { en: "Nonsense on Stilts", it: "Nonsense sui trampoli" }
+- image: putnam-s-brain.webp
+  caption: { en: "Putnam's Brain in a Vat", it: "Il cervello in una vasca di Putnam" }
+- image: arendt-versus-totalitarianism.webp
+  caption: { en: "Arendt Versus Totalitarianism", it: "Arendt contro il totalitarismo" }
+- image: descartes-deceived-by-the-evil-demon.webp
+  caption: { en: "Descartes Deceived by the Evil Demon", it: "Cartesio ingannato dal genio maligno" }
+- image: n-g-rjuna-meditating-under-a-tree.webp
+  caption: { en: "Nāgārjuna Meditating Under a Tree", it: "Nāgārjuna medita sotto un albero" }
+- image: socrates-rapping-the-truth.webp
+  caption: { en: "Socrates Rapping the Truth", it: "Socrate rappa la verità" }
+- image: transcendental-idealism.webp
+  caption: { en: "Transcendental Idealism", it: "Idealismo trascendentale" }
+- image: wittgenstein-s-ladder.webp
+  caption: { en: "Wittgenstein's Ladder", it: "La scala di Wittgenstein" }
+- image: chalmers-surrounded-by-zombies.webp
+  caption: { en: "Chalmers Surrounded by Zombies", it: "Chalmers circondato dagli zombie" }
+- image: mary-the-scientist.webp
+  caption: { en: "Bloody Mary (AKA Mary the Scientist)", it: "Bloody Mary (alias Mary la scienziata)" }
+- image: the-hegelian-concept.webp
+  caption: { en: "The Hegelian Concept", it: "Il Concetto hegeliano" }
+- image: leibniz-and-spinoza-in-the-hague.webp
+  caption: { en: "Leibniz and Spinoza in the Hague", it: "Leibniz e Spinoza all'Aia" }
+- image: meinong-s-round-square.webp
+  caption: { en: "Meinong's \"Round Square\"", it: "Il \"quadrato rotondo\" di Meinong" }
+- image: princess-elisabeth-overcomes-the-mind-body-dualism.webp
+  caption: { en: "Princess Elisabeth Overcomes the Mind-Body Dualism", it: "La principessa Elisabetta supera il dualismo mente-corpo" }

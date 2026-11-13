@@ -119,7 +119,7 @@
       <div class="panel light" id="ai-fun">
         <h2>{{ $p.aifun.title }}</h2>
         <p>{{ $p.aifun.text | markdownify }}</p>
-        <a class="btn ghost" href="{{ $p.aifun.url }}" target="_blank" rel="noopener">{{ i18n "open_gallery" }}</a>
+        <a class="btn ghost" href="{{ with site.GetPage "/ai-fun" }}{{ .RelPermalink }}{{ end }}">{{ i18n "open_gallery" }}</a>
       </div>
     </div>
   </section>

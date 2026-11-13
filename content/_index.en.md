@@ -26,7 +26,7 @@ research:
 
         Through the critical lenses of Kant and Wittgenstein, I distinguish transcendentalism as a **methodological stance** from **transcendental idealism** as a metaphysical doctrine that makes the necessary features of empirical reality depend on our human point of view. Studying the conditions of our cognition can give us self-understanding without a metaphysical reading: an understanding of metaphysics is not necessarily a metaphysical understanding.
       link_label: "Read my PhD dissertation (PDF)"
-      link_url: "https://simonenota.weebly.com/uploads/1/4/1/3/141357793/phd_thesis_-_simone_nota.pdf"
+      link_url: "/papers/phd-thesis.pdf"
     - tag: "Recent interest"
       color: "amber"
       title: "Absolutism"
@@ -81,7 +81,6 @@ cv:
 aifun:
   title: "AI Fun"
   text: "A playful corner of the site: philosophical ideas, from Hegel’s owl to Husserl’s epoché, turned into pictures with AI."
-  url: "https://simonenota.weebly.com/ai-fun.html"
 
 footer:
   affiliation: "Institute of Philosophy, Zagreb"

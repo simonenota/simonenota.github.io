@@ -1,0 +1,26 @@
+{{ define "main" }}
+{{ $lang := site.Language.Lang }}
+<main id="top">
+  <span id="content"></span>
+  <section class="block gallery-page">
+    <div class="wrap">
+      <div class="section-head">
+        <a class="back" href="{{ site.Home.RelPermalink }}#ai-fun">← {{ .Params.back }}</a>
+        <h1>{{ .Title }}</h1>
+        <p>{{ .Params.intro | markdownify }}</p>
+      </div>
+      <ul class="gallery">
+        {{ range site.Data.aifun }}
+        {{ $cap := index .caption $lang }}
+        <li>
+          <figure>
+            <img src="{{ printf "images/ai-fun/%s" .image | relURL }}" alt="{{ $cap }}" width="800" height="800" loading="lazy" decoding="async">
+            <figcaption>{{ $cap }}</figcaption>
+          </figure>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+  </section>
+</main>
+{{ end }}

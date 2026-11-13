@@ -1,12 +1,13 @@
+{{ $home := cond .IsHome "" site.Home.RelPermalink }}
 <header class="site">
   <div class="wrap">
-    <a class="brand" href="#top">Simone <span>Nota</span></a>
+    <a class="brand" href="{{ $home }}#top">Simone <span>Nota</span></a>
       <nav class="main" aria-label="{{ i18n "nav_label" }}">
-        <a href="#research">{{ i18n "nav_research" }}</a>
-        <a href="#publications">{{ i18n "nav_publications" }}</a>
-        <a href="#teaching">{{ i18n "nav_teaching" }}</a>
-        <a href="#cv">{{ i18n "nav_cv" }}</a>
-        <a href="#ai-fun">{{ i18n "nav_aifun" }}</a>
+        <a href="{{ $home }}#research">{{ i18n "nav_research" }}</a>
+        <a href="{{ $home }}#publications">{{ i18n "nav_publications" }}</a>
+        <a href="{{ $home }}#teaching">{{ i18n "nav_teaching" }}</a>
+        <a href="{{ $home }}#cv">{{ i18n "nav_cv" }}</a>
+        <a href="{{ $home }}#ai-fun">{{ i18n "nav_aifun" }}</a>
       </nav>
       <div class="tools">
         {{- range .Translations }}
