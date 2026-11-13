@@ -2,38 +2,41 @@
   /* Size of the photo with its circles on the home page (computer / phone). */
   --portrait-size: 520px;
   --portrait-size-phone: 280px;
-  /* Light mode: all white. Deep blue for text, warm orange as the one strong accent,
-     teal / cobalt / crimson for the three research lines. */
-  --bg: #F7F8FA;
-  --surface: #FFFFFF;
-  --ink: #0F2440;
-  --muted: #55607A;
-  --line: #DDE1EA;
-  --accent: #C2410C;        /* orange for text: eyebrow, highlighted words */
-  --accent-fill: #F7934C;   /* orange for buttons and badges */
-  --teal: #0F766E;          /* teal: first research line, venues, focus ring */
-  --teal-tint: #E1F2EF;
-  --amber: #1D5FA8;         /* cobalt blue: second research line */
-  --amber-fill: #F7934C;
-  --amber-tint: #FDEBDD;
-  --coral: #BE123C;         /* crimson: third research line */
-  --coral-tint: #FCE7EA;
-  --ring-outer: #F7934C; --ring-middle: #F0566A; --ring-inner: #2F7FD0;
-  --ring-fill: #E5EEF9; --ring-line: #DDE1EA;
-  --panel: #0F2440; --panel-2: #1B4378;
-  --panel-ink: #F2F4FA;
-  --panel-muted: #C3CAD8;
-  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
-  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Light mode: ivory paper and ink. Colours of old pigments: lapis blue, vermilion,
+     verdigris, gold. */
+  --bg: #FBF7EF;
+  --surface: #FFFDF8;
+  --ink: #2A211A;
+  --muted: #6B5D50;
+  --line: #E6DAC6;
+  --accent: #9A2F1F;        /* vermilion: highlighted words, buttons */
+  --accent-fill: #9A2F1F;
+  --btn-ink: #FFF8EE;
+  --gold: #B8862B;
+  --gold-soft: #E3CF9F;
+  --teal: #24477F;          /* lapis blue: first research line, venues, focus ring */
+  --teal-tint: #E9EEF6;
+  --amber: #9A2F1F;         /* vermilion: second research line */
+  --amber-fill: #E9D6A8;
+  --amber-tint: #F6ECDD;
+  --coral: #2F6B5B;         /* verdigris: third research line */
+  --coral-tint: #E4F0EB;
+  --ring-outer: #C39433; --ring-middle: #B4432F; --ring-inner: #2F5FA8;
+  --ring-fill: #F3EADB; --ring-line: #D8C7A9; --ring-text: #7A6A58; --ring-tick: #BFA57A;
+  --panel: #2A211A; --panel-2: #4A3526;
+  --panel-ink: #F6EFE2;
+  --panel-muted: #D3C7B5;
+  --font-display: "Cormorant Garamond", Garamond, "Times New Roman", serif;
+  --font-body: "EB Garamond", Garamond, Georgia, serif;
 }
-/* Light is the default. Dark (all blue) only when the visitor picks it with the toggle. */
+/* Light is the default. Dark (night blue with gold) only when the visitor picks it with the toggle. */
 :root[data-theme="dark"] {
-  --bg: #0F2240; --surface: #163056; --ink: #F4F2EE; --muted: #B7C2D3; --line: #26406A;
-  --accent: #FF9F66; --accent-fill: #F7934C;
-  --teal: #4FD1C5; --teal-tint: #123A4A; --amber: #7DB4F0; --amber-fill: #F7934C; --amber-tint: #1B3A63;
-  --coral: #FF8FA3; --coral-tint: #3A2340;
-  --ring-outer: #F7934C; --ring-middle: #F0566A; --ring-inner: #5B9EE8; --ring-fill: #163056; --ring-line: #26406A;
-  --panel: #0A1930; --panel-2: #14325C; --panel-ink: #F2F4FA; --panel-muted: #B7C2D3;
+  --bg: #111A2E; --surface: #18233D; --ink: #F1E8D8; --muted: #C4BAA8; --line: #2C3757;
+  --accent: #E6B85C; --accent-fill: #E6B85C; --btn-ink: #111A2E; --gold: #E6B85C; --gold-soft: #6B5A36;
+  --teal: #A3BDEE; --teal-tint: #1B2A4A; --amber: #F2957D; --amber-fill: #E6B85C; --amber-tint: #1C2846;
+  --coral: #86CDB6; --coral-tint: #17303A;
+  --ring-outer: #E6B85C; --ring-middle: #F07C62; --ring-inner: #7FA6EA; --ring-fill: #18233D; --ring-line: #354166; --ring-text: #C4BAA8; --ring-tick: #6F6650;
+  --panel: #0B1222; --panel-2: #1D2A4A; --panel-ink: #F2F4FA; --panel-muted: #C4BAA8;
   color-scheme: dark;
 }
 
@@ -102,8 +105,7 @@ nav.main { margin-left: auto; }
 .hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, min(var(--portrait-size), 40vw)); gap: clamp(24px, 5vw, 64px); align-items: center; }
 .eyebrow { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); }
 .hero h1 { font-size: clamp(2.3rem, 6vw, 3.9rem); font-weight: 600; margin-top: 14px; letter-spacing: -0.015em; }
-.hero h1 em { font-style: italic; color: var(--accent); background: linear-gradient(90deg, var(--accent), var(--coral)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; padding-right: .06em; }
-@media (forced-colors: active) { .hero h1 em { -webkit-text-fill-color: currentColor; background: none; } }
+.hero h1 em { font-style: italic; font-weight: 600; color: var(--accent); }
 .hero .lead { margin-top: 22px; max-width: 58ch; font-size: 1.12rem; color: var(--muted); }
 .hero .lead strong { color: var(--ink); font-weight: 600; }
 .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
@@ -112,7 +114,7 @@ nav.main { margin-left: auto; }
   padding: 12px 20px; border-radius: 10px; border: 1.5px solid var(--ink); transition: transform .15s ease;
 }
 .btn:hover { transform: translateY(-2px); }
-.btn.primary { background: var(--accent-fill); border-color: var(--accent-fill); color: #0F2440; }
+.btn.primary { background: var(--accent-fill); border-color: var(--accent-fill); color: var(--btn-ink); }
 .btn.primary:hover { box-shadow: 0 12px 26px -12px var(--accent-fill); }
 .btn.ghost { background: transparent; color: var(--ink); }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 30px; padding: 0; list-style: none; }
@@ -331,3 +333,93 @@ footer a { color: var(--ink); font-weight: 500; text-underline-offset: 3px; }
   .cover { width: 84px; grid-column: 2; grid-row: 2; }
 }
 @media (prefers-reduced-motion: reduce) { .cover { transition: none; } }
+
+/* ===================================================================
+   Classical look: a scientific soul (star map, astrolabe) and an
+   artistic one (gilded frames, museum labels), set like an old book.
+   =================================================================== */
+body { font-size: 19.5px; line-height: 1.6; }
+.dial-text { font-family: var(--font-body); font-size: 10.5px; letter-spacing: .06em; fill: var(--ring-text); }
+.motif .ring-dial { animation-name: ring-turn-back; animation-duration: 3.2s; }
+/* Engraved star chart behind the astrolabe. */
+.motif::after { content: ""; position: absolute; inset: -70%; z-index: -2; pointer-events: none;
+  background: url("../images/sky.svg") center / contain no-repeat; }
+:root[data-theme="dark"] .motif::after { background-image: url("../images/sky-dark.svg"); }
+.epigraph { margin: 6px 0 10px; }
+.brand { font-style: italic; font-weight: 600; font-size: 1.55rem; }
+.brand span { color: var(--accent); }
+nav.main a { font-size: .86rem; text-transform: uppercase; letter-spacing: .12em; }
+.tool { font-family: var(--font-body); }
+.eyebrow { font-size: .82rem; letter-spacing: .2em; color: var(--accent); }
+.hero h1 { font-size: clamp(2.7rem, 6.6vw, 4.7rem); font-weight: 600; line-height: 1.02; letter-spacing: -.005em; }
+.hero .lead { font-size: 1.32rem; }
+.btn { font-family: var(--font-body); font-size: 1.02rem; border-radius: 4px; letter-spacing: .02em; }
+.chips { gap: 0; }
+.chips li { border: 0; background: none; padding: 0; font-style: italic; font-size: 1.05rem; color: var(--muted); }
+.chips li + li::before { content: "·"; margin: 0 .55em; color: var(--gold); font-style: normal; }
+main { counter-reset: sec; }
+section.block { border-top: 0; position: relative; }
+section.block::before { content: ""; position: absolute; top: 0; left: 50%; width: min(480px, 76%); height: 14px; translate: -50% -50%;
+  background: linear-gradient(var(--gold), var(--gold)) left center / calc(50% - 30px) 1px no-repeat,
+              linear-gradient(var(--gold), var(--gold)) right center / calc(50% - 30px) 1px no-repeat,
+              url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 14'><path d='M22 1 L29 7 L22 13 L15 7 Z' fill='none' stroke='%23B8862B' stroke-width='1.4'/><circle cx='22' cy='7' r='1.8' fill='%23B8862B'/><circle cx='8' cy='7' r='1.4' fill='%23B8862B'/><circle cx='36' cy='7' r='1.4' fill='%23B8862B'/></svg>") center / 44px 14px no-repeat; opacity: .8; }
+.section-head h2 { counter-increment: sec; font-size: clamp(2.3rem, 4.8vw, 3.4rem); font-weight: 600; }
+.section-head h2::before { content: counter(sec, upper-roman) "."; display: block; font-size: .5em; letter-spacing: .12em; color: var(--gold); margin-bottom: 2px; }
+.section-head h2::after { width: 64px; height: 1px; background: var(--gold); margin-top: 16px; }
+.section-head p { font-size: 1.12rem; }
+.epigraph { border-left: 2px solid var(--gold); padding: 2px 0 2px 16px; }
+.epigraph p { font-family: var(--font-display); font-style: italic; font-size: 1.6rem; line-height: 1.2; color: var(--ink); }
+.epigraph cite { display: block; font-style: normal; font-size: .9rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+.epigraph cite i { text-transform: none; letter-spacing: .02em; font-size: 1.05rem; }
+.strand-teal { --sc: var(--teal); } .strand-amber { --sc: var(--amber); } .strand-coral { --sc: var(--coral); }
+.strand .tag { letter-spacing: .2em; font-size: .78rem; }
+.strand .tag::before { width: 7px; height: 7px; border-radius: 0; rotate: 45deg; }
+.strand h3 { font-size: clamp(2.1rem, 4vw, 2.9rem); font-weight: 600; }
+.strand .question { font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1.5rem; line-height: 1.3; border-left: 2px solid var(--gold); padding-left: 16px; }
+.strand .body > p:first-child:not(.question)::first-letter, .strand .question + p::first-letter {
+  float: left; font-family: var(--font-display); font-weight: 700; font-size: 4.3em; line-height: .74; padding: .07em .09em 0 0; color: var(--sc, var(--accent)); }
+.callout { background: var(--amber-tint); border-left: 3px solid var(--gold); border-radius: 4px; }
+.callout h3 { font-size: 1.6rem; font-style: italic; }
+.pub .venue { color: var(--accent); font-size: 1rem; }
+.pub h3 { font-size: 1.7rem; font-weight: 600; }
+.pub p { font-size: 1.05rem; }
+.modules { gap: 0; }
+.modules li { background: none; padding: 0; font-style: italic; font-size: 1.12rem; color: var(--muted); border-radius: 0; }
+.modules li + li::before { content: "·"; margin: 0 .55em; color: var(--gold); font-style: normal; }
+.method h3 { font-size: 1.55rem; font-style: italic; }
+.method p { font-size: 1.05rem; }
+.quote { border: 0; background: none; text-align: center; margin-inline: auto; font-family: var(--font-display); font-style: italic; font-size: 1.7rem; line-height: 1.3; padding-top: 34px; position: relative; }
+.quote::before { content: "\201C"; position: absolute; top: -18px; left: 50%; translate: -50% 0; font-size: 4.4rem; color: var(--gold); font-style: normal; line-height: 1; }
+.owl-text h2 { font-size: clamp(2.6rem, 5.6vw, 4rem); }
+.owl-text p { font-size: 1.25rem; }
+.owl .btn.primary { background: #E6B85C; border-color: #E6B85C; color: #1A1208; }
+footer { font-size: 1rem; }
+@media (max-width: 780px) { body { font-size: 18.5px; } .brand { font-size: 1.3rem; } }
+
+/* Gilded frames for the research pictures and the articles, with a museum label. */
+.strip { margin-bottom: 26px; padding: 0; border-radius: 3px; aspect-ratio: 1106 / 216;
+  background: linear-gradient(135deg, #7E5E22 0%, #E9CF8A 18%, #A97F2F 36%, #F3DE9F 52%, #9A7228 70%, #E2C47C 86%, #7E5E22 100%);
+  box-shadow: inset 0 0 0 1px rgb(60 40 10 / .5), inset 0 0 0 5px rgb(255 240 200 / .25), 0 26px 40px -22px rgb(40 25 10 / .6); }
+.strip:hover { box-shadow: inset 0 0 0 1px rgb(60 40 10 / .5), inset 0 0 0 5px rgb(255 240 200 / .25), 0 32px 50px -22px rgb(40 25 10 / .65); }
+.strip:has(+ .cartel) { margin-bottom: 10px; }
+.strip-frame { inset: 13px; border-radius: 0; box-shadow: 0 0 0 1px rgb(40 25 10 / .55); }
+.strip-frame::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; box-shadow: inset 0 4px 10px rgb(0 0 0 / .35); }
+.strip img { filter: sepia(.12) saturate(1.05) contrast(1.04); }
+.reveal .strip:not(.in) { box-shadow: none; background: transparent; }
+.reveal .strip.in { transition: transform .4s ease, box-shadow .8s .7s ease, background .6s .5s ease; }
+.reveal .strip .strip-frame { clip-path: inset(0 50% 0 50%); }
+.reveal .strip.in .strip-frame { clip-path: inset(0 0 0 0); }
+.cartel { display: flex; gap: 10px; align-items: baseline; width: fit-content; margin: 0 0 30px auto; padding: 6px 12px;
+  background: var(--surface); border: 1px solid var(--line); box-shadow: 0 2px 6px rgb(40 25 10 / .08); font-size: .95rem; color: var(--muted); }
+.cartel i { font-family: var(--font-display); font-size: 1.1rem; color: var(--ink); }
+.cartel span { font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; }
+.award { background: linear-gradient(135deg, #C9A24E, #F1DB9C 50%, #B88E3A); color: #2A1D08; border-radius: 2px; font-family: var(--font-body); font-size: .82rem; letter-spacing: .06em; }
+.cover, .pub:nth-child(even) .cover { rotate: 0deg; padding: 6px; border-radius: 1px; background: linear-gradient(135deg, #7E5E22, #E9CF8A 30%, #A97F2F 60%, #E2C47C); }
+.pub .cover:hover, .pub:hover .cover { rotate: 0deg; }
+.cover img { border-radius: 0; border: 0; }
+@media (max-width: 780px) {
+  nav.main a { letter-spacing: .07em; font-size: .8rem; }
+  .strip-frame { inset: 8px; }
+  .cover { padding: 4px; }
+  .cartel { font-size: .85rem; }
+}

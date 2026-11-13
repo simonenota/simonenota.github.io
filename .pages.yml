@@ -62,6 +62,8 @@ content:
         label: Ricerca
         type: object
         fields:
+          - { name: epigraph, label: "Epigrafe sopra la ricerca (facoltativa)", type: text }
+          - { name: epigraph_source, label: "Fonte dell'epigrafe (es. Wittgenstein, *Tractatus* 6.13)", type: string }
           - { name: intro, label: Introduzione, type: text }
           - name: strands
             label: Linee di ricerca
@@ -74,6 +76,7 @@ content:
                 type: select
                 options: { values: [teal, amber, coral] }
               - { name: image, label: "Immagine sopra il titolo (facoltativa, larga e bassa, circa 1080×190)", type: image, options: { media: images } }
+              - { name: image_caption, label: "Titolo dell'immagine (cartellino sotto la cornice, facoltativo)", type: string }
               - { name: title, label: Titolo, type: string }
               - { name: question, label: Domanda guida (facoltativa), type: string }
               - { name: text, label: Testo, type: text }
