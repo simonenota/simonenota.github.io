@@ -111,12 +111,12 @@ teaching:
 cv:
   title: Curriculum Vitae
   text: Formazione, posizioni, premi, interventi e didattica, in un unico documento.
-  url: https://simonenota.weebly.com/uploads/1/4/1/3/141357793/cv5.pdf
+  url: /papers/cv-simone-nota.pdf
 aifun:
   title: IA & Filosofia
   text: "Un angolo giocoso del sito: idee filosofiche, dalla civetta di Hegel
     all'epoché di Husserl, trasformate in immagini con l'IA."
 footer:
   affiliation: Istituto di Filosofia, Zagabria
-  contact: I contatti sono nel CV.
+  contact: "[snota@tcd.ie](mailto:snota@tcd.ie) · [PhilPeople](https://philpeople.org/profiles/simone-nota) · [ORCID](https://orcid.org/0000-0002-5812-0465)"
 ---

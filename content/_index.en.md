@@ -76,7 +76,7 @@ teaching:
 cv:
   title: "Curriculum Vitae"
   text: "Education, positions, prizes, talks and teaching, in one document."
-  url: "https://simonenota.weebly.com/uploads/1/4/1/3/141357793/cv5.pdf"
+  url: "/papers/cv-simone-nota.pdf"
 
 aifun:
   title: "AI & Philosophy"
@@ -84,5 +84,5 @@ aifun:
 
 footer:
   affiliation: "Institute of Philosophy, Zagreb"
-  contact: "Contact details are in the CV."
+  contact: "[snota@tcd.ie](mailto:snota@tcd.ie) · [PhilPeople](https://philpeople.org/profiles/simone-nota) · [ORCID](https://orcid.org/0000-0002-5812-0465)"
 ---
