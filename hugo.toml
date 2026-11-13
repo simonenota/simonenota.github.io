@@ -21,3 +21,10 @@ enableRobotsTXT = true
 
 [params]
   author = "Simone Nota"
+  # Used by search engines (structured data about you). Edit freely.
+  jobTitle = "Postdoctoral Researcher in Philosophy"
+  email = "snota@tcd.ie"
+  affiliation = "Institute of Philosophy, Zagreb"
+  affiliationURL = "https://www.ifzg.hr"
+  alumniOf = ["Trinity College Dublin", "University of Pavia"]
+  sameAs = ["https://philpeople.org/profiles/simone-nota", "https://orcid.org/0000-0002-5812-0465"]

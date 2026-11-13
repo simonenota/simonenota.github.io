@@ -47,7 +47,8 @@ content:
     format: yaml-frontmatter
     fields: &home_fields
       - { name: title, label: Titolo della pagina, type: string }
-      - { name: description, label: Descrizione per i motori di ricerca, type: text }
+      - { name: seo_title, label: "Titolo nei risultati di Google (max ~60 caratteri)", type: string }
+      - { name: description, label: "Descrizione nei risultati di Google (max ~155 caratteri)", type: text }
       - name: hero
         label: Apertura
         type: object

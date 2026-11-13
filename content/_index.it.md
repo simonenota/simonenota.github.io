@@ -1,5 +1,6 @@
 ---
 title: Simone Nota
+seo_title: "Simone Nota | Filosofo – Kant, Wittgenstein, metafisica"
 description: Simone Nota, filosofo. Ricerca sulla filosofia trascendentale, la
   metafisica, Kant e Wittgenstein.
 hero:

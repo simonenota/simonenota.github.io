@@ -3,15 +3,44 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>{{ site.Title }}</title>
+  {{- $title := site.Title }}
+  {{- if .IsHome }}{{ with .Params.seo_title }}{{ $title = . }}{{ end }}{{ else }}{{ $title = printf "%s · %s" .Title site.Title }}{{ end }}
+  <title>{{ $title }}</title>
   <meta name="description" content="{{ .Params.description }}">
   <meta name="author" content="{{ site.Params.author }}">
+  <link rel="canonical" href="{{ .Permalink }}">
   {{- range .AllTranslations }}
   <link rel="alternate" hreflang="{{ .Language.LanguageCode }}" href="{{ .Permalink }}">
   {{- end }}
-  <meta property="og:title" content="{{ site.Title }}">
+  {{- range .AllTranslations }}{{ if eq .Language.Lang "en" }}
+  <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">
+  {{- end }}{{ end }}
+  <meta property="og:type" content="{{ if .IsHome }}profile{{ else }}website{{ end }}">
+  <meta property="og:url" content="{{ .Permalink }}">
+  <meta property="og:site_name" content="{{ site.Title }}">
+  <meta property="og:title" content="{{ $title }}">
   <meta property="og:description" content="{{ .Params.description }}">
+  <meta property="og:locale" content="{{ if eq site.Language.Lang "it" }}it_IT{{ else }}en_GB{{ end }}">
   <meta property="og:image" content="{{ "images/simone.jpg" | absURL }}">
+  <meta name="twitter:card" content="summary">
+  {{- if .IsHome }}
+  {{- $p := site.Params }}
+  {{- $person := dict
+      "@context" "https://schema.org"
+      "@type" "Person"
+      "name" $p.author
+      "url" site.Home.Permalink
+      "image" ("images/simone.jpg" | absURL)
+      "email" (printf "mailto:%s" $p.email)
+      "jobTitle" $p.jobTitle
+      "description" .Params.description
+      "affiliation" (dict "@type" "Organization" "name" $p.affiliation "url" $p.affiliationURL)
+      "knowsAbout" .Params.hero.areas
+      "sameAs" $p.sameAs }}
+  {{- $alumni := slice }}{{ range $p.alumniOf }}{{ $alumni = $alumni | append (dict "@type" "CollegeOrUniversity" "name" .) }}{{ end }}
+  {{- $person = merge $person (dict "alumniOf" $alumni) }}
+  <script type="application/ld+json">{{ $person | jsonify | safeJS }}</script>
+  {{- end }}
   <script>
     // Light is the default; apply the visitor's saved choice before the page paints.
     try { if (localStorage.getItem("theme") === "dark") document.documentElement.dataset.theme = "dark"; } catch (e) {}

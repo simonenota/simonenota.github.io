@@ -1,5 +1,6 @@
 ---
 title: Simone Nota
+seo_title: "Simone Nota | Philosopher – Kant, Wittgenstein, Metaphysics"
 description: Simone Nota, philosopher. Research on transcendental philosophy,
   metaphysics, Kant and Wittgenstein.
 hero:
