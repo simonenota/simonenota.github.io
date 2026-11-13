@@ -71,7 +71,7 @@
         <p>{{ $p.publications.intro | markdownify }}</p>
       </div>
       <div class="pubs">
-        {{ range sort site.Data.publications "year" "desc" }}
+        {{ range sort site.Data.publications.articles "year" "desc" }}
         <article class="pub">
           <div class="venue">
             <span><i>{{ .venue }}</i>, {{ .year }}</span>

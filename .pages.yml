@@ -1,0 +1,145 @@
+# Configuration for Pages CMS (https://pagescms.org), the web panel used to edit the site.
+media:
+  - name: images
+    label: Immagini
+    input: static/images
+    output: /images
+    categories: [image]
+  - name: papers
+    label: PDF
+    input: static/papers
+    output: /papers
+    extensions: [pdf]
+
+content:
+  - name: publications
+    label: Pubblicazioni
+    type: file
+    path: data/publications.yaml
+    format: yaml
+    fields:
+      - name: articles
+        label: Articoli
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Titolo, type: string, required: true }
+          - { name: venue, label: Rivista, type: string }
+          - { name: year, label: Anno, type: number }
+          - name: award
+            label: Premio (lascia vuoto se non c'è)
+            type: object
+            fields:
+              - { name: en, label: Inglese, type: string }
+              - { name: it, label: Italiano, type: string }
+          - name: summary
+            label: Riassunto
+            type: object
+            fields:
+              - { name: en, label: Inglese, type: text }
+              - { name: it, label: Italiano, type: text }
+          - { name: pdf, label: PDF, type: file, options: { media: papers } }
+
+  - name: home-en
+    label: Pagina principale (inglese)
+    type: file
+    path: content/_index.en.md
+    format: yaml-frontmatter
+    fields: &home_fields
+      - { name: title, label: Titolo della pagina, type: string }
+      - { name: description, label: Descrizione per i motori di ricerca, type: text }
+      - name: hero
+        label: Apertura
+        type: object
+        fields:
+          - { name: eyebrow, label: Riga sopra il titolo, type: string }
+          - { name: title, label: "Titolo (*parola* = evidenziata)", type: string }
+          - { name: lead, label: Presentazione, type: text }
+          - { name: areas, label: Aree, type: string, list: true }
+      - name: research
+        label: Ricerca
+        type: object
+        fields:
+          - { name: intro, label: Introduzione, type: text }
+          - name: strands
+            label: Linee di ricerca
+            type: object
+            list: true
+            fields:
+              - { name: tag, label: Etichetta, type: string }
+              - name: color
+                label: Colore
+                type: select
+                options: { values: [teal, amber, coral] }
+              - { name: title, label: Titolo, type: string }
+              - { name: question, label: Domanda guida (facoltativa), type: string }
+              - { name: text, label: Testo, type: text }
+              - { name: link_label, label: Testo del link (facoltativo), type: string }
+              - { name: link_url, label: Indirizzo del link (facoltativo), type: string }
+          - { name: bridge_title, label: "Riquadro finale: titolo", type: string }
+          - { name: bridge_text, label: "Riquadro finale: testo", type: text }
+          - { name: also, label: Altri temi, type: text }
+      - name: publications
+        label: Pubblicazioni
+        type: object
+        fields:
+          - { name: intro, label: Introduzione, type: text }
+      - name: teaching
+        label: Didattica
+        type: object
+        fields:
+          - { name: intro, label: Introduzione, type: text }
+          - { name: modules, label: Corsi, type: string, list: true }
+          - name: method
+            label: Metodo
+            type: object
+            list: true
+            fields:
+              - { name: title, label: Titolo, type: string }
+              - { name: text, label: Testo, type: text }
+          - { name: quote, label: Frase finale, type: text }
+      - name: cv
+        label: CV
+        type: object
+        fields:
+          - { name: title, label: Titolo, type: string }
+          - { name: text, label: Testo, type: text }
+          - { name: url, label: File del CV, type: file, options: { media: papers } }
+      - name: aifun
+        label: AI Fun (riquadro)
+        type: object
+        fields:
+          - { name: title, label: Titolo, type: string }
+          - { name: text, label: Testo, type: text }
+      - name: footer
+        label: Piede di pagina
+        type: object
+        fields:
+          - { name: affiliation, label: Affiliazione, type: string }
+          - { name: contact, label: Contatti, type: text }
+
+  - name: home-it
+    label: Pagina principale (italiano)
+    type: file
+    path: content/_index.it.md
+    format: yaml-frontmatter
+    fields: *home_fields
+
+  - name: aifun
+    label: Galleria AI Fun
+    type: file
+    path: data/aifun.yaml
+    format: yaml
+    fields:
+      - name: images
+        label: Immagini
+        type: object
+        list: true
+        fields:
+          - { name: image, label: Immagine, type: image, options: { media: images } }
+          - name: caption
+            label: Didascalia
+            type: object
+            fields:
+              - { name: en, label: Inglese, type: string }
+              - { name: it, label: Italiano, type: string }

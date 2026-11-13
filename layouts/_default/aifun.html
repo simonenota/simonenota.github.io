@@ -10,11 +10,11 @@
         <p>{{ .Params.intro | markdownify }}</p>
       </div>
       <ul class="gallery">
-        {{ range site.Data.aifun }}
+        {{ range site.Data.aifun.images }}
         {{ $cap := index .caption $lang }}
         <li>
           <figure>
-            <img src="{{ printf "images/ai-fun/%s" .image | relURL }}" alt="{{ $cap }}" width="800" height="800" loading="lazy" decoding="async">
+            <img src="{{ .image | relURL }}" alt="{{ $cap }}" width="800" height="800" loading="lazy" decoding="async">
             <figcaption>{{ $cap }}</figcaption>
           </figure>
         </li>
