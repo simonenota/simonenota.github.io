@@ -497,3 +497,67 @@ section.block::before {
   .strip { background-size: calc(100% - 16px) 7px, calc(100% - 16px) 4px, calc(100% - 16px) 7px, calc(100% - 16px) 4px, auto;
     background-position: 8px 1px, 8px 4px, 8px calc(100% - 1px), 8px calc(100% - 4px), 0 0; }
 }
+
+/* ===================================================================
+   Reading room: clicking a paper's picture takes the page off the wall,
+   enlarges it on a dark gallery wall, and lets the reader leaf through
+   the first pages before opening the PDF.
+   =================================================================== */
+html { scrollbar-gutter: stable; }
+html.reading { overflow: hidden; background: #140E08; }
+:root[data-theme="dark"].reading { background: #070B16; }
+.cover[data-pages] { position: relative; cursor: zoom-in; }
+.cover[data-pages]::after { content: attr(data-hint); position: absolute; left: 50%; bottom: 14px; translate: -50% 4px; padding: 3px 10px;
+  background: rgb(26 18 8 / .82); color: #F6E2A8; font-size: .78rem; letter-spacing: .08em; white-space: nowrap; border-radius: 2px;
+  opacity: 0; transition: opacity .25s ease, translate .25s ease; pointer-events: none; }
+.cover[data-pages]:hover::after, .cover[data-pages]:focus-visible::after { opacity: 1; translate: -50% 0; }
+@media (max-width: 780px) { .cover[data-pages]::after { display: none; } }
+
+.reader { width: 100%; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
+  background: transparent; color: var(--ink); overflow: hidden; }
+.reader::backdrop { background: transparent; }
+.r-wall { position: absolute; inset: 0; opacity: 0; transition: opacity .5s ease;
+  background: radial-gradient(ellipse 60% 70% at 40% 46%, #5A4630 0%, #2B2015 55%, #140E08 100%); }
+:root[data-theme="dark"] .r-wall { background: radial-gradient(ellipse 60% 70% at 40% 46%, #2A3E66 0%, #111B33 55%, #070B16 100%); }
+.reader.lit .r-wall { opacity: 1; }
+.r-room { position: relative; height: 100%; display: flex; align-items: center; justify-content: center; gap: clamp(24px, 4vw, 56px);
+  padding: max(56px, env(safe-area-inset-top, 0px)) 24px max(28px, env(safe-area-inset-bottom, 0px)); }
+.r-book { --ar: .707; position: relative; flex: none; aspect-ratio: var(--ar); width: min(calc(84dvh * var(--ar)), calc(100vw - 440px), 900px);
+  padding: 12px; border-radius: 2px; transform-origin: 0 0; perspective: 2400px; cursor: pointer;
+  background: linear-gradient(135deg, #7E5E22 0%, #E9CF8A 22%, #A97F2F 45%, #F3DE9F 62%, #9A7228 80%, #E2C47C 100%);
+  box-shadow: inset 0 0 0 1px rgb(60 40 10 / .5), inset 0 0 0 4px rgb(255 240 200 / .25), 0 50px 90px -30px rgb(0 0 0 / .8); }
+.r-page { position: absolute; inset: 12px; background: #fff; transform-origin: left center; backface-visibility: hidden; visibility: hidden;
+  box-shadow: 0 0 0 1px rgb(40 25 10 / .45); }
+.r-page.on { visibility: visible; }
+.r-page img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.r-label { width: 300px; flex: none; padding: 20px 22px 22px; background: var(--surface); border: 1px solid var(--line);
+  box-shadow: 0 24px 50px -24px rgb(0 0 0 / .7); opacity: 0; translate: 0 12px; transition: opacity .35s ease, translate .35s ease; }
+.reader.lit .r-label { opacity: 1; translate: 0 0; transition-delay: .5s; }
+.r-venue { font-style: italic; color: var(--accent); font-size: 1rem; }
+#reader-title { font-size: 1.55rem; font-weight: 600; line-height: 1.18; margin: 6px 0 16px; }
+.r-turn { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; margin-bottom: 18px;
+  border-block: 1px solid var(--line); }
+.r-btn { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line);
+  background: var(--bg); color: var(--ink); cursor: pointer; }
+.r-btn:hover { border-color: var(--gold); }
+.r-btn[aria-disabled="true"] { opacity: .35; cursor: default; }
+.r-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.r-count { font-size: .98rem; color: var(--muted); letter-spacing: .03em; }
+.r-pdf { display: flex; width: 100%; justify-content: center; }
+.r-close { top: max(12px, env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); z-index: 2;
+  opacity: 0; transition: opacity .3s ease; }
+.reader.lit .r-close { opacity: 1; }
+.reader :focus-visible { outline: 3px solid #E6B85C; outline-offset: 3px; }
+@media (max-width: 760px) {
+  .r-room { flex-direction: column; gap: 14px; padding-inline: 16px; }
+  .r-book { width: min(calc(100vw - 32px), calc((100dvh - 290px) * var(--ar))); padding: 8px; }
+  .r-page { inset: 8px; }
+  .r-label { width: 100%; max-width: 440px; padding: 12px 16px 14px; }
+  #reader-title { font-size: 1.12rem; margin: 2px 0 8px; }
+  .r-venue { font-size: .9rem; }
+  .r-turn { padding: 4px 0; margin-bottom: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .r-wall, .r-label, .r-close, .cover[data-pages]::after { transition: none; }
+  .reader.lit .r-label { transition-delay: 0s; }
+}
