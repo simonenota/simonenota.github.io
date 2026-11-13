@@ -28,3 +28,11 @@ Nei campi di testo si può usare il Markdown: `**grassetto**`, `*corsivo*`, `[te
 ```
 hugo server
 ```
+
+## Traduzione italiana automatica
+
+Quando modifichi un testo in inglese (pagina principale, pubblicazioni, galleria), il workflow `.github/workflows/translate.yml` lo traduce in italiano con DeepL e apre una pull request "Traduzione italiana da rivedere". Rileggila, correggila se serve e premi **Merge pull request**: solo allora va online.
+
+- Vengono ritradotti solo i testi inglesi cambiati; le correzioni fatte a mano all'italiano restano finché non cambi l'originale inglese.
+- Serve il secret `DEEPL_API_KEY` (Settings → Secrets and variables → Actions). Senza, il workflow non fa nulla.
+- `.translation-base` ricorda a quale versione inglese corrisponde l'italiano: non modificarlo a mano.

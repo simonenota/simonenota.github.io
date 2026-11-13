@@ -1,0 +1,74 @@
+# When an English text changes, translates it into Italian with DeepL and
+# proposes the result as a pull request ("Traduzione italiana da rivedere").
+# Nothing goes online until the pull request is merged.
+name: Italian translation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - content/_index.en.md
+      - content/ai-philosophy.en.md
+      - data/publications.yaml
+      - data/aifun.yaml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: translate
+  cancel-in-progress: false
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check DeepL key
+        id: key
+        env:
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+        run: |
+          if [ -z "$DEEPL_API_KEY" ]; then
+            echo "::notice::DEEPL_API_KEY is not set, skipping the translation."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Translate changed texts
+        if: steps.key.outputs.ok == 'true'
+        env:
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+        run: |
+          pip install --quiet pyyaml
+          python3 scripts/translate.py | tee "$RUNNER_TEMP/summary.txt"
+          # Remember which English version this translation follows (only if something changed).
+          grep -q "^Done: 0 " "$RUNNER_TEMP/summary.txt" || echo "${{ github.sha }}" > .translation-base
+
+      - name: Propose the translation
+        if: steps.key.outputs.ok == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: traduzione-italiana
+          delete-branch: true
+          commit-message: Traduzione italiana automatica (DeepL)
+          title: Traduzione italiana da rivedere
+          add-paths: |
+            content/*.it.md
+            data/*.yaml
+            .translation-base
+          body: |
+            Traduzione automatica (DeepL) dei testi inglesi modificati di recente.
+
+            **Come procedere**
+            1. Apri la scheda **Files changed** e leggi le righe in verde.
+            2. Per correggere una frase: menu "⋯" in alto a destra del file → **Edit file**, poi **Commit changes**.
+            3. Quando va bene, torna in **Conversation** e premi **Merge pull request**: in un minuto è online.
+
+            Se modifichi altri testi in inglese prima di approvare, questa proposta si aggiorna da sola.
