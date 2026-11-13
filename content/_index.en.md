@@ -1,88 +1,118 @@
 ---
-title: "Simone Nota"
-description: "Simone Nota, philosopher. Research on transcendental philosophy, metaphysics, Kant and Wittgenstein."
-
+title: Simone Nota
+description: Simone Nota, philosopher. Research on transcendental philosophy,
+  metaphysics, Kant and Wittgenstein.
 hero:
-  eyebrow: "Postdoctoral Fellow · Institute of Philosophy, Zagreb"
-  title: "Thinking at the edge of *metaphysics* and transcendental philosophy"
-  lead: "My work brings a **transcendental perspective** to problems about the nature of reality, knowledge, language and mind, reading Kant and Wittgenstein against contemporary debates."
+  eyebrow: Postdoctoral Fellow · Institute of Philosophy, Zagreb
+  title: Thinking at the edge of *metaphysics* and transcendental philosophy
+  lead: My work brings a **transcendental perspective** to problems about the
+    nature of reality, knowledge, language and mind, reading Kant and
+    Wittgenstein against contemporary debates.
   areas:
-    - "Metaphysics"
-    - "Epistemology"
-    - "Philosophy of language"
-    - "Philosophy of mind"
-    - "Kant"
-    - "Wittgenstein"
-
+    - Metaphysics
+    - Epistemology
+    - Philosophy of language
+    - Philosophy of mind
+    - Kant
+    - Wittgenstein
 research:
-  intro: "Three connected lines of work, each starting from the same question: what are the conditions that make knowledge of reality possible?"
+  intro: "Three connected lines of work, each starting from the same question:
+    what are the conditions that make knowledge of reality possible?"
   strands:
-    - tag: "Main line"
-      color: "teal"
-      title: "Transcendentalism"
-      question: "Can we ever have a priori knowledge of what reality is like, and under what conditions?"
-      text: |
-        I study transcendental philosophy, any outlook aimed at recognizing the **necessary conditions for the possibility of our cognition**. My interest began with the problem of the possibility of **metaphysics**, traditionally a systematic inquiry into the nature of reality through **a priori knowledge**.
+    - tag: Main line
+      color: teal
+      title: Transcendentalism
+      question: Can we ever have a priori knowledge of what reality is like, and under
+        what conditions?
+      text: >
+        I study transcendental philosophy, any outlook aimed at recognizing the
+        **necessary conditions for the possibility of our cognition**. My
+        interest began with the problem of the possibility of **metaphysics**,
+        traditionally a systematic inquiry into the nature of reality through
+        **a priori knowledge**.
 
-        Through the critical lenses of Kant and Wittgenstein, I distinguish transcendentalism as a **methodological stance** from **transcendental idealism** as a metaphysical doctrine that makes the necessary features of empirical reality depend on our human point of view. Studying the conditions of our cognition can give us self-understanding without a metaphysical reading: an understanding of metaphysics is not necessarily a metaphysical understanding.
-      link_label: "Read my PhD dissertation (PDF)"
-      link_url: "/papers/phd-thesis.pdf"
-    - tag: "Recent interest"
-      color: "amber"
-      title: "Absolutism"
-      question: ""
-      text: |
-        I have recently turned to absolute philosophies, metaphysical views that aim at a conception of reality **as it is from no particular perspective**. I focus on contemporary forms: **absolute realism**, where reality can be known independently of any subjective perspective, and **absolute idealism**, where self-knowledge is the whole of reality.
 
-        I argue that absolute philosophies are incoherent and that we should return to perspectival ones, such as transcendental philosophy. The absolute conception may still keep a role as a **regulative ideal**.
-      link_label: ""
-      link_url: ""
-    - tag: "Long-term project"
-      color: "coral"
-      title: "Naturalism"
-      question: ""
-      text: |
-        I am interested in philosophies that give methodological priority to **nature** and to our a posteriori knowledge of it. I look at two variants: **scientific naturalism**, which takes nature to be what science tells us there is, and **humanistic naturalism**, which takes human nature and its socio-cultural expressions to be irreducible to science.
-      link_label: ""
-      link_url: ""
+        Through the critical lenses of Kant and Wittgenstein, I distinguish
+        transcendentalism as a **methodological stance** from **transcendental
+        idealism** as a metaphysical doctrine that makes the necessary features
+        of empirical reality depend on our human point of view. Studying the
+        conditions of our cognition can give us self-understanding without a
+        metaphysical reading: an understanding of metaphysics is not necessarily
+        a metaphysical understanding.
+      link_label: Read my PhD dissertation (PDF)
+      link_url: /papers/phd-thesis.pdf
+    - tag: Recent interest
+      color: amber
+      title: Absolutism
+      text: >
+        I have recently turned to absolute philosophies, metaphysical views that
+        aim at a conception of reality **as it is from no particular
+        perspective**. I focus on contemporary forms: **absolute realism**,
+        where reality can be known independently of any subjective perspective,
+        and **absolute idealism**, where self-knowledge is the whole of reality.
+
+
+        I argue that absolute philosophies are incoherent and that we should
+        return to perspectival ones, such as transcendental philosophy. The
+        absolute conception may still keep a role as a **regulative ideal**.
+    - tag: Long-term project
+      color: coral
+      title: Naturalism
+      text: >
+        I am interested in philosophies that give methodological priority to
+        **nature** and to our a posteriori knowledge of it. I look at two
+        variants: **scientific naturalism**, which takes nature to be what
+        science tells us there is, and **humanistic naturalism**, which takes
+        human nature and its socio-cultural expressions to be irreducible to
+        science.
   bridge_title: "A bridge: the relativized a priori"
-  bridge_text: "My long-term aim is to connect transcendentalism and naturalism through an a priori that holds only relative to certain scientific paradigms or human communities. Doing this calls for a **transcendental philosophy of science** and a **transcendental anthropology**."
-  also: "I have also worked on linguistic falsehood, dreaming and skepticism, theories of intentionality, and thought experiments. See the [publications](#publications) below."
-
+  bridge_text: My long-term aim is to connect transcendentalism and naturalism
+    through an a priori that holds only relative to certain scientific paradigms
+    or human communities. Doing this calls for a **transcendental philosophy of
+    science** and a **transcendental anthropology**.
+  also: I have also worked on linguistic falsehood, dreaming and skepticism,
+    theories of intentionality, and thought experiments. See the
+    [publications](#publications) below.
 publications:
-  intro: "Peer-reviewed articles, with full texts available as PDF."
-
+  intro: Peer-reviewed articles, with full texts available as PDF.
 teaching:
-  intro: "I have taught undergraduate classes for philosophy and science students at Trinity College Dublin as a teaching assistant."
+  intro: I have taught undergraduate classes for philosophy and science students
+    at Trinity College Dublin as a teaching assistant.
   modules:
-    - "Early modern philosophy"
-    - "Kantian and post-Kantian philosophy"
-    - "Analytic philosophy"
-    - "Metaphysics"
-    - "Philosophy of science"
-    - "Ethics of science"
-    - "Philosophy of mind"
+    - Early modern philosophy
+    - Kantian and post-Kantian philosophy
+    - Analytic philosophy
+    - Metaphysics
+    - Philosophy of science
+    - Ethics of science
+    - Philosophy of mind
   method:
-    - title: "Students at the centre"
-      text: "The aim is not to pass on notions but to lead students to reflect on philosophical problems independently."
-    - title: "Open questions"
-      text: "I ask many Socratic questions, some easier, some harder. They are never rhetorical, and they spark debates from which I learn too."
-    - title: "Dialogue, moderated"
-      text: "Once students have the conceptual tools for a problem, I step back to moderate, keeping discussion fair and respectful and encouraging, never imposing, participation."
-    - title: "A creative close"
-      text: "Every class ends with a group activity such as a thought experiment or role-play, to train understanding, imagination and empathy."
-  quote: "These skills matter for a successful academic life and for a more fulfilling human one."
-
+    - title: Students at the centre
+      text: The aim is not to pass on notions but to draw students into genuine
+        philosophical puzzles, helping them to reflect independently.
+    - title: Open questions
+      text: My approach to teaching is open-ended. The philosophical questions asked
+        are never rhetorical, and the work of reasoning matters as much as the
+        conclusion reached.
+    - title: Conceptual tools
+      text: I provide students with conceptual tools they can use and sharpen in their
+        own lives.
+    - title: A creative close
+      text: Every class ends with a group activity such as a thought experiment or
+        role-play, to train understanding, imagination and empathy.
+  quote: These skills matter for a successful academic life and for a more
+    fulfilling human one.
 cv:
-  title: "Curriculum Vitae"
-  text: "Education, positions, prizes, talks and teaching, in one document."
-  url: "/papers/cv-simone-nota.pdf"
-
+  title: Curriculum Vitae
+  text: Education, positions, prizes, talks and teaching.
+  url: /papers/cv-simone-nota.pdf
 aifun:
-  title: "AI & Philosophy"
-  text: "A playful corner of the site: philosophical ideas, from Hegel’s owl to Husserl’s epoché, turned into pictures with AI."
-
+  title: AI & Philosophy
+  text: Philosophical ideas, from Hegel’s owl to Wittgenstein's ladder, turned
+    into pictures with AI.
 footer:
-  affiliation: "Institute of Philosophy, Zagreb"
-  contact: "[snota@tcd.ie](mailto:snota@tcd.ie) · [PhilPeople](https://philpeople.org/profiles/simone-nota) · [ORCID](https://orcid.org/0000-0002-5812-0465)"
+  affiliation: Institute of Philosophy, Zagreb
+  contact: "[snota@tcd.ie](mailto:snota@tcd.ie) ·
+    [PhilPeople](https://philpeople.org/profiles/simone-nota) ·
+    [ORCID](https://orcid.org/0000-0002-5812-0465)"
 ---
