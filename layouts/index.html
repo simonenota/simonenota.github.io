@@ -1,0 +1,127 @@
+{{ define "main" }}
+{{ $p := .Params }}
+{{ $lang := site.Language.Lang }}
+<main id="top">
+  <span id="content"></span>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">{{ $p.hero.eyebrow }}</p>
+        <h1>{{ $p.hero.title | markdownify }}</h1>
+        <p class="lead">{{ $p.hero.lead | markdownify }}</p>
+        <div class="actions">
+          <a class="btn primary" href="#publications">{{ i18n "read_papers" }}</a>
+          <a class="btn ghost" href="{{ $p.cv.url }}" target="_blank" rel="noopener">{{ i18n "download_cv" }}</a>
+        </div>
+        <ul class="chips" aria-label="{{ i18n "areas_label" }}">
+          {{- range $p.hero.areas }}<li>{{ . }}</li>{{ end -}}
+        </ul>
+      </div>
+      <figure class="motif">
+        <!-- Concentric views around one standpoint: the "perspective" the research defends -->
+        <svg viewBox="0 0 400 400" aria-hidden="true" focusable="false">
+          <circle cx="200" cy="200" r="190" fill="none" stroke="var(--line)" stroke-width="2"/>
+          <circle cx="200" cy="200" r="160" fill="none" stroke="var(--line)" stroke-width="2"/>
+          <circle cx="200" cy="200" r="138" fill="var(--teal-tint)" stroke="none"/>
+          <path d="M200 10 A190 190 0 0 1 390 200" fill="none" stroke="var(--amber-fill)" stroke-width="9" stroke-linecap="round"/>
+          <path d="M40 200 A160 160 0 0 1 200 40" fill="none" stroke="var(--coral)" stroke-width="9" stroke-linecap="round"/>
+          <path d="M200 338 A138 138 0 0 0 338 200" fill="none" stroke="var(--teal)" stroke-width="9" stroke-linecap="round"/>
+          <circle cx="390" cy="200" r="10" fill="var(--amber-fill)"/>
+          <circle cx="40" cy="200" r="10" fill="var(--coral)"/>
+          <circle cx="338" cy="200" r="10" fill="var(--teal)"/>
+        </svg>
+        <img class="portrait" src="{{ "images/simone.jpg" | relURL }}" alt="{{ i18n "portrait_alt" }}" width="345" height="344">
+      </figure>
+    </div>
+  </section>
+
+  <section class="block" id="research">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>{{ i18n "nav_research" }}</h2>
+        <p>{{ $p.research.intro | markdownify }}</p>
+      </div>
+      {{ range $p.research.strands }}
+      <article class="strand">
+        <div>
+          <p class="tag s-{{ .color }}">{{ .tag }}</p>
+          <h3 class="s-{{ .color }}">{{ .title }}</h3>
+        </div>
+        <div class="body">
+          {{ with .question }}<p class="question">{{ . }}</p>{{ end }}
+          {{ .text | markdownify }}
+          {{ if .link_url }}<a class="link-line" href="{{ .link_url }}" target="_blank" rel="noopener">{{ .link_label }}</a>{{ end }}
+        </div>
+      </article>
+      {{ end }}
+      {{ with $p.research.bridge_title }}
+      <div class="callout">
+        <h3>{{ . }}</h3>
+        <p>{{ $p.research.bridge_text | markdownify }}</p>
+      </div>
+      {{ end }}
+      {{ with $p.research.also }}<p class="also">{{ . | markdownify }}</p>{{ end }}
+    </div>
+  </section>
+
+  <section class="block" id="publications">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>{{ i18n "nav_publications" }}</h2>
+        <p>{{ $p.publications.intro | markdownify }}</p>
+      </div>
+      <div class="pubs">
+        {{ range sort site.Data.publications "year" "desc" }}
+        <article class="pub">
+          <div class="venue">
+            <span><i>{{ .venue }}</i>, {{ .year }}</span>
+            {{ with index .award $lang }}<span class="award">{{ . }}</span>{{ end }}
+          </div>
+          <div>
+            <h3>{{ .title | markdownify }}</h3>
+            {{ with index .summary $lang }}<p>{{ . | markdownify }}</p>{{ end }}
+            {{ with .pdf }}<a class="pdf" href="{{ . }}" target="_blank" rel="noopener">{{ i18n "read_pdf" }}</a>{{ end }}
+          </div>
+        </article>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="teaching">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>{{ i18n "nav_teaching" }}</h2>
+        <p>{{ $p.teaching.intro | markdownify }}</p>
+      </div>
+      <ul class="modules" aria-label="{{ i18n "modules_label" }}">
+        {{- range $p.teaching.modules }}<li>{{ . }}</li>{{ end -}}
+      </ul>
+      <div class="method">
+        {{ range $p.teaching.method }}
+        <div>
+          <h3>{{ .title }}</h3>
+          <p>{{ .text | markdownify }}</p>
+        </div>
+        {{ end }}
+      </div>
+      {{ with $p.teaching.quote }}<p class="quote">{{ . | markdownify }}</p>{{ end }}
+    </div>
+  </section>
+
+  <section class="block" id="cv">
+    <div class="wrap duo">
+      <div class="panel dark">
+        <h2>{{ $p.cv.title }}</h2>
+        <p>{{ $p.cv.text | markdownify }}</p>
+        <a class="btn" href="{{ $p.cv.url }}" target="_blank" rel="noopener">{{ i18n "download_cv_long" }}</a>
+      </div>
+      <div class="panel light" id="ai-fun">
+        <h2>{{ $p.aifun.title }}</h2>
+        <p>{{ $p.aifun.text | markdownify }}</p>
+        <a class="btn ghost" href="{{ $p.aifun.url }}" target="_blank" rel="noopener">{{ i18n "open_gallery" }}</a>
+      </div>
+    </div>
+  </section>
+</main>
+{{ end }}

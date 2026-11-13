@@ -1,0 +1,26 @@
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="#top">Simone <span>Nota</span></a>
+      <nav class="main" aria-label="{{ i18n "nav_label" }}">
+        <a href="#research">{{ i18n "nav_research" }}</a>
+        <a href="#publications">{{ i18n "nav_publications" }}</a>
+        <a href="#teaching">{{ i18n "nav_teaching" }}</a>
+        <a href="#cv">{{ i18n "nav_cv" }}</a>
+        <a href="#ai-fun">{{ i18n "nav_aifun" }}</a>
+      </nav>
+      <div class="tools">
+        {{- range .Translations }}
+        <a class="tool" href="{{ .RelPermalink }}" hreflang="{{ .Language.LanguageCode }}" lang="{{ .Language.LanguageCode }}" aria-label="{{ i18n "lang_switch_label" }}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>
+          {{ upper .Language.Lang }}
+        </a>
+        {{- end }}
+        <button class="tool" id="theme-toggle" type="button" aria-pressed="false" title="{{ i18n "theme_label" }}"
+          data-to-dark="{{ i18n "theme_to_dark" }}" data-to-light="{{ i18n "theme_to_light" }}">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <span class="label">{{ i18n "theme_to_dark" }}</span>
+        </button>
+      </div>
+  </div>
+</header>

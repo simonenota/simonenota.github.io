@@ -1,0 +1,23 @@
+baseURL = "https://example.org/"
+relativeURLs = true
+title = "Simone Nota"
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = false
+disableKinds = ["taxonomy", "term", "RSS", "section"]
+enableRobotsTXT = true
+
+[languages]
+  [languages.en]
+    languageName = "English"
+    languageCode = "en"
+    weight = 1
+  [languages.it]
+    languageName = "Italiano"
+    languageCode = "it"
+    weight = 2
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[params]
+  author = "Simone Nota"

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="{{ site.Language.LanguageCode }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{{ site.Title }}</title>
+  <meta name="description" content="{{ .Params.description }}">
+  <meta name="author" content="{{ site.Params.author }}">
+  {{- range .AllTranslations }}
+  <link rel="alternate" hreflang="{{ .Language.LanguageCode }}" href="{{ .Permalink }}">
+  {{- end }}
+  <meta property="og:title" content="{{ site.Title }}">
+  <meta property="og:description" content="{{ .Params.description }}">
+  <meta property="og:image" content="{{ "images/simone.jpg" | absURL }}">
+  <script>
+    // Light is the default; apply the visitor's saved choice before the page paints.
+    try { if (localStorage.getItem("theme") === "dark") document.documentElement.dataset.theme = "dark"; } catch (e) {}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&display=swap">
+  {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}">
+  <link rel="icon" href="{{ "images/simone.jpg" | relURL }}">
+</head>
+<body>
+  <a class="skip" href="#content">{{ i18n "skip" }}</a>
+  {{ partial "header.html" . }}
+  {{ block "main" . }}{{ end }}
+  {{ partial "footer.html" . }}
+  <script>
+    (function () {
+      var btn = document.getElementById("theme-toggle");
+      if (!btn) return;
+      var root = document.documentElement;
+      function sync() {
+        var dark = root.dataset.theme === "dark";
+        btn.setAttribute("aria-pressed", dark ? "true" : "false");
+        btn.querySelector(".label").textContent = dark ? btn.dataset.toLight : btn.dataset.toDark;
+      }
+      btn.addEventListener("click", function () {
+        var dark = root.dataset.theme !== "dark";
+        if (dark) root.dataset.theme = "dark"; else delete root.dataset.theme;
+        try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch (e) {}
+        sync();
+      });
+      sync();
+    })();
+  </script>
+</body>
+</html>

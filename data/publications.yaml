@@ -1,0 +1,37 @@
+# One entry per article, newest first.
+# "summary" and "award" have an English (en) and an Italian (it) version.
+- title: "“Logic Is Transcendental”: Content, Isomorphism and Intentionality in Wittgenstein’s Logic of Depiction"
+  venue: "Philosophical Investigations"
+  year: 2026
+  award: { en: "", it: "" }
+  summary:
+    en: "Most readers take logic in the *Tractatus* to be empty, since tautologies do not picture reality, yet this fails to explain its transcendental status. I propose a transcendental reading of the logic of depiction: its content is the formal rules governing the subject’s speech about objects."
+    it: "Gran parte dei lettori considera vuota la logica del *Tractatus*, poiché le tautologie non raffigurano la realtà, ma così non si spiega il suo statuto trascendentale. Propongo una lettura trascendentale della logica della raffigurazione: il suo contenuto sono le regole formali che governano il discorso del soggetto sugli oggetti."
+  pdf: "https://simonenota.weebly.com/uploads/1/4/1/3/141357793/nota_-_logic_is_transcendental.pdf"
+
+- title: "A Transcendental Approach to Dream Skepticism"
+  venue: "Teorema"
+  year: 2024
+  award: { en: "Teorema Essay Prize 2024", it: "Premio Teorema 2024" }
+  summary:
+    en: "How can we know we are not dreaming? I take up this question from a transcendental standpoint, building a narrative around three giants: Descartes, Kant and Putnam. I keep some of their ideas and drop others, to develop an approach that is historically informed and original."
+    it: "Come possiamo sapere di non stare sognando? Affronto questa domanda da un punto di vista trascendentale, costruendo un racconto attorno a tre giganti: Descartes, Kant e Putnam. Di alcune loro idee mi servo, altre le abbandono, per sviluppare un approccio storicamente informato e originale."
+  pdf: "https://simonenota.weebly.com/uploads/1/4/1/3/141357793/nota_-_a_transcendental_approach_to_dream_skepticism.pdf"
+
+- title: "The Paradox of Falsehood and Non-Being"
+  venue: "Synthesis"
+  year: 2021
+  award: { en: "", it: "" }
+  summary:
+    en: "How can we think or say what is not? If what-is-not is nothing, a thought of nothing seems to be no thought at all; if it is not, we must admit that what-is-not is, and refute ourselves. I address the paradox through Parmenides, Plato, Russell and the early Wittgenstein."
+    it: "Come possiamo pensare o dire ciò che non è? Se ciò-che-non-è è nulla, un pensiero del nulla sembra non essere affatto un pensiero; se non lo è, dobbiamo ammettere che ciò-che-non-è è, e confutarci da soli. Affronto il paradosso attraverso Parmenide, Platone, Russell e il primo Wittgenstein."
+  pdf: "https://simonenota.weebly.com/uploads/1/4/1/3/141357793/nota_-_the_paradox_of_falsehood_and_non-being.pdf"
+
+- title: "Wittgenstein’s Transcendental Thought Experiment in Ethics"
+  venue: "Phenomenology and Mind"
+  year: 2022
+  award: { en: "", it: "" }
+  summary:
+    en: "Thought experiments are narratives that lead us to visualize a possible scenario and, when properly run in thought, to certain conclusions. Transcendental ones can lead us to the necessary conditions of representing reality. I argue that in the “Lecture on Ethics” Wittgenstein used one to clarify ethics."
+    it: "Gli esperimenti mentali sono racconti che ci portano a immaginare uno scenario possibile e, se condotti bene nel pensiero, a certe conclusioni. Quelli trascendentali possono condurci alle condizioni necessarie della rappresentazione della realtà. Sostengo che nella “Conferenza sull’etica” Wittgenstein ne abbia usato uno per chiarire l’etica."
+  pdf: "https://simonenota.weebly.com/uploads/1/4/1/3/141357793/nota_-_wittgensteins_transcendental_thought_experiment_in_ethics.pdf"
