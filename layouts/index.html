@@ -182,8 +182,10 @@
     })();
   </script>
   <script>
-    /* A golden thread leaves the astrolabe and runs down the page: it is drawn as
-       the reader scrolls, and lights a star beside each section and each frame. */
+    /* A golden thread leaves the astrolabe and runs down the page. In Research it
+       weaves from one side to the other through the white space between the lines
+       of work, so each picture and its text share a side. It is drawn as the reader
+       scrolls, and lights a star beside each section, each frame and the bridge. */
     (function () {
       var main = document.getElementById('top');
       var motif = document.querySelector('.motif');
@@ -193,9 +195,10 @@
       var NS = 'http://www.w3.org/2000/svg';
       var STAR = 'M0 -1L.18 -.18L1 0L.18 .18L0 1L-.18 .18L-1 0L-.18 -.18ZM.41 -.41L.2 0L.41 .41L0 .2L-.41 .41L-.2 0L-.41 -.41L0 -.2Z';
       var SPARK = 'M0 -1L.22 -.22L1 0L.22 .22L0 1L-.22 .22L-1 0L-.22 -.22Z';
+      var STEP = 4;
       var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
       var root = document.documentElement;
-      var svg, line, spark, nodes = [], table = [], total = 0, queued = false;
+      var svg, line, spark, nodes = [], table = [], total = 0, cur = 0, target = 0, built = false, raf = 0, lastT = 0;
 
       function el(name, attrs, parent) {
         var e = document.createElementNS(NS, name);
@@ -205,14 +208,17 @@
       }
       function box(e) {
         var r = e.getBoundingClientRect(), m = main.getBoundingClientRect();
-        return { x: r.left - m.left, y: r.top - m.top, w: r.width, h: r.height };
+        return { x: r.left - m.left, y: r.top - m.top, w: r.width, h: r.height, b: r.bottom - m.top, r: r.right - m.left };
       }
-      function star(parent, x, y, r, branchTo) {
-        var g = el('g', { 'class': 't-node' }, parent);
-        if (branchTo) el('line', { 'class': 't-branch', x1: x + r + 3, y1: y, x2: branchTo, y2: y, pathLength: 1 }, g);
+      function star(x, y, r, branchTo) {
+        var g = el('g', { 'class': 't-node' }, svg);
+        if (branchTo != null) {
+          var from = branchTo > x ? x + r + 3 : x - r - 3;
+          el('line', { 'class': 't-branch', x1: from, y1: y, x2: branchTo, y2: y, pathLength: 1 }, g);
+        }
         el('circle', { 'class': 't-halo', cx: x, cy: y, r: r * 1.9 }, g);
         el('path', { 'class': 't-star', d: STAR, transform: 'translate(' + x + ' ' + y + ') scale(' + r + ')', 'vector-effect': 'non-scaling-stroke' }, g);
-        nodes.push({ g: g, y: y });
+        nodes.push({ g: g, x: x, y: y, len: 0 });
       }
 
       function build() {
@@ -220,47 +226,75 @@
         nodes = []; table = [];
         var W = main.clientWidth;
         var wrap = research.querySelector('.wrap');
-        var wb = box(wrap);
-        var left = wb.x + parseFloat(getComputedStyle(wrap).paddingLeft);
-        var gx = Math.max(9, Math.round(left - Math.min(44, Math.max(14, left * 0.45))));
+        var wb = box(wrap), cs = getComputedStyle(wrap);
+        var left = wb.x + parseFloat(cs.paddingLeft), right = wb.r - parseFloat(cs.paddingRight);
+        var off = Math.min(44, Math.max(14, left * 0.45));
+        var xL = Math.max(9, Math.round(left - off)), xR = Math.min(W - 9, Math.round(right + (left - xL)));
         var m = box(motif);
         var heads = [].slice.call(main.querySelectorAll('section.block .section-head h2'));
-        var h0 = box(heads[0]);
+        if (!heads.length) return;
         var end = box(owl).y - 30;
+        var small = W < 700 ? 0.75 : 1;
         var wide = m.x + m.w / 2 > W / 2;
-        var d, starAt = null;
+        var d, starAt = null, y;
+        svg = el('svg', { 'class': 'thread', width: W, height: end + 40, 'aria-hidden': 'true', focusable: 'false' });
+
         if (wide) {
           /* From the bottom of the astrolabe, through the star between hero and research, into the margin. */
           var p0 = { x: m.x + m.w / 2, y: m.y + m.h * 0.98 };
           var s = { x: W / 2, y: box(research).y };
-          var y2 = h0.y + 14;
+          var y2 = box(heads[0]).y + 14;
           var dy = s.y - p0.y;
           if (dy < 24) wide = false;
           else {
             d = 'M' + p0.x + ' ' + p0.y +
                 'C' + p0.x + ' ' + (p0.y + dy * 0.75) + ' ' + (s.x + (p0.x - s.x) * 0.45) + ' ' + s.y + ' ' + s.x + ' ' + s.y +
-                'C' + (s.x - (s.x - gx) * 0.55) + ' ' + s.y + ' ' + gx + ' ' + (s.y + (y2 - s.y) * 0.3) + ' ' + gx + ' ' + y2 +
-                'L' + gx + ' ' + end;
-            starAt = s;
+                'C' + (s.x - (s.x - xL) * 0.55) + ' ' + s.y + ' ' + xL + ' ' + (s.y + (y2 - s.y) * 0.3) + ' ' + xL + ' ' + y2;
+            starAt = s; y = y2;
           }
         }
         if (!wide) {
           /* Phone: the astrolabe sits above the text, so the thread leaves its left edge for the margin. */
           var q = { x: m.x + m.w * 0.02, y: m.y + m.h / 2 };
-          d = 'M' + q.x + ' ' + q.y + 'C' + q.x + ' ' + (q.y + 30) + ' ' + gx + ' ' + (q.y + 36) + ' ' + gx + ' ' + (q.y + 70) + 'L' + gx + ' ' + end;
+          d = 'M' + q.x + ' ' + q.y + 'C' + q.x + ' ' + (q.y + 30) + ' ' + xL + ' ' + (q.y + 36) + ' ' + xL + ' ' + (q.y + 70);
+          y = q.y + 70;
         }
         root.classList.toggle('thread-wide', wide);
+        if (starAt) star(starAt.x, starAt.y, 8, null);
 
-        svg = el('svg', { 'class': 'thread', width: W, height: end + 40, 'aria-hidden': 'true', focusable: 'false' });
-        el('path', { 'class': 't-route', d: d }, svg);
-        line = el('path', { 'class': 't-line', d: d }, svg);
-        var small = W < 700 ? 0.75 : 1;
-        if (starAt) star(svg, starAt.x, starAt.y, 8, null);
-        heads.forEach(function (h) { var b = box(h); star(svg, gx, b.y + 14, 5.5 * small, null); });
-        [].slice.call(main.querySelectorAll('#research .strip, #research .callout')).forEach(function (f) {
-          var b = box(f); star(svg, gx, b.y + b.h / 2, 7 * small, b.x - 1);
+        /* In Research, cross to the other side in the white space before each picture (and before the bridge). */
+        var x = xL;
+        var units = [].slice.call(research.querySelectorAll('.wrap > .strip, .wrap > .callout'));
+        units.forEach(function (u) {
+          var ub = box(u), prev = u.previousElementSibling;
+          if (prev && prev.classList.contains('strand')) prev = prev.querySelector('.body') || prev;
+          var bandTop = prev ? box(prev).b : y;
+          var y0 = bandTop + 12, y1 = ub.y - 12;
+          if (y1 - y0 >= 24 && y0 > y) {
+            var xo = x === xL ? xR : xL, ym = (y0 + y1) / 2;
+            d += 'L' + x + ' ' + y0 + 'C' + x + ' ' + ym + ' ' + xo + ' ' + ym + ' ' + xo + ' ' + y1;
+            star((x + xo) / 2, ym, 4.5 * small, null);
+            x = xo; y = y1;
+          }
+          var near = x === xL ? ub.x - 1 : ub.r + 1;
+          star(x, ub.y + ub.h / 2, 7 * small, near);
         });
-        star(svg, gx, end, 6 * small, null);
+        /* Back to the left margin for the rest of the page, if the last crossing ended on the right. */
+        if (x !== xL) {
+          var nb = box(heads[1] || owl), last = wrap.lastElementChild;
+          var t0 = Math.max(y, last ? box(last).b : y) + 12, t1 = nb.y - 12, tm = (t0 + t1) / 2;
+          d += 'L' + x + ' ' + t0 + 'C' + x + ' ' + tm + ' ' + xL + ' ' + tm + ' ' + xL + ' ' + t1;
+          x = xL;
+        }
+        d += 'L' + xL + ' ' + end;
+        heads.forEach(function (h) { var b = box(h); star(xL, b.y + 14, 5.5 * small, null); });
+        star(xL, end, 6 * small, null);
+
+        /* The dotted route and the gilded line go underneath the stars. */
+        var route = el('path', { 'class': 't-route', d: d });
+        line = el('path', { 'class': 't-line', d: d });
+        svg.insertBefore(route, svg.firstChild);
+        svg.insertBefore(line, route.nextSibling);
         spark = el('g', { 'class': 't-spark' }, svg);
         var tw = el('g', { 'class': 't-twinkle' }, spark);
         el('circle', { cx: 0, cy: 0, r: 10 * small }, tw);
@@ -269,31 +303,57 @@
 
         total = line.getTotalLength();
         line.style.strokeDasharray = total + ' ' + total;
-        for (var l = 0; l <= total; l += 6) { var pt = line.getPointAtLength(l); table.push([l, pt.x, pt.y]); }
-        var last = line.getPointAtLength(total); table.push([total, last.x, last.y]);
+        for (var l = 0; l < total; l += STEP) { var pt = line.getPointAtLength(l); table.push([pt.x, pt.y]); }
+        var last = line.getPointAtLength(total); table.push([last.x, last.y]);
+        nodes.forEach(function (n) {
+          var best = 0, bd = Infinity;
+          for (var i = 0; i < table.length; i++) {
+            var dx = table[i][0] - n.x, dy2 = table[i][1] - n.y, dd = dx * dx + dy2 * dy2;
+            if (dd < bd) { bd = dd; best = i; }
+          }
+          n.len = best * STEP;
+        });
         root.classList.add('thread-on');
-        draw();
+        target = aim();
+        if (built || still) cur = target;
+        built = true;
+        render();
+        go();
       }
 
-      function draw() {
-        queued = false;
-        if (!table.length) return;
-        var tip = still ? Infinity : window.innerHeight * 0.62 - main.getBoundingClientRect().top;
+      /* How far the thread should reach: down to 62% of the window. */
+      function aim() {
+        if (still) return total;
+        var tip = window.innerHeight * 0.62 - main.getBoundingClientRect().top;
         var lo = 0, hi = table.length - 1;
-        if (tip >= table[hi][2]) lo = hi;
-        else while (hi - lo > 1) { var mid = (lo + hi) >> 1; if (table[mid][2] <= tip) lo = mid; else hi = mid; }
-        var t = table[lo];
-        line.style.strokeDashoffset = total - t[0];
-        spark.setAttribute('transform', 'translate(' + t[1] + ' ' + t[2] + ')');
-        spark.style.display = still || t[0] >= total - 1 ? 'none' : '';
-        nodes.forEach(function (n) { n.g.classList.toggle('lit', n.y <= t[2] + 1); });
+        if (tip >= table[hi][1]) return total;
+        if (tip <= table[0][1]) return 0;
+        while (hi - lo > 1) { var mid = (lo + hi) >> 1; if (table[mid][1] <= tip) lo = mid; else hi = mid; }
+        return lo * STEP;
       }
-      function later() { if (!queued) { queued = true; requestAnimationFrame(draw); } }
+      function render() {
+        var c = Math.max(0, Math.min(total, cur));
+        line.style.strokeDashoffset = total - c;
+        var i = Math.min(table.length - 1, Math.round(c / STEP)), t = table[i];
+        spark.setAttribute('transform', 'translate(' + t[0] + ' ' + t[1] + ')');
+        spark.style.display = still || c >= total - 1 ? 'none' : '';
+        nodes.forEach(function (n) { n.g.classList.toggle('lit', n.len <= c + 1); });
+      }
+      /* The drawn end glides toward the target, so it runs across the page instead of jumping. */
+      function frame(now) {
+        var dt = Math.min(0.05, (now - lastT) / 1000); lastT = now;
+        var diff = target - cur, move = diff * Math.min(1, dt * 4.5), min = 160 * dt;
+        if (Math.abs(move) < min) move = Math.max(-Math.abs(diff), Math.min(Math.abs(diff), diff < 0 ? -min : min));
+        cur += move;
+        render();
+        raf = Math.abs(target - cur) > 0.5 ? requestAnimationFrame(frame) : 0;
+      }
+      function go() { if (!raf && Math.abs(target - cur) > 0.5) { lastT = performance.now(); raf = requestAnimationFrame(frame); } }
 
       var timer;
       function rebuild() { clearTimeout(timer); timer = setTimeout(build, 120); }
       build();
-      window.addEventListener('scroll', later, { passive: true });
+      window.addEventListener('scroll', function () { if (table.length) { target = aim(); go(); } }, { passive: true });
       window.addEventListener('resize', rebuild);
       if (window.ResizeObserver) new ResizeObserver(rebuild).observe(main);
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(rebuild);
