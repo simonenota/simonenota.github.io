@@ -49,7 +49,7 @@
         </div>
         <div class="body">
           {{ with .question }}<p class="question">{{ . }}</p>{{ end }}
-          {{ .text | markdownify }}
+          {{ $.RenderString (dict "display" "block") .text }}
           {{ if .link_url }}<a class="link-line" href="{{ .link_url }}" target="_blank" rel="noopener">{{ .link_label }}</a>{{ end }}
         </div>
       </article>
