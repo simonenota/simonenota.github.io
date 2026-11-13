@@ -88,18 +88,16 @@ teaching:
     - Philosophy of mind
   method:
     - title: Students at the centre
-      text: The aim is not to pass on notions but to draw students into genuine
-        philosophical puzzles, helping them to reflect independently.
+      text: The aim is to draw students into genuine philosophical puzzles, helping
+        them to reflect independently.
     - title: Open questions
-      text: My approach to teaching is open-ended. The philosophical questions asked
-        are never rhetorical, and the work of reasoning matters as much as the
-        conclusion reached.
+      text: The work of reasoning matters as much as the conclusion reached.
     - title: Conceptual tools
       text: I provide students with conceptual tools they can use and sharpen in their
         own lives.
     - title: A creative close
-      text: Every class ends with a group activity such as a thought experiment or
-        role-play, to train understanding, imagination and empathy.
+      text: Every class ends with a creative group activity to train understanding,
+        imagination and empathy.
   quote: These skills matter for a successful academic life and for a more
     fulfilling human one.
 cv:
