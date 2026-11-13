@@ -12,14 +12,65 @@
       <ul class="gallery">
         {{ range site.Data.aifun.images }}
         {{ $cap := index .caption $lang }}
+        {{ $large := replace .image "/images/ai-fun/" "/images/ai-fun/large/" }}
+        {{ if not (fileExists (printf "static%s" $large)) }}{{ $large = .image }}{{ end }}
         <li>
           <figure>
-            <img src="{{ .image | relURL }}" alt="" width="800" height="800" loading="lazy" decoding="async">
+            <a class="zoom" href="{{ $large | relURL }}" aria-label="{{ i18n "enlarge" }}: {{ $cap }}">
+              <img src="{{ .image | relURL }}" alt="" width="800" height="800" loading="lazy" decoding="async">
+            </a>
             <figcaption>{{ $cap }}</figcaption>
           </figure>
         </li>
         {{ end }}
       </ul>
+      <dialog class="lightbox" id="lightbox" aria-label="{{ .Title }}">
+        <figure>
+          <img id="lb-img" src="data:," alt="">
+          <figcaption id="lb-cap"></figcaption>
+        </figure>
+        <button type="button" class="lb-btn lb-close" data-lb="close" aria-label="{{ i18n "close" }}">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+        <button type="button" class="lb-btn lb-prev" data-lb="prev" aria-label="{{ i18n "previous" }}">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <button type="button" class="lb-btn lb-next" data-lb="next" aria-label="{{ i18n "next" }}">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </dialog>
+      <script>
+        (function () {
+          var dlg = document.getElementById("lightbox");
+          if (!dlg || !dlg.showModal) return; // very old browsers just open the picture
+          var links = Array.prototype.slice.call(document.querySelectorAll(".gallery a.zoom"));
+          var img = document.getElementById("lb-img"), cap = document.getElementById("lb-cap"), cur = 0;
+          function show(i) {
+            cur = (i + links.length) % links.length;
+            var a = links[cur], text = a.parentNode.querySelector("figcaption").textContent;
+            img.src = a.getAttribute("href"); img.alt = text; cap.textContent = text;
+          }
+          links.forEach(function (a, i) {
+            a.addEventListener("click", function (e) { e.preventDefault(); show(i); dlg.showModal(); });
+          });
+          dlg.addEventListener("click", function (e) {
+            var b = e.target.closest("[data-lb]");
+            if (b) { var k = b.dataset.lb; if (k === "close") dlg.close(); else show(cur + (k === "next" ? 1 : -1)); }
+            else if (e.target === dlg || e.target.tagName === "FIGURE") dlg.close();
+          });
+          dlg.addEventListener("keydown", function (e) {
+            if (e.key === "ArrowRight") show(cur + 1);
+            if (e.key === "ArrowLeft") show(cur - 1);
+          });
+          dlg.addEventListener("close", function () { if (links[cur]) links[cur].focus(); });
+          var x0 = null;
+          dlg.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+          dlg.addEventListener("touchend", function (e) {
+            if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null;
+            if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1));
+          });
+        })();
+      </script>
     </div>
   </section>
 </main>

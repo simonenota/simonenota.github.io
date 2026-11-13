@@ -195,3 +195,35 @@ footer strong { color: var(--ink); }
 footer a { color: var(--ink); font-weight: 500; text-underline-offset: 3px; }
 /* Keep running text at a comfortable reading width on wide screens. */
 .strand .body, .also { max-width: 68ch; }
+
+/* Gallery viewer: pictures open almost full screen */
+.gallery a.zoom { display: block; border-radius: 12px; cursor: zoom-in; }
+.gallery a.zoom img { transition: transform .2s ease; }
+.gallery a.zoom:hover img { transform: scale(1.02); }
+.lightbox {
+  width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
+  background: rgb(8 12 24 / 0.94); color: #F2F4FA;
+}
+.lightbox::backdrop { background: rgb(8 12 24 / 0.94); }
+.lightbox figure {
+  margin: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+  padding: max(56px, env(safe-area-inset-top, 0px)) max(64px, env(safe-area-inset-right, 0px)) max(24px, env(safe-area-inset-bottom, 0px)) max(64px, env(safe-area-inset-left, 0px));
+}
+.lightbox img { display: block; width: auto; height: auto; max-width: 100%; max-height: calc(100dvh - 140px); aspect-ratio: 1; object-fit: contain; border-radius: 10px; }
+.lightbox figcaption { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; text-align: center; max-width: 60ch; }
+.lb-btn {
+  position: absolute; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%;
+  border: 1px solid rgb(242 244 250 / 0.3); background: rgb(242 244 250 / 0.08); color: #F2F4FA; cursor: pointer;
+}
+.lb-btn:hover { background: rgb(242 244 250 / 0.2); }
+.lb-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.lb-close { top: max(12px, env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); }
+.lb-prev { left: max(8px, env(safe-area-inset-left, 0px)); top: 50%; transform: translateY(-50%); }
+.lb-next { right: max(8px, env(safe-area-inset-right, 0px)); top: 50%; transform: translateY(-50%); }
+.lightbox :focus-visible { outline: 3px solid #3CC3C4; outline-offset: 3px; }
+@media (max-width: 600px) {
+  .lightbox figure { padding-inline: 12px; padding-bottom: 88px; }
+  .lb-prev, .lb-next { top: auto; bottom: max(16px, env(safe-area-inset-bottom, 0px)); transform: none; }
+  .lb-prev { left: calc(50% - 60px); } .lb-next { right: calc(50% - 60px); }
+}
+@media (prefers-reduced-motion: reduce) { .gallery a.zoom img { transition: none; } }
