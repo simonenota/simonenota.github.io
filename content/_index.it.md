@@ -22,6 +22,7 @@ research:
   strands:
     - tag: Linea principale
       color: teal
+      image: /images/research/transcendentalism.jpg
       title: Trascendentalismo
       question: Possiamo avere una conoscenza a priori di come è fatta la realtà, e a
         quali condizioni?
@@ -45,6 +46,7 @@ research:
       link_url: /papers/phd-thesis.pdf
     - tag: Interesse recente
       color: amber
+      image: /images/research/absolutism.jpg
       title: Assolutismo
       text: >
         Di recente mi sono rivolto alle filosofie dell'assoluto, concezioni
@@ -61,6 +63,7 @@ research:
         regolativo**.
     - tag: Progetto a lungo termine
       color: coral
+      image: /images/research/naturalism.jpg
       title: Naturalismo
       text: >
         Mi interessano le filosofie che danno priorità metodologica alla

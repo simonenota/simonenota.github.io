@@ -22,6 +22,7 @@ research:
   strands:
     - tag: Main line
       color: teal
+      image: /images/research/transcendentalism.jpg
       title: Transcendentalism
       question: Can we ever have a priori knowledge of what reality is like, and under
         what conditions?
@@ -44,6 +45,7 @@ research:
       link_url: /papers/phd-thesis.pdf
     - tag: Recent interest
       color: amber
+      image: /images/research/absolutism.jpg
       title: Absolutism
       text: >
         I have recently turned to absolute philosophies, metaphysical views that
@@ -58,6 +60,7 @@ research:
         absolute conception may still keep a role as a **regulative ideal**.
     - tag: Long-term project
       color: coral
+      image: /images/research/naturalism.jpg
       title: Naturalism
       text: >
         I am interested in philosophies that give methodological priority to

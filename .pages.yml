@@ -72,6 +72,7 @@ content:
                 label: Colore
                 type: select
                 options: { values: [teal, amber, coral] }
+              - { name: image, label: "Immagine sopra il titolo (facoltativa, larga e bassa, circa 1080×190)", type: image, options: { media: images } }
               - { name: title, label: Titolo, type: string }
               - { name: question, label: Domanda guida (facoltativa), type: string }
               - { name: text, label: Testo, type: text }
