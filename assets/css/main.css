@@ -1,6 +1,6 @@
 :root {
   /* Size of the photo with its circles on the home page (computer / phone). */
-  --portrait-size: 440px;
+  --portrait-size: 520px;
   --portrait-size-phone: 280px;
   --bg: #F7F8FA;
   --surface: #FFFFFF;
@@ -49,7 +49,7 @@ p { margin: 0; }
 :focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; border-radius: 4px; }
 
 .wrap {
-  max-width: 1120px; margin: 0 auto;
+  max-width: 1240px; margin: 0 auto;
   padding-left: max(20px, env(safe-area-inset-left, 0px));
   padding-right: max(20px, env(safe-area-inset-right, 0px));
 }
@@ -90,7 +90,7 @@ nav.main { margin-left: auto; }
 
 /* Hero */
 .hero { padding-block: clamp(40px, 8vw, 96px); }
-.hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, var(--portrait-size)); gap: clamp(24px, 5vw, 64px); align-items: center; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, min(var(--portrait-size), 40vw)); gap: clamp(24px, 5vw, 64px); align-items: center; }
 .eyebrow { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--teal); }
 .hero h1 { font-size: clamp(2.3rem, 6vw, 3.9rem); font-weight: 800; margin-top: 14px; }
 .hero h1 em { font-style: normal; color: var(--teal); }
@@ -193,3 +193,5 @@ footer strong { color: var(--ink); }
 .gallery img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); }
 .gallery figcaption { font-size: 0.95rem; font-weight: 500; line-height: 1.4; }
 footer a { color: var(--ink); font-weight: 500; text-underline-offset: 3px; }
+/* Keep running text at a comfortable reading width on wide screens. */
+.strand .body, .also { max-width: 68ch; }
