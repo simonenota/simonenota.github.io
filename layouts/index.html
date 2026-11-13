@@ -95,7 +95,6 @@
       </div>
       <div class="pubs">
         {{ range sort site.Data.publications.articles "year" "desc" }}
-        {{ $title := .title | markdownify | plainify }}
         <article class="pub">
           <div class="venue">
             <span><i>{{ .venue }}</i>, {{ .year }}</span>
@@ -107,14 +106,9 @@
             {{ with .pdf }}<a class="pdf" href="{{ . }}" target="_blank" rel="noopener">{{ i18n "read_pdf" }}</a>{{ end }}
           </div>
           {{- with .pdf }}
-          {{- $name := replaceRE `^/?papers/(.+)\.pdf$` "$1" . }}
-          {{- $cover := printf "/papers/covers/%s.jpg" $name }}
+          {{- $cover := replaceRE `^/?papers/(.+)\.pdf$` "/papers/covers/$1.jpg" . }}
           {{- if fileExists (printf "static%s" $cover) }}
-          {{- /* Larger pictures of the first pages, made with the covers (scripts/paper-covers.py). */}}
-          {{- $pages := slice }}
-          {{- range seq 6 }}{{ $f := printf "/papers/pages/%s-%d.jpg" $name . }}{{ if fileExists (printf "static%s" $f) }}{{ $pages = $pages | append ($f | relURL) }}{{ end }}{{ end }}
-          <a class="cover" href="{{ . }}" target="_blank" rel="noopener"
-            {{- with $pages }} data-pages="{{ delimit . " " }}" data-hint="{{ i18n "leaf_hint" }}" aria-label="{{ i18n "leaf_through" }}: {{ $title }}"{{ else }} tabindex="-1" aria-hidden="true"{{ end }}>
+          <a class="cover" href="{{ . }}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
             <img src="{{ $cover | relURL }}" alt="" width="400" height="560" loading="lazy">
           </a>
           {{- end }}
@@ -122,30 +116,6 @@
         </article>
         {{ end }}
       </div>
-      <!-- Reading room: a paper's first page leaves its frame on the wall and can be leafed through. -->
-      <dialog class="reader" id="reader" aria-labelledby="reader-title" data-page="{{ i18n "page_word" }}" data-of="{{ i18n "of_word" }}">
-        <div class="r-wall" data-r="close"></div>
-        <div class="r-room" data-r="close">
-          <div class="r-book"></div>
-          <div class="r-label">
-            <p class="r-venue"></p>
-            <h2 id="reader-title"></h2>
-            <div class="r-turn">
-              <button type="button" class="r-btn" data-r="prev" aria-label="{{ i18n "page_prev" }}">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
-              </button>
-              <span class="r-count" aria-live="polite"></span>
-              <button type="button" class="r-btn" data-r="next" aria-label="{{ i18n "page_next" }}" autofocus>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
-              </button>
-            </div>
-            <a class="btn primary r-pdf" href="#" target="_blank" rel="noopener">{{ i18n "read_full_pdf" }}</a>
-          </div>
-        </div>
-        <button type="button" class="lb-btn r-close" data-r="close" aria-label="{{ i18n "close" }}">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
-        </button>
-      </dialog>
     </div>
   </section>
 
@@ -209,141 +179,6 @@
         if (!waiting) { waiting = true; requestAnimationFrame(drift); }
       }, { passive: true });
       drift();
-    })();
-  </script>
-  <script>
-    /* Reading room for the papers (see the dialog in Publications). Without this script,
-       or in very old browsers, the picture simply opens the PDF. */
-    (function () {
-      var dlg = document.getElementById('reader');
-      if (!dlg || !dlg.showModal) return;
-      var root = document.documentElement;
-      var book = dlg.querySelector('.r-book'), wall = dlg.querySelector('.r-wall'), room = dlg.querySelector('.r-room');
-      var venue = dlg.querySelector('.r-venue'), title = dlg.querySelector('#reader-title'), count = dlg.querySelector('.r-count');
-      var pdf = dlg.querySelector('.r-pdf'), prevB = dlg.querySelector('[data-r="prev"]'), nextB = dlg.querySelector('[data-r="next"]');
-      var still = !book.animate || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
-      var link = null, pages = [], urls = [], cur = 0, closing = false, until = 0;
-      /* While a movement plays, clicks and keys wait (with a time limit, so nothing can stay stuck). */
-      function lock(ms) { until = performance.now() + ms; }
-      function busy() { return performance.now() < until; }
-      var EASE = 'cubic-bezier(.22,.7,.2,1)';
-
-      function load(i) {
-        var im = pages[i] && pages[i].firstChild;
-        if (im && !im.getAttribute('src')) { im.src = urls[i]; if (im.decode) im.decode().catch(function () {}); }
-      }
-      function label() {
-        count.textContent = dlg.dataset.page + ' ' + (cur + 1) + ' ' + dlg.dataset.of + ' ' + pages.length;
-        prevB.setAttribute('aria-disabled', cur === 0 ? 'true' : 'false');
-        nextB.setAttribute('aria-disabled', cur === pages.length - 1 ? 'true' : 'false');
-      }
-      /* Transform that puts the book exactly over a rectangle on the page. */
-      function over(r) {
-        var b = book.getBoundingClientRect();
-        return 'translate(' + (r.left - b.left) + 'px,' + (r.top - b.top) + 'px) scale(' + r.width / b.width + ',' + r.height / b.height + ')';
-      }
-
-      function open(a) {
-        link = a; cur = 0; closing = false;
-        urls = a.dataset.pages.split(' ');
-        var art = a.closest('.pub'), thumb = a.querySelector('img');
-        venue.textContent = art.querySelector('.venue span').textContent.trim();
-        title.textContent = art.querySelector('h3').textContent.trim();
-        pdf.href = a.getAttribute('href');
-        if (thumb.naturalWidth) book.style.setProperty('--ar', (thumb.naturalWidth / thumb.naturalHeight).toFixed(4));
-        book.textContent = ''; pages = [];
-        urls.forEach(function (u, i) {
-          var pg = document.createElement('div'), im = document.createElement('img');
-          pg.className = 'r-page'; im.alt = title.textContent + ', ' + dlg.dataset.page.toLowerCase() + ' ' + (i + 1);
-          pg.appendChild(im); book.appendChild(pg); pages.push(pg);
-        });
-        /* Page 1 starts as the small picture already loaded, then sharpens. */
-        var first = pages[0].firstChild;
-        first.src = thumb.currentSrc || thumb.src;
-        var big = new Image(); big.onload = function () { first.src = urls[0]; }; big.src = urls[0];
-        pages[0].classList.add('on');
-        label();
-        root.classList.add('reading');
-        dlg.showModal();
-        a.style.visibility = 'hidden';
-        requestAnimationFrame(function () {
-          dlg.classList.add('lit');
-          if (!still) {
-            lock(860);
-            book.animate([
-              { transform: over(a.getBoundingClientRect()), boxShadow: '0 4px 10px -4px rgb(0 0 0 / .4)' },
-              { transform: 'translate(0,-10px) scale(1.025)', offset: 0.72 },
-              { transform: 'none' }
-            ], { duration: 820, easing: EASE }).onfinish = function () { load(1); };
-          } else load(1);
-        });
-      }
-
-      function turn(dir) {
-        var to = cur + dir;
-        if (busy() || closing || to < 0 || to >= pages.length) return;
-        var from = pages[cur], next = pages[to];
-        load(to); load(to + 1);
-        cur = to; label();
-        if (still) { from.classList.remove('on'); next.classList.add('on'); return; }
-        lock(600);
-        /* Forward: the page lifts from its left edge and turns over. Back: the previous page turns back in. */
-        var page = dir > 0 ? from : next, under = dir > 0 ? next : from;
-        under.classList.add('on'); under.style.zIndex = 1;
-        page.classList.add('on'); page.style.zIndex = 2;
-        var flat = { transform: 'rotateY(0deg)', filter: 'brightness(1)' }, up = { transform: 'rotateY(-92deg)', filter: 'brightness(.55)' };
-        page.animate(dir > 0 ? [flat, up] : [up, flat], { duration: 560, easing: dir > 0 ? 'cubic-bezier(.4,0,.7,.4)' : 'cubic-bezier(.3,.6,.6,1)' }).onfinish = function () {
-          (dir > 0 ? from : under).classList.remove('on');
-          page.style.zIndex = under.style.zIndex = '';
-        };
-      }
-
-      function close() {
-        if (closing || !link) return;
-        closing = true;
-        dlg.classList.remove('lit');
-        function done() {
-          dlg.close(); root.classList.remove('reading');
-          link.style.visibility = ''; link.focus({ preventScroll: true });
-          link = null; until = 0;
-        }
-        if (still) return done();
-        /* Back to page 1 under the current page, which fades while the picture returns to its frame. */
-        if (cur !== 0) {
-          pages[0].classList.add('on'); pages[0].style.zIndex = 1;
-          pages[cur].style.zIndex = 2;
-          pages[cur].animate([{ opacity: 1 }, { opacity: 0 }], { duration: 260, fill: 'forwards' });
-        }
-        book.animate([{ transform: 'none' }, { transform: over(link.getBoundingClientRect()) }],
-          { duration: 600, easing: 'cubic-bezier(.5,0,.3,1)', fill: 'forwards' }).onfinish = function () {
-          done(); book.getAnimations().forEach(function (an) { an.cancel(); });
-        };
-      }
-
-      [].slice.call(document.querySelectorAll('.cover[data-pages]')).forEach(function (a) {
-        a.addEventListener('click', function (e) {
-          if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return; // a new tab still gets the PDF
-          e.preventDefault(); open(a);
-        });
-      });
-      dlg.addEventListener('click', function (e) {
-        var b = e.target.closest('[data-r]');
-        if (e.target.closest('.r-book')) return turn(1);
-        if (!b || ((b === room || b === wall) && e.target !== b)) return;
-        if (b.dataset.r === 'close') close(); else turn(b.dataset.r === 'next' ? 1 : -1);
-      });
-      dlg.addEventListener('cancel', function (e) { e.preventDefault(); close(); });
-      dlg.addEventListener('keydown', function (e) {
-        if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); turn(1); }
-        if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); turn(-1); }
-      });
-      var x0 = null;
-      book.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
-      book.addEventListener('touchend', function (e) {
-        if (x0 === null) return;
-        var dx = e.changedTouches[0].clientX - x0; x0 = null;
-        if (Math.abs(dx) > 40) { e.preventDefault(); turn(dx < 0 ? 1 : -1); }
-      });
     })();
   </script>
   <script>
