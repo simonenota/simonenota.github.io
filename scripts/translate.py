@@ -6,7 +6,7 @@ translated again, or whose Italian version is empty. Italian texts you
 corrected by hand stay as they are until their English original changes.
 
 Usage:  DEEPL_API_KEY=... python3 scripts/translate.py [BASE_COMMIT]
-        python3 scripts/translate.py [BASE_COMMIT] --dry-run   (no API calls)
+        python3 scripts/translate.py [BASE_COMMIT] --dry-run   (no API calls, no files changed)
 
 Without BASE_COMMIT the commit stored in .translation-base is used: the
 English version that the Italian one was last brought in line with.
@@ -194,7 +194,8 @@ def main():
             base = read(".translation-base").strip() or None
         except FileNotFoundError:
             base = None
-    translate = fake if "--dry-run" in sys.argv else deepl
+    dry = "--dry-run" in sys.argv  # show what would be translated, change no file
+    translate = fake if dry else deepl
     total = 0
 
     for en_path, it_path in PAGES.items():
@@ -208,7 +209,7 @@ def main():
         job = Job()
         walk_page(new_en, old_en, it, job)
         n = job.run(translate)
-        if n:
+        if n and not dry:
             with open(os.path.join(ROOT, it_path), "w", encoding="utf-8") as f:
                 f.write("---\n" + dump(it) + "---\n" + body)
             print(f"{it_path}: {n} text(s) translated")
@@ -225,7 +226,7 @@ def main():
         job = Job()
         walk_data(new, old, job)
         n = job.run(translate)
-        if n:
+        if n and not dry:
             with open(os.path.join(ROOT, path), "w", encoding="utf-8") as f:
                 f.write(head + dump(new))
             print(f"{path}: {n} text(s) translated")

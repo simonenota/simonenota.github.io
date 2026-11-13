@@ -24,15 +24,29 @@
         </ul>
       </div>
       <figure class="motif">
-        <!-- Concentric views around one standpoint: the "perspective" the research defends -->
+        <!-- An astrolabe around one standpoint (the "perspective" the research defends), on an engraved star chart. -->
         <svg viewBox="0 0 400 400" aria-hidden="true" focusable="false">
-          <circle cx="200" cy="200" r="190" fill="none" stroke="var(--ring-line)" stroke-width="2"/>
-          <circle cx="200" cy="200" r="160" fill="none" stroke="var(--ring-line)" stroke-width="2"/>
-          <circle cx="200" cy="200" r="138" fill="var(--ring-fill)" stroke="none"/>
-          <!-- The three coloured rings turn once when the page opens, then rest here. -->
-          <g class="ring ring-outer"><path d="M200 10 A190 190 0 0 1 390 200" fill="none" stroke="var(--ring-outer)" stroke-width="9" stroke-linecap="round"/><circle cx="390" cy="200" r="10" fill="var(--ring-outer)"/></g>
-          <g class="ring ring-middle"><path d="M40 200 A160 160 0 0 1 200 40" fill="none" stroke="var(--ring-middle)" stroke-width="9" stroke-linecap="round"/><circle cx="40" cy="200" r="10" fill="var(--ring-middle)"/></g>
-          <g class="ring ring-inner"><path d="M200 338 A138 138 0 0 0 338 200" fill="none" stroke="var(--ring-inner)" stroke-width="9" stroke-linecap="round"/><circle cx="338" cy="200" r="10" fill="var(--ring-inner)"/></g>
+          <defs>
+            <path id="dial-path" d="M34 200 A166 166 0 1 1 366 200 A166 166 0 1 1 34 200"/>
+            <!-- The same gilded brass as the picture frames further down. -->
+            <linearGradient id="gilt" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" style="stop-color: var(--gilt-1)"/><stop offset=".3" style="stop-color: var(--gilt-3)"/>
+              <stop offset=".55" style="stop-color: var(--gilt-2)"/><stop offset=".8" style="stop-color: var(--gilt-3)"/>
+              <stop offset="1" style="stop-color: var(--gilt-1)"/>
+            </linearGradient>
+          </defs>
+          <circle cx="200" cy="200" r="192" fill="none" stroke="var(--ring-line)" stroke-width="1.5"/>
+          <circle cx="200" cy="200" r="178" fill="none" stroke="var(--ring-line)" stroke-width="1"/>
+          <circle cx="200" cy="200" r="156" fill="none" stroke="var(--ring-line)" stroke-width="1.5"/>
+          <circle cx="200" cy="200" r="140" fill="var(--ring-fill)" stroke="none"/>
+          <g class="ring ring-dial">
+            <circle cx="200" cy="200" r="185" fill="none" stroke="url(#gilt)" stroke-width="6" stroke-dasharray="1.2 14.944"/>
+            <circle cx="200" cy="200" r="185" fill="none" stroke="url(#gilt)" stroke-width="12" stroke-dasharray="2 62.576"/>
+            <text class="dial-text"><textPath href="#dial-path" textLength="1030" lengthAdjust="spacing">{{ upper (delimit $p.hero.areas "  ·  ") }}  ·</textPath></text>
+          </g>
+          <g class="ring ring-outer"><path d="M200 8 A192 192 0 0 1 392 200" fill="none" stroke="url(#gilt)" stroke-width="6" stroke-linecap="round"/><circle cx="392" cy="200" r="8" fill="url(#gilt)"/></g>
+          <g class="ring ring-middle"><path d="M44 200 A156 156 0 0 1 200 44" fill="none" stroke="var(--ring-middle)" stroke-width="6" stroke-linecap="round"/><circle cx="44" cy="200" r="8" fill="var(--ring-middle)"/></g>
+          <g class="ring ring-inner"><path d="M200 340 A140 140 0 0 0 340 200" fill="none" stroke="var(--ring-inner)" stroke-width="6" stroke-linecap="round"/><circle cx="340" cy="200" r="8" fill="var(--ring-inner)"/></g>
         </svg>
         <img class="portrait" src="{{ "images/simone.jpg" | relURL }}" alt="{{ i18n "portrait_alt" }}" width="345" height="344">
       </figure>
@@ -43,12 +57,15 @@
     <div class="wrap">
       <div class="section-head">
         <h2>{{ i18n "nav_research" }}</h2>
+        {{ with $p.research.epigraph }}<blockquote class="epigraph"><p>{{ . | markdownify }}</p>{{ with $p.research.epigraph_source }}<cite>{{ . | markdownify }}</cite>{{ end }}</blockquote>{{ end }}
         <p>{{ $p.research.intro | markdownify }}</p>
       </div>
       {{ range $p.research.strands }}
       {{ $color := .color }}
-      {{ with .image }}<div class="strip strip-{{ $color }}"><div class="strip-frame"><img src="{{ . | relURL }}" alt="" width="1080" height="190" loading="lazy"></div></div>{{ end }}
-      <article class="strand">
+      {{ $caption := .image_caption }}
+      {{ with .image }}<div class="strip strip-{{ $color }}"><div class="strip-frame"><img src="{{ . | relURL }}" alt="" width="1080" height="190" loading="lazy"></div></div>
+      {{ with $caption }}<p class="cartel"><i>{{ . }}</i><span>{{ i18n "ai_image" }}</span></p>{{ end }}{{ end }}
+      <article class="strand strand-{{ .color }}">
         <div>
           <p class="tag s-{{ .color }}">{{ .tag }}</p>
           <h3 class="s-{{ .color }}">{{ .title }}</h3>
@@ -76,28 +93,44 @@
         <h2>{{ i18n "nav_publications" }}</h2>
         <p>{{ $p.publications.intro | markdownify }}</p>
       </div>
-      <div class="pubs">
-        {{ range sort site.Data.publications.articles "year" "desc" }}
-        <article class="pub">
-          <div class="venue">
-            <span><i>{{ .venue }}</i>, {{ .year }}</span>
-            {{ with index .award $lang }}<span class="award">{{ . }}</span>{{ end }}
-          </div>
-          <div>
+    </div>
+    {{- /* A stage, as in a travel showcase: the chosen article's picture fills the
+         scene, its title appears large, and the other articles wait as framed
+         cards; picking one opens its card into the new scene. Without the script,
+         the articles are simply listed. */}}
+    {{- $arts := sort site.Data.publications.articles "year" "desc" }}
+    <div class="stage" id="stage">
+      <div class="scene" aria-hidden="true">
+        {{- with (index $arts 0).image }}<img class="scene-img" src="{{ . | relURL }}" alt="" width="1024" height="1024">{{ end }}
+      </div>
+      <div class="wrap stage-inner">
+        <div class="stage-text" id="stage-text" aria-live="polite">
+          {{ range $i, $a := $arts }}
+          <article class="pub{{ if eq $i 0 }} is-on{{ end }}" data-i="{{ $i }}">
+            <p class="venue"><span><i>{{ .venue }}</i> · {{ .year }}</span>{{ with index .award $lang }}<span class="award">{{ . }}</span>{{ end }}</p>
             <h3>{{ .title | markdownify }}</h3>
-            {{ with index .summary $lang }}<p>{{ . | markdownify }}</p>{{ end }}
-            {{ with .pdf }}<a class="pdf" href="{{ . }}" target="_blank" rel="noopener">{{ i18n "read_pdf" }}</a>{{ end }}
-          </div>
-          {{- with .pdf }}
-          {{- $cover := replaceRE `^/?papers/(.+)\.pdf$` "/papers/covers/$1.jpg" . }}
-          {{- if fileExists (printf "static%s" $cover) }}
-          <a class="cover" href="{{ . }}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-            <img src="{{ $cover | relURL }}" alt="" width="400" height="560" loading="lazy">
-          </a>
-          {{- end }}
-          {{- end }}
-        </article>
-        {{ end }}
+            {{ with index .summary $lang }}<p class="sum">{{ . | markdownify }}</p>{{ end }}
+            {{- with .pdf }}
+            <div class="pub-actions">
+              {{- $cover := replaceRE `^/?papers/(.+)\.pdf$` "/papers/covers/$1.jpg" . }}
+              {{- if fileExists (printf "static%s" $cover) }}
+              <a class="cover" href="{{ . }}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="{{ $cover | relURL }}" alt="" width="400" height="560" loading="lazy"></a>
+              {{- end }}
+              <a class="btn primary pdf" href="{{ . }}" target="_blank" rel="noopener">{{ i18n "read_pdf" }}</a>
+            </div>
+            {{- end }}
+          </article>
+          {{ end }}
+        </div>
+        <div class="deck" aria-label="{{ i18n "articles_label" }}">
+          {{ range $i, $a := $arts }}
+          <button type="button" class="card{{ if eq $i 0 }} is-on{{ end }}" data-i="{{ $i }}" data-scene="{{ with .image }}{{ . | relURL }}{{ end }}" aria-controls="stage-text">
+            <span class="card-frame">{{ with .image }}<img src="{{ . | relURL }}" alt="" width="1024" height="1024" loading="lazy">{{ end }}</span>
+            <span class="card-venue">{{ .venue }} · {{ .year }}</span>
+            <span class="card-title">{{ .title | markdownify | plainify }}</span>
+          </button>
+          {{ end }}
+        </div>
       </div>
     </div>
   </section>
@@ -162,6 +195,204 @@
         if (!waiting) { waiting = true; requestAnimationFrame(drift); }
       }, { passive: true });
       drift();
+    })();
+  </script>
+  <script>
+    /* Publications stage: picking a card opens it into the scene behind the text. */
+    (function () {
+      var stage = document.getElementById('stage');
+      if (!stage) return;
+      var arts = [].slice.call(stage.querySelectorAll('.stage-text > .pub'));
+      var cards = [].slice.call(stage.querySelectorAll('.card'));
+      var scene = stage.querySelector('.scene'), img = scene.querySelector('.scene-img');
+      if (!img || cards.length < 2 || cards.length !== arts.length) return;
+      var still = !img.animate || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+      var cur = 0, until = 0, driftAnim = null;
+      stage.classList.add('on');
+      arts.forEach(function (a) { var h = a.querySelector('h3'); if (h) h.tabIndex = -1; });
+
+      /* The scene breathes: a slow zoom out after each change. */
+      function drift() {
+        if (still) return;
+        if (driftAnim) driftAnim.cancel();
+        driftAnim = img.animate([{ transform: 'scale(1.08)' }, { transform: 'scale(1)' }], { duration: 9000, easing: 'cubic-bezier(.2,.6,.3,1)', fill: 'both' });
+      }
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { drift(); io.disconnect(); } }, { threshold: 0.25 });
+        io.observe(stage);
+      }
+      /* Load the other scenes in advance, once the page is calm. */
+      setTimeout(function () { cards.forEach(function (c) { var i = new Image(); i.src = c.dataset.scene; }); }, 1500);
+
+      function rel(r, s) { return { left: r.left - s.left, top: r.top - s.top, width: r.width, height: r.height }; }
+
+      function select(i, fromKey) {
+        if (i === cur || performance.now() < until) return;
+        var card = cards[i], url = card.dataset.scene;
+        var s = stage.getBoundingClientRect(), from = rel(card.querySelector('.card-frame img').getBoundingClientRect(), s);
+        var before = cards.map(function (c) { return c.getBoundingClientRect(); });
+        var back = cur;
+        cards[cur].classList.remove('is-on'); card.classList.add('is-on');
+        arts[cur].classList.remove('is-on'); arts[i].classList.add('is-on');
+        cur = i;
+        var h = arts[i].querySelector('h3');
+        if (fromKey && h) h.focus({ preventScroll: true });
+        if (s.top < 0) stage.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' });
+        if (still || !url) { if (url) img.src = url; return; }
+        until = performance.now() + 950;
+
+        /* The card's picture grows out of its frame until it fills the scene. */
+        var fly = document.createElement('img');
+        fly.className = 'scene-fly'; fly.alt = ''; fly.src = url;
+        scene.appendChild(fly);
+        var end = { left: '0px', top: '0px', width: s.width + 'px', height: s.height + 'px', filter: 'blur(0px) saturate(1)', borderRadius: '0px' };
+        fly.animate([
+          { left: from.left + 'px', top: from.top + 'px', width: from.width + 'px', height: from.height + 'px', filter: 'blur(0px) saturate(1)', borderRadius: '2px' },
+          { offset: 0.5, filter: 'blur(7px) saturate(1.15)' },
+          end
+        ], { duration: 950, easing: 'cubic-bezier(.65,0,.25,1)', fill: 'forwards' }).onfinish = function () {
+          img.src = url;
+          var swap = function () { fly.remove(); drift(); };
+          if (img.decode) img.decode().then(swap, swap); else swap();
+        };
+
+        /* The other cards slide to their new places; the one given back returns. */
+        cards.forEach(function (c, k) {
+          if (k === i) return;
+          var r = c.getBoundingClientRect();
+          if (k === back) {
+            c.animate([{ opacity: 0, transform: 'translateY(24px) scale(.92)' }, { opacity: 1, transform: 'none' }],
+              { duration: 600, delay: 450, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'backwards' });
+          } else if (before[k].width) {
+            var dx = before[k].left - r.left, dy = before[k].top - r.top;
+            if (dx || dy) c.animate([{ transform: 'translate(' + dx + 'px,' + dy + 'px)' }, { transform: 'none' }],
+              { duration: 650, easing: 'cubic-bezier(.3,.7,.2,1)' });
+          }
+        });
+      }
+
+      cards.forEach(function (c, k) {
+        c.addEventListener('click', function (e) { select(k, e.detail === 0); });
+      });
+    })();
+  </script>
+  <script>
+    /* A golden thread leaves the astrolabe and runs down the page: it is drawn as
+       the reader scrolls, and lights a star beside each section and each frame. */
+    (function () {
+      var main = document.getElementById('top');
+      var motif = document.querySelector('.motif');
+      var research = document.getElementById('research');
+      var owl = document.querySelector('.owl');
+      if (!main || !motif || !research || !owl || !document.createElementNS || !window.requestAnimationFrame) return;
+      var NS = 'http://www.w3.org/2000/svg';
+      var STAR = 'M0 -1L.18 -.18L1 0L.18 .18L0 1L-.18 .18L-1 0L-.18 -.18ZM.41 -.41L.2 0L.41 .41L0 .2L-.41 .41L-.2 0L-.41 -.41L0 -.2Z';
+      var SPARK = 'M0 -1L.22 -.22L1 0L.22 .22L0 1L-.22 .22L-1 0L-.22 -.22Z';
+      var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var root = document.documentElement;
+      var svg, line, spark, nodes = [], table = [], total = 0, queued = false;
+
+      function el(name, attrs, parent) {
+        var e = document.createElementNS(NS, name);
+        for (var k in attrs) e.setAttribute(k, attrs[k]);
+        if (parent) parent.appendChild(e);
+        return e;
+      }
+      function box(e) {
+        var r = e.getBoundingClientRect(), m = main.getBoundingClientRect();
+        return { x: r.left - m.left, y: r.top - m.top, w: r.width, h: r.height };
+      }
+      function star(parent, x, y, r, branchTo) {
+        var g = el('g', { 'class': 't-node' }, parent);
+        if (branchTo) el('line', { 'class': 't-branch', x1: x + r + 3, y1: y, x2: branchTo, y2: y, pathLength: 1 }, g);
+        el('circle', { 'class': 't-halo', cx: x, cy: y, r: r * 1.9 }, g);
+        el('path', { 'class': 't-star', d: STAR, transform: 'translate(' + x + ' ' + y + ') scale(' + r + ')', 'vector-effect': 'non-scaling-stroke' }, g);
+        nodes.push({ g: g, y: y });
+      }
+
+      function build() {
+        if (svg) svg.remove();
+        nodes = []; table = [];
+        var W = main.clientWidth;
+        var wrap = research.querySelector('.wrap');
+        var wb = box(wrap);
+        var left = wb.x + parseFloat(getComputedStyle(wrap).paddingLeft);
+        var gx = Math.max(9, Math.round(left - Math.min(44, Math.max(14, left * 0.45))));
+        var m = box(motif);
+        var heads = [].slice.call(main.querySelectorAll('section.block .section-head h2'));
+        var h0 = box(heads[0]);
+        var end = box(owl).y - 30;
+        var wide = m.x + m.w / 2 > W / 2;
+        var d, starAt = null;
+        if (wide) {
+          /* From the bottom of the astrolabe, through the star between hero and research, into the margin. */
+          var p0 = { x: m.x + m.w / 2, y: m.y + m.h * 0.98 };
+          var s = { x: W / 2, y: box(research).y };
+          var y2 = h0.y + 14;
+          var dy = s.y - p0.y;
+          if (dy < 24) wide = false;
+          else {
+            d = 'M' + p0.x + ' ' + p0.y +
+                'C' + p0.x + ' ' + (p0.y + dy * 0.75) + ' ' + (s.x + (p0.x - s.x) * 0.45) + ' ' + s.y + ' ' + s.x + ' ' + s.y +
+                'C' + (s.x - (s.x - gx) * 0.55) + ' ' + s.y + ' ' + gx + ' ' + (s.y + (y2 - s.y) * 0.3) + ' ' + gx + ' ' + y2 +
+                'L' + gx + ' ' + end;
+            starAt = s;
+          }
+        }
+        if (!wide) {
+          /* Phone: the astrolabe sits above the text, so the thread leaves its left edge for the margin. */
+          var q = { x: m.x + m.w * 0.02, y: m.y + m.h / 2 };
+          d = 'M' + q.x + ' ' + q.y + 'C' + q.x + ' ' + (q.y + 30) + ' ' + gx + ' ' + (q.y + 36) + ' ' + gx + ' ' + (q.y + 70) + 'L' + gx + ' ' + end;
+        }
+        root.classList.toggle('thread-wide', wide);
+
+        svg = el('svg', { 'class': 'thread', width: W, height: end + 40, 'aria-hidden': 'true', focusable: 'false' });
+        el('path', { 'class': 't-route', d: d }, svg);
+        line = el('path', { 'class': 't-line', d: d }, svg);
+        var small = W < 700 ? 0.75 : 1;
+        if (starAt) star(svg, starAt.x, starAt.y, 8, null);
+        heads.forEach(function (h) { var b = box(h); star(svg, gx, b.y + 14, 5.5 * small, null); });
+        [].slice.call(main.querySelectorAll('#research .strip, #research .callout')).forEach(function (f) {
+          var b = box(f); star(svg, gx, b.y + b.h / 2, 7 * small, b.x - 1);
+        });
+        star(svg, gx, end, 6 * small, null);
+        spark = el('g', { 'class': 't-spark' }, svg);
+        var tw = el('g', { 'class': 't-twinkle' }, spark);
+        el('circle', { cx: 0, cy: 0, r: 10 * small }, tw);
+        el('path', { d: SPARK, transform: 'scale(' + 7 * small + ')' }, tw);
+        main.insertBefore(svg, main.firstChild);
+
+        total = line.getTotalLength();
+        line.style.strokeDasharray = total + ' ' + total;
+        for (var l = 0; l <= total; l += 6) { var pt = line.getPointAtLength(l); table.push([l, pt.x, pt.y]); }
+        var last = line.getPointAtLength(total); table.push([total, last.x, last.y]);
+        root.classList.add('thread-on');
+        draw();
+      }
+
+      function draw() {
+        queued = false;
+        if (!table.length) return;
+        var tip = still ? Infinity : window.innerHeight * 0.62 - main.getBoundingClientRect().top;
+        var lo = 0, hi = table.length - 1;
+        if (tip >= table[hi][2]) lo = hi;
+        else while (hi - lo > 1) { var mid = (lo + hi) >> 1; if (table[mid][2] <= tip) lo = mid; else hi = mid; }
+        var t = table[lo];
+        line.style.strokeDashoffset = total - t[0];
+        spark.setAttribute('transform', 'translate(' + t[1] + ' ' + t[2] + ')');
+        spark.style.display = still || t[0] >= total - 1 ? 'none' : '';
+        nodes.forEach(function (n) { n.g.classList.toggle('lit', n.y <= t[2] + 1); });
+      }
+      function later() { if (!queued) { queued = true; requestAnimationFrame(draw); } }
+
+      var timer;
+      function rebuild() { clearTimeout(timer); timer = setTimeout(build, 120); }
+      build();
+      window.addEventListener('scroll', later, { passive: true });
+      window.addEventListener('resize', rebuild);
+      if (window.ResizeObserver) new ResizeObserver(rebuild).observe(main);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(rebuild);
+      window.addEventListener('load', rebuild);
     })();
   </script>
 </main>
