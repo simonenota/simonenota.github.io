@@ -39,6 +39,7 @@ content:
               - { name: en, label: Inglese, type: text }
               - { name: it, label: Italiano, type: text }
           - { name: pdf, label: PDF, type: file, options: { media: papers } }
+          - { name: cover_page, label: "Pagina del PDF da mostrare in anteprima (vuoto = la prima)", type: number }
 
   - name: home-en
     label: Pagina principale (inglese)

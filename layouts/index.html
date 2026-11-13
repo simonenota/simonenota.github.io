@@ -88,6 +88,14 @@
             {{ with index .summary $lang }}<p>{{ . | markdownify }}</p>{{ end }}
             {{ with .pdf }}<a class="pdf" href="{{ . }}" target="_blank" rel="noopener">{{ i18n "read_pdf" }}</a>{{ end }}
           </div>
+          {{- with .pdf }}
+          {{- $cover := replaceRE `^/?papers/(.+)\.pdf$` "/papers/covers/$1.jpg" . }}
+          {{- if fileExists (printf "static%s" $cover) }}
+          <a class="cover" href="{{ . }}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="{{ $cover | relURL }}" alt="" width="400" height="560" loading="lazy">
+          </a>
+          {{- end }}
+          {{- end }}
         </article>
         {{ end }}
       </div>

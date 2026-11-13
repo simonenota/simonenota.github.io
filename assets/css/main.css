@@ -315,3 +315,19 @@ footer a { color: var(--ink); font-weight: 500; text-underline-offset: 3px; }
   .owl-text { padding-block: 40px; }
 }
 @media (prefers-reduced-motion: reduce) { .owl-img { transition: none; } }
+
+/* First page of each article, next to it: a second way into the PDF. */
+.pub { grid-template-columns: minmax(0, 220px) minmax(0, 1fr) 150px; }
+.cover { display: block; align-self: start; width: 150px; justify-self: end; border-radius: 4px; rotate: 2deg;
+  box-shadow: 0 1px 2px rgb(15 36 64 / .12), 0 14px 28px -14px rgb(15 36 64 / .45); transition: rotate .3s ease, translate .3s ease, box-shadow .3s ease; }
+.cover img { display: block; width: 100%; height: auto; border-radius: 4px; background: #FFF; border: 1px solid rgb(15 36 64 / .1); }
+.pub:nth-child(even) .cover { rotate: -2deg; }
+.pub .cover:hover, .pub:hover .cover { rotate: 0deg; translate: 0 -4px; box-shadow: 0 1px 2px rgb(15 36 64 / .12), 0 22px 36px -16px rgb(15 36 64 / .5); }
+:root[data-theme="dark"] .cover { box-shadow: 0 1px 2px rgb(0 0 0 / .3), 0 16px 30px -14px rgb(0 0 0 / .7); }
+@media (max-width: 780px) {
+  .pub { grid-template-columns: minmax(0, 1fr) 84px; }
+  .pub .venue { grid-column: 1 / -1; }
+  .pub > div:not(.venue) { grid-column: 1; }
+  .cover { width: 84px; grid-column: 2; grid-row: 2; }
+}
+@media (prefers-reduced-motion: reduce) { .cover { transition: none; } }
