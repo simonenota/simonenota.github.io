@@ -90,7 +90,7 @@ nav.main { margin-left: auto; }
 
 /* Hero */
 .hero { padding-block: clamp(40px, 8vw, 96px); }
-.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: clamp(24px, 5vw, 64px); align-items: center; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, var(--portrait-size)); gap: clamp(24px, 5vw, 64px); align-items: center; }
 .eyebrow { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--teal); }
 .hero h1 { font-size: clamp(2.3rem, 6vw, 3.9rem); font-weight: 800; margin-top: 14px; }
 .hero h1 em { font-style: normal; color: var(--teal); }
