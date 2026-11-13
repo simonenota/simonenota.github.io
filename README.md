@@ -11,7 +11,7 @@ Ogni modifica salvata sul ramo `main` ripubblica il sito da sola in circa un min
 | Testi della pagina principale, inglese | `content/_index.en.md` |
 | Testi della pagina principale, italiano | `content/_index.it.md` |
 | Pubblicazioni (con riassunto EN/IT) | `data/publications.yaml` |
-| Galleria AI Fun | `data/aifun.yaml` e `content/ai-fun.*.md` |
+| Galleria AI & Philosophy | `data/aifun.yaml` e `content/ai-philosophy.*.md` |
 | PDF di articoli, tesi e CV | `static/papers/` |
 | Foto e immagini | `static/images/` |
 | Scritte dei pulsanti e del menu | `i18n/en.yaml`, `i18n/it.yaml` |

@@ -106,7 +106,7 @@ content:
           - { name: text, label: Testo, type: text }
           - { name: url, label: File del CV, type: file, options: { media: papers } }
       - name: aifun
-        label: AI Fun (riquadro)
+        label: AI & Philosophy (riquadro)
         type: object
         fields:
           - { name: title, label: Titolo, type: string }
@@ -126,7 +126,7 @@ content:
     fields: *home_fields
 
   - name: aifun
-    label: Galleria AI Fun
+    label: Galleria AI & Philosophy
     type: file
     path: data/aifun.yaml
     format: yaml

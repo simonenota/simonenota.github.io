@@ -116,10 +116,10 @@
         <p>{{ $p.cv.text | markdownify }}</p>
         <a class="btn" href="{{ $p.cv.url }}" target="_blank" rel="noopener">{{ i18n "download_cv_long" }}</a>
       </div>
-      <div class="panel light" id="ai-fun">
+      <div class="panel light" id="ai-philosophy">
         <h2>{{ $p.aifun.title }}</h2>
         <p>{{ $p.aifun.text | markdownify }}</p>
-        <a class="btn ghost" href="{{ with site.GetPage "/ai-fun" }}{{ .RelPermalink }}{{ end }}">{{ i18n "open_gallery" }}</a>
+        <a class="btn ghost" href="{{ with site.GetPage "/ai-philosophy" }}{{ .RelPermalink }}{{ end }}">{{ i18n "open_gallery" }}</a>
       </div>
     </div>
   </section>

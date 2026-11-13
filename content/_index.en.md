@@ -79,7 +79,7 @@ cv:
   url: "https://simonenota.weebly.com/uploads/1/4/1/3/141357793/cv5.pdf"
 
 aifun:
-  title: "AI Fun"
+  title: "AI & Philosophy"
   text: "A playful corner of the site: philosophical ideas, from Hegel’s owl to Husserl’s epoché, turned into pictures with AI."
 
 footer:
