@@ -469,12 +469,6 @@ section.block::before {
   linear-gradient(135deg, #7E5E22 0%, #E9CF8A 18%, #A97F2F 36%, #F3DE9F 52%, #9A7228 70%, #E2C47C 86%, #7E5E22 100%); }
 .reveal .strip:not(.in) { background: transparent; }
 
-/* More white space between the lines of research, where the golden thread crosses the page. */
-#research .section-head { margin-bottom: 84px; }
-.strand { padding-bottom: 92px; }
-.callout { margin-top: 8px; }
-@media (max-width: 780px) { #research .section-head { margin-bottom: 64px; } .strand { padding-bottom: 76px; } }
-
 /* The golden thread (drawn by the page script; absent without it). */
 .thread { position: absolute; left: 0; top: 0; z-index: -1; pointer-events: none; overflow: visible; }
 .thread path, .thread line { fill: none; stroke: var(--gold); stroke-linecap: round; }
