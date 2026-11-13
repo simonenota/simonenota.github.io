@@ -101,12 +101,12 @@ content:
               - { name: text, label: Testo, type: text }
           - { name: quote, label: Frase finale, type: text }
       - name: cv
-        label: CV
+        label: "CV (il file aperto da \"Download CV\" e dal menu)"
         type: object
         fields:
-          - { name: title, label: Titolo, type: string }
-          - { name: text, label: Testo, type: text }
           - { name: url, label: File del CV, type: file, options: { media: papers } }
+          - { name: title, label: "Titolo (non mostrato al momento)", type: string }
+          - { name: text, label: "Testo (non mostrato al momento)", type: text }
       - name: aifun
         label: AI & Philosophy (riquadro)
         type: object

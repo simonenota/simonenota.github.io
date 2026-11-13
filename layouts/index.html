@@ -3,6 +3,12 @@
 {{ $lang := site.Language.Lang }}
 <main id="top">
   <span id="content"></span>
+  <script>
+    /* Research pictures open when they come into view (not for "reduce motion"). */
+    try {
+      if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reveal');
+    } catch (e) {}
+  </script>
   <section class="hero">
     <div class="wrap">
       <div>
@@ -40,7 +46,8 @@
         <p>{{ $p.research.intro | markdownify }}</p>
       </div>
       {{ range $p.research.strands }}
-      {{ with .image }}<img class="strip" src="{{ . | relURL }}" alt="" width="1080" height="190" loading="lazy">{{ end }}
+      {{ $color := .color }}
+      {{ with .image }}<div class="strip strip-{{ $color }}"><div class="strip-frame"><img src="{{ . | relURL }}" alt="" width="1080" height="190" loading="lazy"></div></div>{{ end }}
       <article class="strand">
         <div>
           <p class="tag s-{{ .color }}">{{ .tag }}</p>
@@ -108,19 +115,46 @@
     </div>
   </section>
 
-  <section class="block" id="cv">
-    <div class="wrap duo">
-      <div class="panel dark">
-        <h2>{{ $p.cv.title }}</h2>
-        <p>{{ $p.cv.text | markdownify }}</p>
-        <a class="btn" href="{{ $p.cv.url }}" target="_blank" rel="noopener">{{ i18n "download_cv_long" }}</a>
-      </div>
-      <div class="panel light" id="ai-philosophy">
-        <h2>{{ $p.aifun.title }}</h2>
-        <p>{{ $p.aifun.text | markdownify }}</p>
-        <a class="btn ghost" href="{{ with site.GetPage "/ai-philosophy" }}{{ .RelPermalink }}{{ end }}">{{ i18n "open_gallery" }}</a>
-      </div>
+  <section class="owl" id="ai-philosophy">
+    <img class="owl-img" src="{{ "images/minerva-owl.jpg" | relURL }}" alt="" width="1114" height="532" loading="lazy">
+    <div class="wrap owl-text">
+      <h2>{{ $p.aifun.title }}</h2>
+      <p>{{ $p.aifun.text | markdownify }}</p>
+      <a class="btn primary" href="{{ with site.GetPage "/ai-philosophy" }}{{ .RelPermalink }}{{ end }}">{{ i18n "open_gallery" }}</a>
     </div>
   </section>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      if (!root.classList.contains('reveal')) return;
+      var strips = [].slice.call(document.querySelectorAll('.strip'));
+      var owl = document.querySelector('.owl');
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.3 });
+      strips.forEach(function (s) { io.observe(s); });
+      if (owl) io.observe(owl);
+      /* Gentle drift while scrolling: the picture moves a little slower than the page. */
+      var waiting = false;
+      function drift() {
+        waiting = false;
+        var vh = window.innerHeight;
+        strips.forEach(function (s) {
+          var r = s.getBoundingClientRect();
+          if (r.bottom < 0 || r.top > vh) return;
+          var p = (r.top + r.height / 2 - vh / 2) / (vh / 2 + r.height / 2);
+          p = Math.max(-1, Math.min(1, p));
+          s.style.setProperty('--px', (p * -3).toFixed(2) + '%');
+          s.style.setProperty('--py', (p * 5).toFixed(2) + '%');
+        });
+      }
+      window.addEventListener('scroll', function () {
+        if (!waiting) { waiting = true; requestAnimationFrame(drift); }
+      }, { passive: true });
+      drift();
+    })();
+  </script>
 </main>
 {{ end }}
