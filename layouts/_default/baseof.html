@@ -52,7 +52,11 @@
        browser kept from before an update still finds its style sheet. */}}
   {{ $css := resources.Get "css/main.css" | minify }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}?v={{ substr (md5 $css.Content) 0 10 }}">
-  <link rel="icon" href="{{ "images/simone.jpg" | relURL }}">
+  {{/* Tab icon: the initials SN in the site's display font (SVG, with an .ico for older
+       browsers); the home-screen icon is the same, full-bleed. */}}
+  <link rel="icon" href="{{ "favicon.ico" | relURL }}" sizes="32x32">
+  <link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}">
 </head>
 <body>
   <a class="skip" href="#content">{{ i18n "skip" }}</a>
