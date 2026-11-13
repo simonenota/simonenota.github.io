@@ -405,7 +405,6 @@ footer { font-size: 1rem; }
 .cartel { display: flex; gap: 10px; align-items: baseline; width: fit-content; margin: 0 0 30px auto; padding: 6px 12px;
   background: var(--surface); border: 1px solid var(--line); box-shadow: 0 2px 6px rgb(40 25 10 / .08); font-size: .95rem; color: var(--muted); }
 .cartel i { font-family: var(--font-display); font-size: 1.1rem; color: var(--ink); }
-.cartel span { font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; }
 .award { background: linear-gradient(135deg, #C9A24E, #F1DB9C 50%, #B88E3A); color: #2A1D08; border-radius: 2px; font-family: var(--font-body); font-size: .82rem; letter-spacing: .06em; }
 .cover, .pub:nth-child(even) .cover { rotate: none; padding: 6px; border-radius: 1px; background: linear-gradient(135deg, #7E5E22, #E9CF8A 30%, #A97F2F 60%, #E2C47C); }
 .pub .cover:hover, .pub:hover .cover { rotate: none; }

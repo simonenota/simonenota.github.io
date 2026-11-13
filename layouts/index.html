@@ -64,7 +64,7 @@
       {{ $color := .color }}
       {{ $caption := .image_caption }}
       {{ with .image }}<div class="strip strip-{{ $color }}"><div class="strip-frame"><img src="{{ . | relURL }}" alt="" width="1080" height="190" loading="lazy"></div></div>
-      {{ with $caption }}<p class="cartel"><i>{{ . }}</i><span>{{ i18n "ai_image" }}</span></p>{{ end }}{{ end }}
+      {{ with $caption }}<p class="cartel"><i>{{ . }}</i></p>{{ end }}{{ end }}
       <article class="strand strand-{{ .color }}">
         <div>
           <p class="tag s-{{ .color }}">{{ .tag }}</p>
