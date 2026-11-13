@@ -23,12 +23,10 @@
           <circle cx="200" cy="200" r="190" fill="none" stroke="var(--line)" stroke-width="2"/>
           <circle cx="200" cy="200" r="160" fill="none" stroke="var(--line)" stroke-width="2"/>
           <circle cx="200" cy="200" r="138" fill="var(--teal-tint)" stroke="none"/>
-          <path d="M200 10 A190 190 0 0 1 390 200" fill="none" stroke="var(--amber-fill)" stroke-width="9" stroke-linecap="round"/>
-          <path d="M40 200 A160 160 0 0 1 200 40" fill="none" stroke="var(--coral)" stroke-width="9" stroke-linecap="round"/>
-          <path d="M200 338 A138 138 0 0 0 338 200" fill="none" stroke="var(--teal)" stroke-width="9" stroke-linecap="round"/>
-          <circle cx="390" cy="200" r="10" fill="var(--amber-fill)"/>
-          <circle cx="40" cy="200" r="10" fill="var(--coral)"/>
-          <circle cx="338" cy="200" r="10" fill="var(--teal)"/>
+          <!-- The three coloured rings turn once when the page opens, then rest here. -->
+          <g class="ring ring-outer"><path d="M200 10 A190 190 0 0 1 390 200" fill="none" stroke="var(--amber-fill)" stroke-width="9" stroke-linecap="round"/><circle cx="390" cy="200" r="10" fill="var(--amber-fill)"/></g>
+          <g class="ring ring-middle"><path d="M40 200 A160 160 0 0 1 200 40" fill="none" stroke="var(--coral)" stroke-width="9" stroke-linecap="round"/><circle cx="40" cy="200" r="10" fill="var(--coral)"/></g>
+          <g class="ring ring-inner"><path d="M200 338 A138 138 0 0 0 338 200" fill="none" stroke="var(--teal)" stroke-width="9" stroke-linecap="round"/><circle cx="338" cy="200" r="10" fill="var(--teal)"/></g>
         </svg>
         <img class="portrait" src="{{ "images/simone.jpg" | relURL }}" alt="{{ i18n "portrait_alt" }}" width="345" height="344">
       </figure>

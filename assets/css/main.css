@@ -227,3 +227,11 @@ footer a { color: var(--ink); font-weight: 500; text-underline-offset: 3px; }
   .lb-prev { left: calc(50% - 60px); } .lb-next { right: calc(50% - 60px); }
 }
 @media (prefers-reduced-motion: reduce) { .gallery a.zoom img { transition: none; } }
+
+/* Home page rings: each coloured ring turns once when the page opens, then stops where it is drawn. */
+.motif .ring { transform-box: view-box; transform-origin: 50% 50%; animation: ring-turn 1.8s cubic-bezier(.2, .75, .25, 1) .15s both; }
+.motif .ring-middle { animation-name: ring-turn-back; animation-duration: 2.2s; }
+.motif .ring-inner { animation-duration: 2.6s; }
+@keyframes ring-turn { from { transform: rotate(-360deg); } to { transform: rotate(0deg); } }
+@keyframes ring-turn-back { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+@media (prefers-reduced-motion: reduce) { .motif .ring { animation: none; } }
