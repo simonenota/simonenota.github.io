@@ -112,7 +112,7 @@ cv:
   url: /papers/cv-simone-nota.pdf
 aifun:
   title: IA & Filosofia
-  text: Idee filosofiche, dal gufo di Hegel alla scala di Wittgenstein,
+  text: Idee filosofiche, dalla nottola di Hegel alla scala di Wittgenstein,
     trasformate in immagini grazie all’intelligenza artificiale.
 footer:
   affiliation: Istituto di Filosofia, Zagabria
