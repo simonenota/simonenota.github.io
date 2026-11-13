@@ -215,7 +215,7 @@
       function drift() {
         if (still) return;
         if (driftAnim) driftAnim.cancel();
-        driftAnim = img.animate([{ transform: 'scale(1.08)' }, { transform: 'scale(1)' }], { duration: 9000, easing: 'cubic-bezier(.2,.6,.3,1)', fill: 'both' });
+        driftAnim = img.animate([{ transform: 'scale(1.08)' }, { transform: 'scale(1)' }], { duration: 9000, easing: 'cubic-bezier(.35,0,.25,1)', fill: 'both' });
       }
       if ('IntersectionObserver' in window) {
         var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { drift(); io.disconnect(); } }, { threshold: 0.25 });
@@ -224,51 +224,95 @@
       /* Load the other scenes in advance, once the page is calm. */
       setTimeout(function () { cards.forEach(function (c) { var i = new Image(); i.src = c.dataset.scene; }); }, 1500);
 
-      function rel(r, s) { return { left: r.left - s.left, top: r.top - s.top, width: r.width, height: r.height }; }
+      /* The opening's pace: slow to leave the card, slow to settle (like cubic-bezier(.62,0,.18,1)). */
+      var EASE = (function (x1, y1, x2, y2) {
+        function at(p1, p2, t) { return ((1 - 3 * p2 + 3 * p1) * t + (3 * p2 - 6 * p1)) * t * t + 3 * p1 * t; }
+        return function (x) {
+          var lo = 0, hi = 1, t = x;
+          for (var n = 0; n < 40; n++) { var v = at(x1, x2, t); if (Math.abs(v - x) < 1e-6) break; if (v < x) lo = t; else hi = t; t = (lo + hi) / 2; }
+          return at(y1, y2, t);
+        };
+      })(0.62, 0, 0.18, 1);
+
+      /* Where a picture of nw x nh shows inside a w x h box with object-fit: cover. */
+      function cover(nw, nh, w, h, px, py) {
+        var k = Math.max(w / nw, h / nh), dw = nw * k, dh = nh * k;
+        return { x: (w - dw) * px, y: (h - dh) * py, w: dw, h: dh };
+      }
+
+      /* The deck closes the gap left by the chosen card; the one given back returns. */
+      function swapCards(i, back, anim) {
+        var before = cards.map(function (c) { return c.getBoundingClientRect(); });
+        cards[back].classList.remove('is-on'); cards[i].classList.add('is-on');
+        if (!anim) return;
+        cards.forEach(function (c, k) {
+          if (k === i) return;
+          if (k === back) {
+            c.animate([{ opacity: 0, transform: 'translateY(24px) scale(.92)' }, { opacity: 1, transform: 'none' }],
+              { duration: 650, delay: 180, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'backwards' });
+            return;
+          }
+          if (!before[k].width) return;
+          var r = c.getBoundingClientRect(), dx = before[k].left - r.left, dy = before[k].top - r.top;
+          if (dx || dy) c.animate([{ transform: 'translate(' + dx + 'px,' + dy + 'px)' }, { transform: 'none' }],
+            { duration: 700, easing: 'cubic-bezier(.3,.7,.2,1)' });
+        });
+      }
 
       function select(i, fromKey) {
         if (i === cur || performance.now() < until) return;
-        var card = cards[i], url = card.dataset.scene;
-        var s = stage.getBoundingClientRect(), from = rel(card.querySelector('.card-frame img').getBoundingClientRect(), s);
-        var before = cards.map(function (c) { return c.getBoundingClientRect(); });
-        var back = cur;
-        cards[cur].classList.remove('is-on'); card.classList.add('is-on');
+        var card = cards[i], url = card.dataset.scene, back = cur;
         arts[cur].classList.remove('is-on'); arts[i].classList.add('is-on');
         cur = i;
         var h = arts[i].querySelector('h3');
         if (fromKey && h) h.focus({ preventScroll: true });
+        var s = stage.getBoundingClientRect(), from = card.querySelector('.card-frame img').getBoundingClientRect();
         if (s.top < 0) stage.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' });
-        if (still || !url) { if (url) img.src = url; return; }
-        until = performance.now() + 950;
+        if (still || !url) { swapCards(i, back, false); if (url) img.src = url; return; }
+        until = performance.now() + 4000;
 
-        /* The card's picture grows out of its frame until it fills the scene. */
-        var fly = document.createElement('img');
-        fly.className = 'scene-fly'; fly.alt = ''; fly.src = url;
-        scene.appendChild(fly);
-        var end = { left: '0px', top: '0px', width: s.width + 'px', height: s.height + 'px', filter: 'blur(0px) saturate(1)', borderRadius: '0px' };
-        fly.animate([
-          { left: from.left + 'px', top: from.top + 'px', width: from.width + 'px', height: from.height + 'px', filter: 'blur(0px) saturate(1)', borderRadius: '2px' },
-          { offset: 0.5, filter: 'blur(7px) saturate(1.15)' },
-          end
-        ], { duration: 950, easing: 'cubic-bezier(.65,0,.25,1)', fill: 'forwards' }).onfinish = function () {
-          img.src = url;
-          var swap = function () { fly.remove(); drift(); };
-          if (img.decode) img.decode().then(swap, swap); else swap();
-        };
+        /* The chosen card lets go of its picture... */
+        var fade = card.animate([{ opacity: 1 }, { opacity: 0, transform: 'scale(.97)' }], { duration: 260, easing: 'ease', fill: 'forwards' });
+        fade.onfinish = function () { swapCards(i, back, true); fade.cancel(); };
 
-        /* The other cards slide to their new places; the one given back returns. */
-        cards.forEach(function (c, k) {
-          if (k === i) return;
-          var r = c.getBoundingClientRect();
-          if (k === back) {
-            c.animate([{ opacity: 0, transform: 'translateY(24px) scale(.92)' }, { opacity: 1, transform: 'none' }],
-              { duration: 600, delay: 450, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'backwards' });
-          } else if (before[k].width) {
-            var dx = before[k].left - r.left, dy = before[k].top - r.top;
-            if (dx || dy) c.animate([{ transform: 'translate(' + dx + 'px,' + dy + 'px)' }, { transform: 'none' }],
-              { duration: 650, easing: 'cubic-bezier(.3,.7,.2,1)' });
+        /* ...which grows out of the frame until it fills the scene. Only transforms and
+           opacity move (a window that widens and the picture inside it), so the browser never
+           has to lay out or repaint anything and the motion stays fluid; it ends exactly where
+           the scene's slow zoom begins, so there is no jump when the two hand over. */
+        var layer = document.createElement('div'), box = document.createElement('div'), pic = document.createElement('img');
+        layer.className = 'scene-layer'; box.className = 'scene-pic'; pic.alt = ''; pic.src = url;
+        box.appendChild(pic); layer.appendChild(box);
+        function grow() {
+          var W = s.width, H = s.height, nw = pic.naturalWidth || 1, nh = pic.naturalHeight || 1;
+          var bx = from.left - s.left, by = from.top - s.top, bw = from.width, bh = from.height;
+          var S = cover(nw, nh, W, H, 0.5, 0.42), C = cover(nw, nh, bw, bh, 0.5, 0.5), Z = 1.08;
+          var x0 = bx + C.x, y0 = by + C.y, k0 = C.w / S.w, x1 = W / 2 + Z * (S.x - W / 2), y1 = H / 2 + Z * (S.y - H / 2);
+          var win = [], inner = [], soft = [], N = 60;
+          for (var n = 0; n <= N; n++) {
+            var e = EASE(n / N), m = function (a, b) { return a + (b - a) * e; };
+            var wx = m(bx, 0), wy = m(by, 0), sx = m(bw, W) / W, sy = m(bh, H) / H, px = m(x0, x1), py = m(y0, y1), k = m(k0, Z);
+            win.push({ transform: 'translate(' + wx + 'px,' + wy + 'px) scale(' + sx + ',' + sy + ')' });
+            inner.push({ transform: 'translate(' + (px - wx) / sx + 'px,' + (py - wy) / sy + 'px) scale(' + k / sx + ',' + k / sy + ')' });
+            soft.push({ opacity: (0.8 * Math.sin(Math.PI * e)).toFixed(3) });
           }
-        });
+          box.style.width = S.w + 'px'; box.style.height = S.h + 'px';
+          /* The soft focus of fast motion, cheaply: a tiny copy of the picture, stretched over
+             it, shows through mid-flight and is gone by the end. */
+          var cv = document.createElement('canvas'), q = 96 / Math.max(nw, nh);
+          cv.width = Math.max(1, Math.round(nw * q)); cv.height = Math.max(1, Math.round(nh * q));
+          try { var g = cv.getContext('2d'); g.filter = 'blur(1px)'; g.drawImage(pic, 0, 0, cv.width, cv.height); box.appendChild(cv); } catch (err) { cv = null; }
+          scene.appendChild(layer);
+          var o = { duration: 1150, fill: 'forwards' };
+          layer.animate(win, o);
+          if (cv) cv.animate(soft, o);
+          box.animate(inner, o).onfinish = function () {
+            img.src = url;
+            var done = function () { drift(); layer.remove(); until = 0; };
+            if (img.decode) img.decode().then(done, done); else done();
+          };
+        }
+        var skip = function () { img.src = url; until = 0; };
+        if (pic.decode) pic.decode().then(grow, skip); else { pic.onload = grow; pic.onerror = skip; }
       }
 
       cards.forEach(function (c, k) {
@@ -302,9 +346,8 @@
         var r = e.getBoundingClientRect(), m = main.getBoundingClientRect();
         return { x: r.left - m.left, y: r.top - m.top, w: r.width, h: r.height };
       }
-      function star(parent, x, y, r, branchTo) {
+      function star(parent, x, y, r) {
         var g = el('g', { 'class': 't-node' }, parent);
-        if (branchTo) el('line', { 'class': 't-branch', x1: x + r + 3, y1: y, x2: branchTo, y2: y, pathLength: 1 }, g);
         el('circle', { 'class': 't-halo', cx: x, cy: y, r: r * 1.9 }, g);
         el('path', { 'class': 't-star', d: STAR, transform: 'translate(' + x + ' ' + y + ') scale(' + r + ')', 'vector-effect': 'non-scaling-stroke' }, g);
         nodes.push({ g: g, y: y });
@@ -350,12 +393,12 @@
         el('path', { 'class': 't-route', d: d }, svg);
         line = el('path', { 'class': 't-line', d: d }, svg);
         var small = W < 700 ? 0.75 : 1;
-        if (starAt) star(svg, starAt.x, starAt.y, 8, null);
-        heads.forEach(function (h) { var b = box(h); star(svg, gx, b.y + 14, 5.5 * small, null); });
+        if (starAt) star(svg, starAt.x, starAt.y, 8);
+        heads.forEach(function (h) { var b = box(h); star(svg, gx, b.y + 14, 5.5 * small); });
         [].slice.call(main.querySelectorAll('#research .strip, #research .callout')).forEach(function (f) {
-          var b = box(f); star(svg, gx, b.y + b.h / 2, 7 * small, b.x - 1);
+          var b = box(f); star(svg, gx, b.y + b.h / 2, 7 * small);
         });
-        star(svg, gx, end, 6 * small, null);
+        star(svg, gx, end, 6 * small);
         spark = el('g', { 'class': 't-spark' }, svg);
         var tw = el('g', { 'class': 't-twinkle' }, spark);
         el('circle', { cx: 0, cy: 0, r: 10 * small }, tw);
