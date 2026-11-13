@@ -1,6 +1,6 @@
 ---
 title: Simone Nota
-seo_title: "Simone Nota | Philosopher – Kant, Wittgenstein, Metaphysics"
+seo_title: Simone Nota | Philosopher – Kant, Wittgenstein, Metaphysics
 description: Simone Nota, philosopher. Research on transcendental philosophy,
   metaphysics, Kant and Wittgenstein.
 hero:
@@ -102,12 +102,12 @@ teaching:
     - title: A creative close
       text: Every class ends with a creative group activity to train understanding,
         imagination and empathy.
-  quote: These skills matter for a successful academic life and for a more
-    fulfilling human one.
+  quote: These skills matter not only for a successful academic life but also for
+    a more fulfilling human one.
 cv:
+  url: /papers/cv-simone-nota.pdf
   title: Curriculum Vitae
   text: Education, positions, prizes, talks and teaching.
-  url: /papers/cv-simone-nota.pdf
 aifun:
   title: AI & Philosophy
   text: Philosophical ideas, from Hegel’s owl to Wittgenstein's ladder, turned
