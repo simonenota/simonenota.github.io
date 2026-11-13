@@ -1,4 +1,7 @@
 :root {
+  /* Size of the photo with its circles on the home page (computer / phone). */
+  --portrait-size: 440px;
+  --portrait-size-phone: 280px;
   --bg: #F7F8FA;
   --surface: #FFFFFF;
   --ink: #14213D;
@@ -87,9 +90,9 @@ nav.main { margin-left: auto; }
 
 /* Hero */
 .hero { padding-block: clamp(40px, 8vw, 96px); }
-.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: clamp(24px, 5vw, 64px); align-items: center; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: clamp(24px, 5vw, 64px); align-items: center; }
 .eyebrow { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--teal); }
-.hero h1 { font-size: clamp(2.3rem, 6vw, 4.2rem); font-weight: 800; margin-top: 14px; }
+.hero h1 { font-size: clamp(2.3rem, 6vw, 3.9rem); font-weight: 800; margin-top: 14px; }
 .hero h1 em { font-style: normal; color: var(--teal); }
 .hero .lead { margin-top: 22px; max-width: 58ch; font-size: 1.12rem; color: var(--muted); }
 .hero .lead strong { color: var(--ink); font-weight: 600; }
@@ -104,7 +107,7 @@ nav.main { margin-left: auto; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 30px; padding: 0; list-style: none; }
 .chips li { font-size: 0.85rem; padding: 5px 12px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); color: var(--muted); }
 
-.motif { position: relative; width: 100%; max-width: 380px; justify-self: center; margin: 0; }
+.motif { position: relative; width: 100%; max-width: var(--portrait-size); justify-self: center; margin: 0; }
 .motif svg { display: block; width: 100%; height: auto; }
 .motif .portrait {
   position: absolute; left: 50%; top: 50%; width: 64%; aspect-ratio: 1; transform: translate(-50%, -50%);
@@ -172,7 +175,7 @@ footer strong { color: var(--ink); }
 
 @media (max-width: 780px) {
   .hero .wrap, .strand, .pub { grid-template-columns: minmax(0, 1fr); }
-  .motif { max-width: 240px; order: -1; justify-self: start; }
+  .motif { max-width: var(--portrait-size-phone); order: -1; justify-self: start; }
   nav.main { order: 3; width: 100%; margin-left: -12px; }
   header.site .wrap { padding-block: 10px 6px; }
   body { font-size: 16.5px; }
