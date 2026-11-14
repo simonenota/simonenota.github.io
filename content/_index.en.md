@@ -46,8 +46,8 @@ research:
       image: /images/research/absolutism.jpg
       title: Absolutism
       text: >
-        I have recently turned to absolute philosophies, metaphysical views that
-        aim at a conception of reality **as it is from no particular
+        Recently, I have turned to absolute philosophies, metaphysical views
+        that aim at a conception of reality **as it is from no particular
         perspective**. I focus on contemporary forms: **absolute realism**,
         where reality can be known independently of any subjective perspective,
         and **absolute idealism**, where self-knowledge is the whole of reality.
