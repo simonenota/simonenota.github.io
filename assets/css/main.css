@@ -499,7 +499,8 @@ section.block::before {
   text-wrap: balance; text-shadow: 0 2px 20px rgb(0 0 0 / .45); }
 .stage .pub .sum { margin-top: 18px; max-width: 56ch; color: rgb(246 238 223 / .88); font-size: 1.1rem; }
 .pub-actions { display: flex; align-items: center; gap: 18px; margin-top: 26px; }
-.stage .cover, .stage .pub:nth-child(even) .cover { width: 66px; padding: 4px; rotate: none; flex: none; }
+.stage .cover, .stage .pub:nth-child(even) .cover { width: 66px; padding: 0; background: none; border-radius: 1px; rotate: none; flex: none;
+  box-shadow: 0 1px 2px rgb(0 0 0 / .35), 0 12px 24px -12px rgb(0 0 0 / .85); }
 .stage .btn.pdf { margin: 0; background: #E6B85C; border-color: #E6B85C; color: #1A1208; }
 .stage .btn.pdf:hover { background: #F1CB78; border-color: #F1CB78; }
 .stage :focus-visible { outline-color: #E6B85C; }
