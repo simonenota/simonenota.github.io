@@ -366,9 +366,9 @@
         var h0 = box(heads[0]);
         var end = box(owl).y - 30;
         var wide = m.x + m.w / 2 > W / 2;
-        var d, starAt = null;
+        var d;
         if (wide) {
-          /* From the bottom of the astrolabe, through the star between hero and research, into the margin. */
+          /* From the bottom of the astrolabe, across the line between hero and research, into the margin. */
           var p0 = { x: m.x + m.w / 2, y: m.y + m.h * 0.98 };
           var s = { x: W / 2, y: box(research).y };
           var y2 = h0.y + 14;
@@ -379,7 +379,6 @@
                 'C' + p0.x + ' ' + (p0.y + dy * 0.75) + ' ' + (s.x + (p0.x - s.x) * 0.45) + ' ' + s.y + ' ' + s.x + ' ' + s.y +
                 'C' + (s.x - (s.x - gx) * 0.55) + ' ' + s.y + ' ' + gx + ' ' + (s.y + (y2 - s.y) * 0.3) + ' ' + gx + ' ' + y2 +
                 'L' + gx + ' ' + end;
-            starAt = s;
           }
         }
         if (!wide) {
@@ -393,7 +392,6 @@
         el('path', { 'class': 't-route', d: d }, svg);
         line = el('path', { 'class': 't-line', d: d }, svg);
         var small = W < 700 ? 0.75 : 1;
-        if (starAt) star(svg, starAt.x, starAt.y, 8);
         heads.forEach(function (h) { var b = box(h); star(svg, gx, b.y + 14, 5.5 * small); });
         [].slice.call(main.querySelectorAll('#research .strip, #research .callout')).forEach(function (f) {
           var b = box(f); star(svg, gx, b.y + b.h / 2, 7 * small);

@@ -437,7 +437,7 @@ section.block::before {
 :root[data-theme="dark"] section.block::before { background-image: linear-gradient(var(--gold), var(--gold)), linear-gradient(var(--gold), var(--gold)),
   url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 14'><path d='M22 .4L23.06 5.94L28.6 7L23.06 8.06L22 13.6L20.94 8.06L15.4 7L20.94 5.94ZM24.69 4.31L23.2 7L24.69 9.69L22 8.2L19.31 9.69L20.8 7L19.31 4.31L22 5.8Z' fill='%23E6B85C'/></svg>"); }
 .gallery-page::before { display: none; }
-/* Where the golden thread passes through the first divider, the thread draws it. */
+/* Where the golden thread crosses the first divider, the thread takes its place (no star there). */
 .thread-on.thread-wide #research::before { visibility: hidden; }
 
 /* Strand markers and museum labels carry a small star too. */
