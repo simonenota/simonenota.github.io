@@ -250,8 +250,6 @@ footer strong { color: var(--ink); }
 .gallery img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); }
 .gallery figcaption { font-size: 0.95rem; font-weight: 500; line-height: 1.4; }
 footer a { color: var(--ink); font-weight: 500; text-underline-offset: 3px; }
-/* Keep running text at a comfortable reading width on wide screens. */
-.also { max-width: 68ch; }
 
 /* Gallery viewer: pictures open almost full screen */
 .gallery a.zoom { display: block; border-radius: 12px; cursor: zoom-in; }
@@ -579,6 +577,9 @@ section.block::before {
 .sobrio .hero h1 { font-size: clamp(2.1rem, 4vw, 3.05rem); font-weight: 500; line-height: 1.08; }
 .sobrio .hero h1 em { color: inherit; font-weight: 500; }
 .sobrio .hero .lead { font-size: 1.2rem; }
+/* With a smaller title the opening is shorter, so Research follows closer behind it. */
+.sobrio .hero { padding-block: clamp(32px, 6vw, 72px) clamp(8px, 2vw, 24px); }
+.sobrio #research { padding-top: clamp(40px, 5vw, 64px); }
 @media (min-width: 781px) {
   .sobrio .hero .wrap { grid-template-columns: minmax(0, 1fr) minmax(0, min(450px, 38vw)); }
   .sobrio .motif { max-width: 450px; }
