@@ -322,7 +322,7 @@
   </script>
   <script>
     /* A golden thread leaves the astrolabe and runs down the page: it is drawn as
-       the reader scrolls, and lights a star beside each section and each frame. */
+       the reader scrolls, and lights a star beside each section title. */
     (function () {
       var main = document.getElementById('top');
       var motif = document.querySelector('.motif');
@@ -393,9 +393,6 @@
         line = el('path', { 'class': 't-line', d: d }, svg);
         var small = W < 700 ? 0.75 : 1;
         heads.forEach(function (h) { var b = box(h); star(svg, gx, b.y + 14, 5.5 * small); });
-        [].slice.call(main.querySelectorAll('#research .strip, #research .callout')).forEach(function (f) {
-          var b = box(f); star(svg, gx, b.y + b.h / 2, 7 * small);
-        });
         star(svg, gx, end, 6 * small);
         spark = el('g', { 'class': 't-spark' }, svg);
         var tw = el('g', { 'class': 't-twinkle' }, spark);
