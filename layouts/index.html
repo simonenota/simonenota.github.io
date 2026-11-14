@@ -152,7 +152,15 @@
   </section>
 
   <section class="owl" id="ai-philosophy">
+    {{- /* With the flight video in place, the still is its first frame, so the two meet exactly. */}}
+    {{- $flight := fileExists "static/videos/owl-flight.mp4" }}
+    {{- if $flight }}
+    <img class="owl-img" src="{{ "videos/owl-flight.jpg" | relURL }}" alt=""{{ with images.Config "static/videos/owl-flight.jpg" }} width="{{ .Width }}" height="{{ .Height }}"{{ end }} loading="lazy">
+    <video class="owl-video" muted playsinline preload="none" aria-hidden="true" tabindex="-1"
+      data-webm="{{ "videos/owl-flight.webm" | relURL }}" data-mp4="{{ "videos/owl-flight.mp4" | relURL }}"></video>
+    {{- else }}
     <img class="owl-img" src="{{ "images/minerva-owl.jpg" | relURL }}" alt="" width="1114" height="532" loading="lazy">
+    {{- end }}
     <div class="wrap owl-text">
       <h2>{{ $p.aifun.title }}</h2>
       <p>{{ $p.aifun.text | markdownify }}</p>
@@ -190,6 +198,47 @@
         if (!waiting) { waiting = true; requestAnimationFrame(drift); }
       }, { passive: true });
       drift();
+    })();
+  </script>
+  <script>
+    /* Minerva's owl takes flight when the reader reaches the end of the page: the video
+       starts from the still it replaces, plays once, and fades back into it. It loads only
+       when the owl section comes near, plays again after the reader scrolls up and comes
+       back down, and stays still for "reduce motion". */
+    (function () {
+      var owl = document.querySelector('.owl'), v = owl && owl.querySelector('.owl-video');
+      if (!v || !v.play || !('IntersectionObserver' in window)) return;
+      if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var loaded = false, armed = true, busy = false, timer = 0, queued = false;
+      new IntersectionObserver(function (es, io) {
+        if (!es[0].isIntersecting) return;
+        io.disconnect();
+        v.src = v.canPlayType('video/webm; codecs="vp9"') ? v.dataset.webm : v.dataset.mp4;
+        v.preload = 'auto'; v.load(); loaded = true; check();
+      }, { rootMargin: '900px 0px' }).observe(owl);
+      v.addEventListener('playing', function () { v.classList.add('on'); });
+      v.addEventListener('ended', function () {
+        v.classList.remove('on');                      /* fades back into the still */
+        setTimeout(function () { busy = false; check(); }, 1000);
+      });
+      function gap() { return document.documentElement.scrollHeight - (window.innerHeight + window.scrollY); }
+      function fly() {
+        armed = false; busy = true;
+        try { v.currentTime = 0; } catch (e) {}
+        var p = v.play();
+        if (p && p.catch) p.catch(function () { busy = false; });
+      }
+      function check() {
+        if (!loaded || busy) return;
+        var g = gap();
+        if (g <= 4 && armed && !timer) timer = setTimeout(function () { timer = 0; if (gap() <= 4 && armed && !busy) fly(); }, 250);
+        else if (g > 160) armed = true;
+      }
+      window.addEventListener('scroll', function () {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(function () { queued = false; check(); });
+      }, { passive: true });
     })();
   </script>
   <script>
