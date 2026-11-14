@@ -88,6 +88,7 @@
   </section>
 
   <section class="block" id="publications">
+    <div class="wrap"><div class="section-head"><h2>{{ i18n "nav_publications" }}</h2></div></div>
     {{- /* A stage, as in a travel showcase: the chosen article's picture fills the
          scene, its title appears large, and the other articles wait as framed
          cards; picking one opens its card into the new scene. Without the script,
@@ -98,8 +99,6 @@
         {{- with (index $arts 0).image }}<img class="scene-img" src="{{ . | relURL }}" alt="" width="1024" height="1024">{{ end }}
       </div>
       <div class="wrap stage-inner">
-        {{- /* The section title opens inside the scene. */}}
-        <div class="section-head"><h2>{{ i18n "nav_publications" }}</h2></div>
         <div class="stage-text" id="stage-text" aria-live="polite">
           {{ range $i, $a := $arts }}
           <article class="pub{{ if eq $i 0 }} is-on{{ end }}" data-i="{{ $i }}">

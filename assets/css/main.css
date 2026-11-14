@@ -489,14 +489,21 @@ section.block::before {
 .stage::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background: linear-gradient(90deg, rgb(12 9 6 / .9) 0%, rgb(12 9 6 / .66) 36%, rgb(12 9 6 / .18) 66%, rgb(12 9 6 / .3) 100%),
               linear-gradient(0deg, rgb(12 9 6 / .75) 0%, transparent 42%); }
-.stage-inner { position: relative; width: 100%; display: grid; grid-template-columns: minmax(0, 600px) minmax(0, 1fr); grid-template-rows: auto 1fr; gap: 40px;
+.stage-inner { position: relative; width: 100%; display: grid; grid-template-columns: minmax(0, 600px) minmax(0, 1fr); gap: 40px;
   align-items: center; padding-block: clamp(48px, 7vh, 80px); }
-/* "II. Publications" opens inside the scene, in light letters. */
-#publications { padding-top: clamp(28px, 4vw, 44px); }
-.stage .section-head { grid-column: 1 / -1; align-self: start; margin: 0; }
-.stage .section-head h2 { color: #FFF8EC; text-shadow: 0 2px 18px rgb(0 0 0 / .5); }
-.stage .section-head h2::before { color: #E6B85C; }
-.stage .section-head h2::after { background: #E6B85C; }
+/* "II. Publications" stands on the page like the other titles, and the scene
+   rises out of the paper just beneath it, with no hard edge between them. */
+#publications > .wrap { position: relative; z-index: 1; }
+#publications .section-head { margin-bottom: 16px; }
+.stage { --fade: clamp(170px, 28vh, 260px); --rise: linear-gradient(180deg, transparent, rgb(0 0 0 / .06) calc(var(--fade) * .2), rgb(0 0 0 / .22) calc(var(--fade) * .4),
+    rgb(0 0 0 / .5) calc(var(--fade) * .6), rgb(0 0 0 / .82) calc(var(--fade) * .8), #000 var(--fade)); background: none; }
+.scene { background: #120D09; }
+.scene, .stage::before { -webkit-mask-image: var(--rise); mask-image: var(--rise); }
+.stage-inner { padding-top: calc(var(--fade) + 8px); }
+/* preview B: the scene begins behind the title */
+.vB #publications .section-head { margin-bottom: 0; }
+.vB .stage { --fade: clamp(300px, 46vh, 420px); margin-top: -150px; }
+.vB .stage-inner { padding-top: calc(var(--fade) - 40px); }
 /* The golden thread passes over the scene, so its star still marks the title. */
 .thread { z-index: 1; }
 .stage-text { display: grid; gap: 56px; }
