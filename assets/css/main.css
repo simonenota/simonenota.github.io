@@ -328,9 +328,12 @@ body { font-size: 19.5px; line-height: 1.6; }
 /* A sheet after Leonardo round the portrait: its pen lines may run a little past the frame. */
 .motif .sheet { overflow: visible; }
 .sheet-label { font-family: var(--font-display); font-style: italic; font-size: 6.5px; fill: var(--sketch); stroke: none; }
-/* His note under the drawing, in the same ink. */
-.motto { margin: 6px 0 0; font-family: var(--font-display); font-style: italic; font-size: .95rem; line-height: 1.3; color: var(--sketch); text-align: center; text-wrap: balance; }
-@media (min-width: 781px) { .motto { position: absolute; top: 100%; left: -10%; right: -10%; margin-top: 2px; } }
+/* His note under the drawing, in the same ink. It hangs below the figure
+   rather than inside it, so the figure keeps the drawing's own height and
+   the photo stays centred in its traced circle. */
+.motto { position: absolute; top: 100%; left: -10%; right: -10%; margin: 2px 0 0; font-family: var(--font-display); font-style: italic; font-size: .95rem; line-height: 1.3; color: var(--sketch); text-align: center; text-wrap: balance; }
+/* On a phone the text follows right after, so the note gets its room as a margin (outside the box the photo is centred in). */
+@media (max-width: 780px) { .motif { margin-bottom: 30px; } .motto { left: 0; right: 0; margin-top: 4px; } }
 .epigraph { margin: 6px 0 10px; }
 .brand { font-style: italic; font-weight: 600; font-size: 1.55rem; }
 .brand span { color: var(--accent); }
