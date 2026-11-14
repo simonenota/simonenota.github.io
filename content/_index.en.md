@@ -28,17 +28,17 @@ research:
         I study transcendental philosophy, any outlook aimed at recognizing the
         **necessary conditions for the possibility of our cognition**. My
         interest began with the problem of the possibility of **metaphysics**,
-        traditionally a systematic inquiry into the nature of reality through
-        **a priori knowledge**.
+        traditionally a systematic inquiry aimed at at **a priori knowledge** of
+        the nature of reality.
 
 
         Through the critical lenses of Kant and Wittgenstein, I distinguish
         transcendentalism as a **methodological stance** from **transcendental
-        idealism** as a metaphysical doctrine that makes the necessary features
-        of empirical reality depend on our human point of view. Studying the
-        conditions of our cognition can give us self-understanding without a
-        metaphysical reading: an understanding of metaphysics is not necessarily
-        a metaphysical understanding.
+        idealism** as a metaphysical doctrine that makes the form of empirical
+        reality depend on our human point of view. Studying the conditions of
+        our cognition can give us self-understanding without a metaphysical
+        doctrine: an understanding of metaphysics is not necessarily a
+        metaphysical understanding.
       link_label: Read my PhD dissertation (PDF)
       link_url: /papers/phd-thesis.pdf
     - tag: Recent interest
@@ -61,12 +61,12 @@ research:
       image: /images/research/naturalism.jpg
       title: Naturalism
       text: >
-        I am interested in philosophies that give methodological priority to
-        **nature** and to our a posteriori knowledge of it. I look at two
-        variants: **scientific naturalism**, which takes nature to be what
-        science tells us there is, and **humanistic naturalism**, which takes
-        human nature and its socio-cultural expressions to be irreducible to
-        science.
+        Lastly, I am interested in philosophies that give methodological
+        priority to **nature** and to our a posteriori knowledge of it. I look
+        at two variants: **scientific naturalism**, which takes nature to be
+        what science tells us there is, and **humanistic naturalism**, which
+        takes human nature and its socio-cultural expressions to be irreducible
+        to science.
   bridge_title: "A bridge: the relativized a priori"
   bridge_text: My long-term aim is to connect transcendentalism and naturalism
     through an a priori that holds only relative to certain scientific paradigms
@@ -78,8 +78,8 @@ research:
 publications:
   intro: Peer-reviewed articles, with full texts available as PDF.
 teaching:
-  intro: I have taught undergraduate classes for philosophy and science students
-    at Trinity College Dublin as a teaching assistant.
+  intro: Alongside my research, I have taught undergraduate classes for philosophy
+    and science students at Trinity College Dublin as a teaching assistant.
   modules:
     - Early modern philosophy
     - Kantian and post-Kantian philosophy
