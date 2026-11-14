@@ -579,7 +579,8 @@ section.block::before {
   .sobrio .motif { max-width: 450px; }
 }
 .sobrio .motif::before { display: none; }
-.sobrio .motif .portrait { border-width: 3px; box-shadow: 0 6px 18px rgb(20 20 20 / .12); }
+/* No mount round the photo: the drawing frames it, with a circle traced in the same ink. */
+.sobrio .motif .portrait { border: 0; box-shadow: none; }
 /* The main button in a clean, lively gold, with dark letters. */
 .sobrio .btn.primary { background: #EBB443; border-color: #EBB443; color: #1A1208; }
 .sobrio .btn.primary:hover { background: #F2C25E; border-color: #F2C25E; box-shadow: none; }
