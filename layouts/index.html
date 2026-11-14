@@ -157,7 +157,9 @@
   </section>
 
   <section class="owl" id="ai-philosophy">
-    <img class="owl-img" src="{{ "images/minerva-owl.jpg" | relURL }}" alt="" width="1114" height="532" loading="lazy">
+    <div class="owl-art" aria-hidden="true" data-plate="{{ "images/owl/plate.webp" | relURL }}" data-wl="{{ "images/owl/wing-l.webp" | relURL }}" data-wr="{{ "images/owl/wing-r.webp" | relURL }}" data-body="{{ "images/owl/body.webp" | relURL }}">
+      <img class="owl-img" src="{{ "images/minerva-owl.jpg" | relURL }}" alt="" width="1114" height="532" loading="lazy">
+    </div>
     <div class="wrap owl-text">
       <h2>{{ $p.aifun.title }}</h2>
       <p>{{ $p.aifun.text | markdownify }}</p>
@@ -195,6 +197,162 @@
         if (!waiting) { waiting = true; requestAnimationFrame(drift); }
       }, { passive: true });
       drift();
+    })();
+  </script>
+  <script>
+    /* Minerva's owl beats its wings when the reader reaches the end of the page. The picture
+       is cut into a backdrop, two wings and the body (images/owl/); the wings are bent on a
+       fine mesh with WebGL, so they flex like real wings: the tip follows the arm a moment
+       later, and the body lifts after each downstroke. The canvas shows only while the owl
+       moves; the rest of the time it is the plain picture. Still for "reduce motion". */
+    (function () {
+      var owl = document.querySelector('.owl'), art = owl && owl.querySelector('.owl-art');
+      var base = art && art.querySelector('.owl-img');
+      if (!base || !window.requestAnimationFrame || !('IntersectionObserver' in window)) return;
+      if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      /* Where the parts sit in the 1114 x 532 picture: boxes [x, y, w, h] and the shoulders. */
+      var RIG = { w: 1114, h: 532, wl: [97, 3, 392, 354], wr: [584, 0, 398, 357], body: [357, 173, 377, 308], sl: [478, 262], sr: [601, 262] };
+      var SRC = { plate: art.dataset.plate, wl: art.dataset.wl, wr: art.dataset.wr, body: art.dataset.body };
+
+      function make() {
+        var canvas = document.createElement('canvas');
+        canvas.className = 'owl-rig';
+        var gl = canvas.getContext('webgl', { premultipliedAlpha: true, alpha: false, antialias: false });
+        if (!gl) return null;
+        /* m maps a point of the picture to the canvas, which covers only the visible section. */
+        var VS = 'attribute vec2 p; attribute vec2 t; uniform vec4 m; varying vec2 v;' +
+          'void main(){ v = t; gl_Position = vec4(p.x * m.x + m.y, p.y * m.z + m.w, 0.0, 1.0); }';
+        var FS = 'precision mediump float; uniform sampler2D u; varying vec2 v; void main(){ gl_FragColor = texture2D(u, v); }';
+        var prog = gl.createProgram();
+        [[gl.VERTEX_SHADER, VS], [gl.FRAGMENT_SHADER, FS]].forEach(function (d) {
+          var o = gl.createShader(d[0]); gl.shaderSource(o, d[1]); gl.compileShader(o); gl.attachShader(prog, o);
+        });
+        gl.linkProgram(prog);
+        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
+        gl.useProgram(prog);
+        var aP = gl.getAttribLocation(prog, 'p'), aT = gl.getAttribLocation(prog, 't'), uM = gl.getUniformLocation(prog, 'm');
+        gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+        gl.enableVertexAttribArray(aP); gl.enableVertexAttribArray(aT);
+
+        /* One part of the picture: a texture and a grid of points over its box. */
+        function part(box, cols, rows) {
+          var n = (cols + 1) * (rows + 1), pos = new Float32Array(n * 2), uv = new Float32Array(n * 2), rest = new Float32Array(n * 2), idx = [], i, j;
+          for (j = 0; j <= rows; j++) for (i = 0; i <= cols; i++) {
+            var k = 2 * (j * (cols + 1) + i);
+            uv[k] = i / cols; uv[k + 1] = j / rows;
+            rest[k] = pos[k] = box[0] + box[2] * i / cols; rest[k + 1] = pos[k + 1] = box[1] + box[3] * j / rows;
+          }
+          for (j = 0; j < rows; j++) for (i = 0; i < cols; i++) {
+            var a = j * (cols + 1) + i, c = a + cols + 1;
+            idx.push(a, a + 1, c, a + 1, c + 1, c);
+          }
+          var o = { pos: pos, rest: rest, n: idx.length, pb: gl.createBuffer(), tb: gl.createBuffer(), ib: gl.createBuffer(), tex: gl.createTexture() };
+          gl.bindBuffer(gl.ARRAY_BUFFER, o.tb); gl.bufferData(gl.ARRAY_BUFFER, uv, gl.STATIC_DRAW);
+          gl.bindBuffer(gl.ARRAY_BUFFER, o.pb); gl.bufferData(gl.ARRAY_BUFFER, pos, gl.DYNAMIC_DRAW);
+          gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, o.ib); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(idx), gl.STATIC_DRAW);
+          return o;
+        }
+        var parts = { plate: part([0, 0, RIG.w, RIG.h], 1, 1), wl: part(RIG.wl, 30, 26), wr: part(RIG.wr, 30, 26), body: part(RIG.body, 1, 1) };
+        function draw(o) {
+          gl.bindTexture(gl.TEXTURE_2D, o.tex);
+          gl.bindBuffer(gl.ARRAY_BUFFER, o.pb); gl.bufferSubData(gl.ARRAY_BUFFER, 0, o.pos); gl.vertexAttribPointer(aP, 2, gl.FLOAT, false, 0, 0);
+          gl.bindBuffer(gl.ARRAY_BUFFER, o.tb); gl.vertexAttribPointer(aT, 2, gl.FLOAT, false, 0, 0);
+          gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, o.ib); gl.drawElements(gl.TRIANGLES, o.n, gl.UNSIGNED_SHORT, 0);
+        }
+
+        /* How far down the wings are (0 = raised, as in the picture): two beats, the second
+           a little shallower, each with a quicker downstroke than upstroke. */
+        var BEATS = [[0, 820, 1], [820, 760, 0.82]], END = 1840;
+        function down(t) {
+          for (var b = 0; b < BEATS.length; b++) {
+            var s = BEATS[b][0], T = BEATS[b][1];
+            if (t >= s && t < s + T) {
+              var x = (t - s) / T, d = 0.42;
+              return BEATS[b][2] * (x < d ? 0.5 - 0.5 * Math.cos(Math.PI * x / d) : 0.5 + 0.5 * Math.cos(Math.PI * (x - d) / (1 - d)));
+            }
+          }
+          return 0;
+        }
+        var DEPTH = 58 * Math.PI / 180, LAG = 80, LIFT = 5;
+        function bend(o, S, side, t, dy) {
+          var i;
+          if (!o.L) { o.L = 1; for (i = 0; i < o.rest.length; i += 2) o.L = Math.max(o.L, Math.hypot(o.rest[i] - S[0], o.rest[i + 1] - S[1])); }
+          for (i = 0; i < o.rest.length; i += 2) {
+            var vx = o.rest[i] - S[0], vy = o.rest[i + 1] - S[1], u = Math.min(Math.hypot(vx, vy) / o.L, 1);
+            var q = down(t - LAG * u);                          /* the tip follows the arm a moment later */
+            var ang = side * DEPTH * q * (0.82 + 0.3 * u);      /* and bends a little further */
+            var k = 1 - 0.13 * Math.sin(Math.PI * Math.min(q, 1)) * u;   /* swept towards us, it looks shorter */
+            var c = Math.cos(ang), s = Math.sin(ang);
+            o.pos[i] = S[0] + (vx * c - vy * s) * k;
+            o.pos[i + 1] = S[1] + dy + (vx * s + vy * c) * k;
+          }
+        }
+        function frame(t) {
+          var dy = -LIFT * down(t - 140), b = parts.body;      /* the body lifts just after each downstroke */
+          bend(parts.wl, RIG.sl, -1, t, dy);
+          bend(parts.wr, RIG.sr, 1, t, dy);
+          for (var i = 0; i < b.rest.length; i += 2) { b.pos[i] = b.rest[i]; b.pos[i + 1] = b.rest[i + 1] + dy; }
+          draw(parts.plate); draw(parts.wl); draw(parts.wr); draw(b);
+        }
+        /* Draw the picture where the page shows it (object-fit: cover), at screen sharpness
+           but only over the section itself, which on a phone is a narrow slice of it. */
+        function place() {
+          var W = art.offsetWidth, H = art.offsetHeight, op = getComputedStyle(base).objectPosition.split(' ');
+          var px = parseFloat(op[0]) / 100, py = parseFloat(op[1] || '50%') / 100;
+          var k = Math.max(W / RIG.w, H / RIG.h), x0 = (W - RIG.w * k) * px, y0 = (H - RIG.h * k) * py;
+          var dpr = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(4e6 / (W * H)));
+          canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+          gl.viewport(0, 0, canvas.width, canvas.height);
+          gl.uniform4f(uM, 2 * k / W, 2 * x0 / W - 1, -2 * k / H, 1 - 2 * y0 / H);
+        }
+
+        var api = { ready: false, busy: false }, left = 4;
+        Object.keys(SRC).forEach(function (key) {
+          var im = new Image();
+          im.onload = function () {
+            var o = parts[key];
+            gl.bindTexture(gl.TEXTURE_2D, o.tex);
+            gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, im);
+            [[gl.TEXTURE_MIN_FILTER, gl.LINEAR], [gl.TEXTURE_MAG_FILTER, gl.LINEAR], [gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE]]
+              .forEach(function (p) { gl.texParameteri(gl.TEXTURE_2D, p[0], p[1]); });
+            if (!--left) { art.appendChild(canvas); api.ready = true; check(); }
+          };
+          im.src = SRC[key];
+        });
+        api.flap = function () {
+          if (!api.ready || api.busy) return false;
+          api.busy = true; place(); frame(0);
+          canvas.classList.add('on');
+          var t0 = performance.now();
+          requestAnimationFrame(function step() {
+            var t = performance.now() - t0;
+            frame(Math.min(t, END));
+            if (t < END) requestAnimationFrame(step);
+            else { canvas.classList.remove('on'); api.busy = false; }
+          });
+          return true;
+        };
+        return api;
+      }
+
+      /* Get ready when the owl comes near; beat once each time the reader reaches the bottom. */
+      var rig = null, armed = true, timer = 0, queued = false;
+      function gap() { return document.documentElement.scrollHeight - (window.innerHeight + window.scrollY); }
+      function check() {
+        if (!rig || !rig.ready) return;
+        var g = gap();
+        if (g <= 4 && armed && !timer) timer = setTimeout(function () { timer = 0; if (gap() <= 4 && armed && rig.flap()) armed = false; }, 250);
+        else if (g > 160) armed = true;
+      }
+      new IntersectionObserver(function (es, io) {
+        if (es[0].isIntersecting) { io.disconnect(); rig = make(); }
+      }, { rootMargin: '900px 0px' }).observe(owl);
+      window.addEventListener('scroll', function () {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(function () { queued = false; check(); });
+      }, { passive: true });
     })();
   </script>
   <script>
