@@ -23,6 +23,7 @@
   --coral-tint: #E4F0EB;
   --ring-outer: #C39433; --ring-middle: #B4432F; --ring-inner: #2F5FA8;
   --ring-fill: #F3EADB; --ring-line: #D8C7A9; --ring-text: #7A6A58; --ring-tick: #BFA57A;
+  --sketch: #6B4A2B;         /* iron-gall ink of the drawing round the portrait */
   --panel: #2A211A; --panel-2: #4A3526;
   --panel-ink: #F6EFE2;
   --panel-muted: #D3C7B5;
@@ -35,7 +36,7 @@
   --accent: #E6B85C; --accent-fill: #E6B85C; --btn-ink: #111A2E; --gold: #E6B85C; --gold-soft: #6B5A36;
   --teal: #A3BDEE; --teal-tint: #1B2A4A; --amber: #F2957D; --amber-fill: #E6B85C; --amber-tint: #1C2846;
   --coral: #86CDB6; --coral-tint: #17303A;
-  --ring-outer: #E6B85C; --ring-middle: #F07C62; --ring-inner: #7FA6EA; --ring-fill: #18233D; --ring-line: #354166; --ring-text: #C4BAA8; --ring-tick: #6F6650;
+  --ring-outer: #E6B85C; --ring-middle: #F07C62; --ring-inner: #7FA6EA; --ring-fill: #18233D; --ring-line: #354166; --ring-text: #C4BAA8; --ring-tick: #6F6650; --sketch: #DCC08C;
   --panel: #0B1222; --panel-2: #1D2A4A; --panel-ink: #F2F4FA; --panel-muted: #C4BAA8;
   color-scheme: dark;
 }
@@ -283,13 +284,6 @@ footer a { color: var(--ink); font-weight: 500; text-underline-offset: 3px; }
 }
 @media (prefers-reduced-motion: reduce) { .gallery a.zoom img { transition: none; } }
 
-/* Home page rings: each coloured ring turns once when the page opens, then stops where it is drawn. */
-.motif .ring { transform-box: view-box; transform-origin: 50% 50%; animation: ring-turn 1.8s cubic-bezier(.2, .75, .25, 1) .15s both; }
-.motif .ring-middle { animation-name: ring-turn-back; animation-duration: 2.2s; }
-.motif .ring-inner { animation-duration: 2.6s; }
-@keyframes ring-turn { from { transform: rotate(-360deg); } to { transform: rotate(0deg); } }
-@keyframes ring-turn-back { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
-@media (prefers-reduced-motion: reduce) { .motif .ring { animation: none; } }
 
 /* AI & Philosophy: Minerva's owl across the whole width, at the end of the page. */
 .owl { position: relative; isolation: isolate; overflow: hidden; min-height: clamp(460px, 42vw, 640px); display: flex; align-items: center; background: #120C08; color: #FFF7EE; border-top: 1px solid var(--line); }
@@ -327,19 +321,16 @@ footer a { color: var(--ink); font-weight: 500; text-underline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { .cover { transition: none; } }
 
 /* ===================================================================
-   Classical look: a scientific soul (star map, astrolabe) and an
+   Classical look: a scientific soul (star map, Leonardo's sheet) and an
    artistic one (gilded frames, museum labels), set like an old book.
    =================================================================== */
 body { font-size: 19.5px; line-height: 1.6; }
-.dial-text { font-family: var(--font-body); font-size: 10.5px; letter-spacing: .06em; fill: var(--ring-text); }
-.motif .ring-dial { animation-name: ring-turn-back; animation-duration: 3.2s; }
-/* Engraved star chart behind the astrolabe. */
-.motif::after { content: ""; position: absolute; inset: -70%; z-index: -2; pointer-events: none;
-  background: url("../images/sky.svg") center / contain no-repeat;
-  /* No hard edge: the chart fades out into the page instead of being cut at the end of the hero. */
-  -webkit-mask-image: radial-gradient(closest-side, #000 52%, transparent);
-  mask-image: radial-gradient(closest-side, #000 52%, transparent); }
-:root[data-theme="dark"] .motif::after { background-image: url("../images/sky-dark.svg"); }
+/* A sheet after Leonardo round the portrait: its pen lines may run a little past the frame. */
+.motif .sheet { overflow: visible; }
+.sheet-label { font-family: var(--font-display); font-style: italic; font-size: 6.5px; fill: var(--sketch); stroke: none; }
+/* His note under the drawing, in the same ink. */
+.motto { margin: 6px 0 0; font-family: var(--font-display); font-style: italic; font-size: .95rem; line-height: 1.3; color: var(--sketch); text-align: center; text-wrap: balance; }
+@media (min-width: 781px) { .motto { position: absolute; top: 100%; left: -10%; right: -10%; margin-top: 2px; } }
 .epigraph { margin: 6px 0 10px; }
 .brand { font-style: italic; font-weight: 600; font-size: 1.55rem; }
 .brand span { color: var(--accent); }
@@ -417,7 +408,7 @@ footer { font-size: 1rem; }
 /* ===================================================================
    One sky over the whole page, so the two souls do not feel like two
    sites: faint stars behind everything, a golden thread that leaves the
-   astrolabe and links the frames like a constellation, and frames made
+   drawing and links the frames like a constellation, and frames made
    of the same gilded brass as the instrument.
    =================================================================== */
 :root { --gilt-1: #7E5E22; --gilt-2: #A97F2F; --gilt-3: #F3DE9F; }
@@ -572,7 +563,7 @@ section.block::before {
    gold instead of five colours, smaller voices, and no sky behind the page.
    =================================================================== */
 .sobrio { --accent: var(--ink); --accent-fill: var(--ink); --btn-ink: var(--bg); }
-/* Hero: a title rather than a poster; the astrolabe keeps only its gold. */
+/* Hero: a title rather than a poster, and one sheet of drawing round the portrait. */
 .sobrio .eyebrow { color: var(--muted); letter-spacing: .16em; }
 .sobrio .hero h1 { font-size: clamp(2.1rem, 4vw, 3.05rem); font-weight: 500; line-height: 1.08; }
 .sobrio .hero h1 em { color: inherit; font-weight: 500; }
@@ -588,8 +579,6 @@ section.block::before {
   .sobrio .motif { max-width: 450px; }
 }
 .sobrio .motif::before { display: none; }
-.sobrio .motif::after { opacity: .45; }
-.sobrio .motif .ring-middle, .sobrio .motif .ring-inner { display: none; }
 .sobrio .motif .portrait { border-width: 3px; box-shadow: 0 6px 18px rgb(20 20 20 / .12); }
 /* The main button in a clean, lively gold, with dark letters. */
 .sobrio .btn.primary { background: #EBB443; border-color: #EBB443; color: #1A1208; }
