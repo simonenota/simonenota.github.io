@@ -75,6 +75,8 @@ research:
   also: I have also worked on linguistic falsehood, dreaming and skepticism,
     theories of intentionality, and thought experiments. See the
     [publications](#publications) below.
+publications:
+  intro: Peer-reviewed articles, with downloadable PDFs.
 teaching:
   intro: Alongside my research, I have taught undergraduate classes for philosophy
     and science students at Trinity College Dublin as a teaching assistant.
