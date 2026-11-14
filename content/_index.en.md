@@ -24,8 +24,6 @@ research:
       color: teal
       image: /images/research/transcendentalism.jpg
       title: Transcendentalism
-      question: Can we ever have a priori knowledge of what reality is like, and under
-        what conditions?
       text: >
         I study transcendental philosophy, any outlook aimed at recognizing the
         **necessary conditions for the possibility of our cognition**. My
