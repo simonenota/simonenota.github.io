@@ -36,7 +36,7 @@ research:
         transcendentalism as a **methodological stance** from **transcendental
         idealism** as a metaphysical doctrine that makes the form of empirical
         reality depend on our human point of view. Studying the conditions of
-        our cognition can give us self-understanding without a metaphysical
+        our cognition can give us self-knowledge without a metaphysical
         doctrine: an understanding of metaphysics is not necessarily a
         metaphysical understanding.
       link_label: Read my PhD dissertation (PDF)
