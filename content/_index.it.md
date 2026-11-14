@@ -1,13 +1,13 @@
 ---
 title: Simone Nota
-seo_title: "Simone Nota | Filosofo – Kant, Wittgenstein, metafisica"
+seo_title: Simone Nota | Filosofo – Kant, Wittgenstein, metafisica
 description: Simone Nota, filosofo. Ricerca sulla filosofia trascendentale, la
   metafisica, Kant e Wittgenstein.
 hero:
   eyebrow: Assegnista postdoc · Istituto di Filosofia, Zagabria
   title: Pensare al confine tra *metafisica* e filosofia trascendentale
   lead: Il mio lavoro porta una **prospettiva trascendentale** sui problemi della
-    natura della realtà, della conoscenza, del linguaggio e della mente -
+    natura della realtà, della conoscenza, del linguaggio e della mente,
     leggendo Kant e Wittgenstein alla luce dei dibattiti contemporanei.
   areas:
     - Metafisica
@@ -17,16 +17,13 @@ hero:
     - Kant
     - Wittgenstein
 research:
-  intro: "Tre linee di ricerca collegate, che partono tutte dalla stessa domanda:
-    quali sono le condizioni che rendono possibile la conoscenza della realtà?"
+  intro: "Tre linee di ricerca collegate, che partono dalla stessa domanda: quali
+    sono le condizioni che rendono possibile la rappresentazione della realtà?"
   strands:
     - tag: Linea principale
       color: teal
       image: /images/research/transcendentalism.jpg
-      image_caption: "Idealismo trascendentale"
       title: Trascendentalismo
-      question: Possiamo avere una conoscenza a priori di come è fatta la realtà, e a
-        quali condizioni?
       text: >
         Studio la filosofia trascendentale, cioè ogni prospettiva volta a
         riconoscere le **condizioni necessarie della possibilità della nostra
@@ -48,7 +45,6 @@ research:
     - tag: Interesse recente
       color: amber
       image: /images/research/absolutism.jpg
-      image_caption: "Una notte stellata metafisica"
       title: Assolutismo
       text: >
         Di recente mi sono rivolto alle filosofie dell'assoluto, concezioni
@@ -66,7 +62,6 @@ research:
     - tag: Progetto a lungo termine
       color: coral
       image: /images/research/naturalism.jpg
-      image_caption: "L’epoché di Husserl"
       title: Naturalismo
       text: >
         Mi interessano le filosofie che danno priorità metodologica alla
@@ -114,9 +109,9 @@ teaching:
   quote: Queste capacità contano per una vita accademica riuscita e per una vita
     umana più piena.
 cv:
+  url: /papers/cv-simone-nota.pdf
   title: Curriculum Vitae
   text: Formazione, incarichi, premi, conferenze e attività didattica.
-  url: /papers/cv-simone-nota.pdf
 aifun:
   title: IA & Filosofia
   text: Idee filosofiche, dalla nottola di Hegel alla scala di Wittgenstein,
