@@ -496,11 +496,16 @@ section.block::before {
    already climbing behind the word. */
 #publications > .wrap { position: relative; z-index: 1; }
 #publications .section-head { margin-bottom: 0; }
+/* The paper's glow keeps the line under the title legible where the scene begins. */
+#publications .section-head p { text-shadow: 0 0 6px var(--bg), 0 0 14px var(--bg), 0 0 24px var(--bg); }
 .stage { --fade: clamp(300px, 46vh, 420px); margin-top: -150px; background: none;
-  --rise: linear-gradient(180deg, transparent, rgb(0 0 0 / .06) calc(var(--fade) * .2), rgb(0 0 0 / .22) calc(var(--fade) * .4),
-    rgb(0 0 0 / .5) calc(var(--fade) * .6), rgb(0 0 0 / .82) calc(var(--fade) * .8), #000 var(--fade)); }
+  --rise: linear-gradient(180deg, transparent, rgb(0 0 0 / .03) calc(var(--fade) * .2), rgb(0 0 0 / .1) calc(var(--fade) * .4),
+    rgb(0 0 0 / .38) calc(var(--fade) * .6), rgb(0 0 0 / .76) calc(var(--fade) * .8), #000 var(--fade));
+  /* the darkening veil for the article text comes in a little later than the picture */
+  --veil: linear-gradient(180deg, transparent calc(var(--fade) * .4), rgb(0 0 0 / .5) calc(var(--fade) * .72), #000 var(--fade)); }
 .scene { background: #120D09; }
-.scene, .stage::before { -webkit-mask-image: var(--rise); mask-image: var(--rise); }
+.scene { -webkit-mask-image: var(--rise); mask-image: var(--rise); }
+.stage::before { -webkit-mask-image: var(--veil); mask-image: var(--veil); }
 .stage-inner { padding-top: calc(var(--fade) - 40px); }
 /* The golden thread passes over the scene, not behind it. */
 .thread { z-index: 1; }
