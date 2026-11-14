@@ -191,7 +191,7 @@ section.block { padding-block: clamp(48px, 7vw, 88px); border-top: 1px solid var
 .link-line { font-weight: 600; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; width: fit-content; }
 .callout { margin-top: 12px; padding: 24px clamp(20px, 3vw, 32px); border-radius: 14px; background: var(--amber-tint); }
 .callout h3 { font-size: 1.25rem; font-weight: 600; }
-.callout p { margin-top: 8px; max-width: 70ch; }
+.callout p { margin-top: 8px; }
 .also { margin-top: 28px; color: var(--muted); }
 .also a { color: var(--ink); font-weight: 600; }
 
