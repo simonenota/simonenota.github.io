@@ -587,9 +587,9 @@ section.block::before {
 .sobrio .motif::after { opacity: .45; }
 .sobrio .motif .ring-middle, .sobrio .motif .ring-inner { display: none; }
 .sobrio .motif .portrait { border-width: 3px; box-shadow: 0 6px 18px rgb(20 20 20 / .12); }
-/* The main button in gold, with dark letters. */
-.sobrio .btn.primary { background: linear-gradient(135deg, #D9A848, #F0CF7E 50%, #CF9C3E); border-color: #B8862B; color: #1A1208; }
-.sobrio .btn.primary:hover { box-shadow: 0 12px 24px -14px rgb(150 105 30 / .9); }
+/* The main button in a clean, lively gold, with dark letters. */
+.sobrio .btn.primary { background: #EBB443; border-color: #EBB443; color: #1A1208; }
+.sobrio .btn.primary:hover { background: #F2C25E; border-color: #F2C25E; box-shadow: none; }
 .sobrio .brand span { color: var(--gold); }
 /* No stars behind the page; the golden thread stays, a little quieter. */
 .sobrio::before { display: none; }
