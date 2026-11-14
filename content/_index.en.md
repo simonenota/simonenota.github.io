@@ -17,13 +17,12 @@ hero:
     - Kant
     - Wittgenstein
 research:
-  intro: "Three connected lines of work, each starting from the same question:
-    what are the conditions that make knowledge of reality possible?"
+  intro: "My guiding question is: what are the conditions that make representation
+    of reality possible? I answer through three connected lines of work."
   strands:
     - tag: Main line
       color: teal
       image: /images/research/transcendentalism.jpg
-      image_caption: "Transcendental Idealism"
       title: Transcendentalism
       question: Can we ever have a priori knowledge of what reality is like, and under
         what conditions?
@@ -47,7 +46,6 @@ research:
     - tag: Recent interest
       color: amber
       image: /images/research/absolutism.jpg
-      image_caption: "A Metaphysical Starry Night"
       title: Absolutism
       text: >
         I have recently turned to absolute philosophies, metaphysical views that
@@ -63,7 +61,6 @@ research:
     - tag: Long-term project
       color: coral
       image: /images/research/naturalism.jpg
-      image_caption: "Husserl’s Epoché"
       title: Naturalism
       text: >
         I am interested in philosophies that give methodological priority to
