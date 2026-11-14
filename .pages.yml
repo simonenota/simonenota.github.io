@@ -86,6 +86,11 @@ content:
           - { name: bridge_title, label: "Riquadro finale: titolo", type: string }
           - { name: bridge_text, label: "Riquadro finale: testo", type: text }
           - { name: also, label: Altri temi, type: text }
+      - name: publications
+        label: Pubblicazioni
+        type: object
+        fields:
+          - { name: intro, label: Introduzione, type: text }
       - name: teaching
         label: Didattica
         type: object
