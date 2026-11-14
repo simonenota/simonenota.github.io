@@ -489,8 +489,16 @@ section.block::before {
 .stage::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background: linear-gradient(90deg, rgb(12 9 6 / .9) 0%, rgb(12 9 6 / .66) 36%, rgb(12 9 6 / .18) 66%, rgb(12 9 6 / .3) 100%),
               linear-gradient(0deg, rgb(12 9 6 / .75) 0%, transparent 42%); }
-.stage-inner { position: relative; width: 100%; display: grid; grid-template-columns: minmax(0, 600px) minmax(0, 1fr); gap: 40px;
+.stage-inner { position: relative; width: 100%; display: grid; grid-template-columns: minmax(0, 600px) minmax(0, 1fr); grid-template-rows: auto 1fr; gap: 40px;
   align-items: center; padding-block: clamp(48px, 7vh, 80px); }
+/* "II. Publications" opens inside the scene, in light letters. */
+#publications { padding-top: clamp(28px, 4vw, 44px); }
+.stage .section-head { grid-column: 1 / -1; align-self: start; margin: 0; }
+.stage .section-head h2 { color: #FFF8EC; text-shadow: 0 2px 18px rgb(0 0 0 / .5); }
+.stage .section-head h2::before { color: #E6B85C; }
+.stage .section-head h2::after { background: #E6B85C; }
+/* The golden thread passes over the scene, so its star still marks the title. */
+.thread { z-index: 1; }
 .stage-text { display: grid; gap: 56px; }
 .stage .pub { display: block; padding: 0; border: 0; }
 .stage .pub:last-child { border: 0; }
