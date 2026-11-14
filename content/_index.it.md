@@ -106,8 +106,8 @@ teaching:
     - title: Una chiusura creativa
       text: Ogni lezione si conclude con un’attività creativa di gruppo volta a
         stimolare la comprensione, l’immaginazione e l’empatia.
-  quote: Queste capacità contano per una vita accademica riuscita e per una vita
-    umana più piena.
+  quote: Queste capacità contano non solo per una vita accademica riuscita ma
+    anche per una vita più piena.
 cv:
   url: /papers/cv-simone-nota.pdf
   title: Curriculum Vitae
