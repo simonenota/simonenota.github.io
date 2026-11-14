@@ -580,6 +580,9 @@ section.block::before {
 /* With a smaller title the opening is shorter, so Research follows closer behind it. */
 .sobrio .hero { padding-block: clamp(32px, 6vw, 72px) clamp(8px, 2vw, 24px); }
 .sobrio #research { padding-top: clamp(40px, 5vw, 64px); }
+/* Less empty paper between sections. Below the scene its own fade is the margin. */
+.sobrio section.block { padding-block: clamp(36px, 5vw, 60px); }
+.sobrio #publications { padding-bottom: 0; }
 @media (min-width: 781px) {
   .sobrio .hero .wrap { grid-template-columns: minmax(0, 1fr) minmax(0, min(450px, 38vw)); }
   .sobrio .motif { max-width: 450px; }
