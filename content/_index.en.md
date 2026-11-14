@@ -17,7 +17,7 @@ hero:
     - Kant
     - Wittgenstein
 research:
-  intro: "My guiding question is: what are the conditions that make representation
+  intro: "My guiding question is: What are the conditions that make representation
     of reality possible? I answer through three connected lines of work."
   strands:
     - tag: Main line
