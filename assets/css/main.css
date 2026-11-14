@@ -295,22 +295,26 @@ footer a { color: var(--ink); font-weight: 500; text-underline-offset: 3px; }
 
 /* AI & Philosophy: Minerva's owl across the whole width, at the end of the page. */
 .owl { position: relative; isolation: isolate; overflow: hidden; min-height: clamp(460px, 42vw, 640px); display: flex; align-items: center; background: #120C08; color: #FFF7EE; border-top: 1px solid var(--line); }
-.owl-img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; scale: 1.03; transition: scale 3s cubic-bezier(.2, .7, .2, 1); }
+.owl-art { position: absolute; inset: 0; z-index: -2; scale: 1.03; transition: scale 3s cubic-bezier(.2, .7, .2, 1); }
+.owl-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; }
+/* The wing-beat canvas (script in the home page) shows only while the owl moves. */
+.owl-rig { position: absolute; inset: 0; width: 100%; height: 100%; visibility: hidden; pointer-events: none; }
+.owl-rig.on { visibility: visible; }
 .owl::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgb(14 9 5 / .86) 0%, rgb(14 9 5 / .5) 34%, rgb(14 9 5 / 0) 60%); }
 .owl-text { width: 100%; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; padding-block: 56px; }
 .owl-text h2 { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 600; text-shadow: 0 2px 18px rgb(0 0 0 / .45); }
 .owl-text p { max-width: 36ch; font-size: 1.1rem; color: #F3E7DA; text-shadow: 0 1px 10px rgb(0 0 0 / .5); }
 .owl-text a:not(.btn) { color: inherit; }
 .owl .btn.primary { margin-top: 6px; }
-.reveal .owl .owl-img { scale: 1.16; }
-.reveal .owl.in .owl-img { scale: 1.03; }
+.reveal .owl .owl-art { scale: 1.16; }
+.reveal .owl.in .owl-art { scale: 1.03; }
 @media (max-width: 780px) {
   .owl { min-height: 600px; align-items: flex-end; }
   .owl-img { object-position: 50% 30%; }
   .owl::before { background: linear-gradient(to top, rgb(14 9 5 / .92) 0%, rgb(14 9 5 / .6) 42%, rgb(14 9 5 / 0) 72%); }
   .owl-text { padding-block: 40px; }
 }
-@media (prefers-reduced-motion: reduce) { .owl-img { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .owl-art { transition: none; } }
 
 /* First page of each article, next to it: a second way into the PDF. */
 .pub { grid-template-columns: minmax(0, 220px) minmax(0, 1fr) 150px; }
