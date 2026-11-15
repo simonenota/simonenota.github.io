@@ -441,13 +441,11 @@ section.block::before {
   mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-1 -1 2 2'><path d='M0 -1L.2 -.2L1 0L.2 .2L0 1L-.2 .2L-1 0L-.2 -.2Z'/></svg>") center / contain no-repeat; }
 
 /* The pencil line (drawn by the page script; absent without it), in the ink of the drawing:
-   a faint construction line, the pencil stroke over it with a lighter second pass beside it,
+   a single stroke that draws itself as the page scrolls, with no guide ahead of it,
    and a compass point at each section title. */
 .thread { position: absolute; left: 0; top: 0; z-index: -1; pointer-events: none; overflow: visible; }
 .thread path { fill: none; stroke: var(--sketch); stroke-linecap: round; stroke-linejoin: round; }
-.thread .t-route { stroke-width: .8; stroke-opacity: .22; }
 .thread .t-line { stroke-width: 1.25; stroke-opacity: .85; }
-.thread .t-second { stroke-width: .6; stroke-opacity: .4; }
 .thread .t-ring { fill: var(--bg); stroke: var(--sketch); stroke-width: 1; }
 .thread .t-dot { fill: var(--sketch); opacity: 0; transition: opacity .5s ease; }
 .thread .lit .t-dot { opacity: 1; }
@@ -570,6 +568,10 @@ section.block::before {
 /* With a smaller title the opening is shorter, so Research follows closer behind it. */
 .sobrio .hero { padding-block: clamp(32px, 6vw, 72px) clamp(8px, 2vw, 24px); }
 .sobrio #research { padding-top: clamp(40px, 5vw, 64px); }
+/* Where the pencil leaves from the corner of the drawn square rather than from under the motto
+   (the page script sets the class when the corner clears the text), Research follows the opening closely. */
+.sobrio.thread-corner .hero { padding-bottom: 8px; }
+.sobrio.thread-corner #research { padding-top: 24px; }
 /* Less empty paper between sections. Below the scene its own fade is the margin. */
 .sobrio section.block { padding-block: clamp(36px, 5vw, 60px); }
 .sobrio #publications { padding-bottom: 0; }

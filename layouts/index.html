@@ -348,7 +348,7 @@
       var NS = 'http://www.w3.org/2000/svg';
       var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
       var root = document.documentElement;
-      var svg, line, second, pen, nodes = [], table = [], total = 0, total2 = 0, queued = false;
+      var svg, line, pen, nodes = [], table = [], total = 0, queued = false;
 
       function el(name, attrs, parent) {
         var e = document.createElementNS(NS, name);
@@ -390,21 +390,35 @@
         var gx = Math.max(9, Math.round(left - Math.min(44, Math.max(14, left * 0.45))));
         var m = box(motif);
         var heads = [].slice.call(main.querySelectorAll('section.block .section-head h2'));
-        var h0 = box(heads[0]);
-        var end = box(owl).y - 30;
         var wide = m.x + m.w / 2 > W / 2;
+        /* The lower left corner of the drawn square, and whether it clears the text beside it.
+           When it does, the pencil leaves from there and Research may sit closer (a class tightens its padding). */
+        var sb = box(motif.querySelector('.sheet') || motif);
+        var c = { x: sb.x + sb.w * 0.12, y: sb.y + sb.h * 0.94 };
+        var tc = motif.parentNode.firstElementChild, tb = box(tc.lastElementChild || tc);
+        var corner = wide && c.y > tb.y + tb.h + 8;
+        root.classList.toggle('thread-corner', corner);
+        var h0 = box(heads[0]);
+        var y2 = h0.y + 14;
+        if (corner && y2 - c.y < 30) { corner = false; root.classList.remove('thread-corner'); h0 = box(heads[0]); y2 = h0.y + 14; }
+        var end = box(owl).y - 30;
         var d;
         if (wide) {
-          /* From under the drawing and its motto, across the line between hero and research, into the margin. */
-          var cap = motif.querySelector('.motto'), cb = cap && box(cap);
-          var p0 = { x: m.x + m.w / 2, y: cb && cb.h ? cb.y + cb.h + 12 : m.y + m.h * 0.98 };
-          var s = { x: W / 2, y: Math.max(box(research).y, p0.y + 36) };
-          var y2 = h0.y + 14;
-          var dy = s.y - p0.y;
-          if (dy < 24) wide = false;
-          else {
-            d = 'M' + p0.x + ' ' + p0.y +
-                'C' + p0.x + ' ' + (p0.y + dy * 0.75) + ' ' + (s.x + (p0.x - s.x) * 0.45) + ' ' + s.y + ' ' + s.x + ' ' + s.y +
+          if (corner) {
+            /* On along the square's bottom edge, then down into the margin beside Research. */
+            var dy = y2 - c.y;
+            d = 'M' + c.x + ' ' + c.y +
+                'C' + (c.x - (c.x - gx) * 0.55) + ' ' + c.y + ' ' + gx + ' ' + (c.y + dy * 0.2) + ' ' + gx + ' ' + y2 +
+                'L' + gx + ' ' + end;
+          } else {
+            /* Where the text runs lower than the drawing, the corner would cut across it: leave from under the motto instead. */
+            var cap = motif.querySelector('.motto'), cb = cap && box(cap);
+            var p0 = { x: m.x + m.w / 2, y: cb && cb.h ? cb.y + cb.h + 12 : m.y + m.h * 0.98 };
+            var s = { x: W / 2, y: Math.min(Math.max(box(research).y, p0.y + 36), y2 - 16) };
+            var dy0 = s.y - p0.y;
+            if (dy0 < 24) wide = false;
+            else d = 'M' + p0.x + ' ' + p0.y +
+                'C' + p0.x + ' ' + (p0.y + dy0 * 0.75) + ' ' + (s.x + (p0.x - s.x) * 0.45) + ' ' + s.y + ' ' + s.x + ' ' + s.y +
                 'C' + (s.x - (s.x - gx) * 0.55) + ' ' + s.y + ' ' + gx + ' ' + (s.y + (y2 - s.y) * 0.3) + ' ' + gx + ' ' + y2 +
                 'L' + gx + ' ' + end;
           }
@@ -419,19 +433,16 @@
         svg = el('svg', { 'class': 'thread', width: W, height: end + 40, 'aria-hidden': 'true', focusable: 'false' });
         main.insertBefore(svg, main.firstChild);
         var base = el('path', { d: d }, svg), len = base.getTotalLength();
-        var d1 = hand(base, len, 0.3, 0.9, 0), d2 = hand(base, len, 2.2, 1.1, 0.9);
+        var d1 = hand(base, len, 0.3, 0.9, 0);
         base.remove();
-        el('path', { 'class': 't-route', d: d1 }, svg);
-        second = el('path', { 'class': 't-line t-second', d: d2 }, svg);
         line = el('path', { 'class': 't-line', d: d1 }, svg);
         var small = W < 700 ? 0.75 : 1;
         heads.forEach(function (h) { var b = box(h); mark(svg, gx, b.y + 14, 4.5 * small); });
         mark(svg, gx, end, 5 * small);
         pen = el('circle', { 'class': 't-tip', r: 1.6 }, svg);
 
-        total = line.getTotalLength(); total2 = second.getTotalLength();
+        total = line.getTotalLength();
         line.style.strokeDasharray = total + ' ' + total;
-        second.style.strokeDasharray = total2 + ' ' + total2;
         for (var l = 0; l <= total; l += 6) { var pt = line.getPointAtLength(l); table.push([l, pt.x, pt.y]); }
         var last = line.getPointAtLength(total); table.push([total, last.x, last.y]);
         root.classList.add('thread-on');
@@ -447,7 +458,6 @@
         else while (hi - lo > 1) { var mid = (lo + hi) >> 1; if (table[mid][2] <= tip) lo = mid; else hi = mid; }
         var t = table[lo];
         line.style.strokeDashoffset = total - t[0];
-        second.style.strokeDashoffset = total2 - t[0] * total2 / total;
         pen.setAttribute('cx', t[1]); pen.setAttribute('cy', t[2]);
         pen.style.display = still || t[0] >= total - 1 ? 'none' : '';
         nodes.forEach(function (n) { n.g.classList.toggle('lit', n.y <= t[2] + 1); });
