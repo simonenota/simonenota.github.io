@@ -450,13 +450,10 @@ section.block::before {
 .thread .t-dot { fill: var(--sketch); opacity: 0; transition: opacity .5s ease; }
 .thread .lit .t-dot { opacity: 1; }
 .thread .t-tip { fill: var(--sketch); }
-.thread .t-tip .t-lead { fill: var(--sketch); stroke: none; opacity: .92; }
-.thread .t-tip .t-grain { fill: var(--sketch); stroke: none; }
-.thread .t-tip .t-hair { stroke-width: .45; stroke-opacity: .55; }
-.thread .t-tip .t-scratch { stroke-width: .5; stroke-opacity: .45; }
-.thread .t-tip .t-wood { fill: var(--bg); stroke: none; }
-.thread .t-tip .t-edge { stroke-width: .7; }
-.thread .t-tip .t-hatch { stroke-width: .45; stroke-opacity: .6; }
+.thread .t-tip .t-lead { fill: url(#t-fade); stroke: none; }
+.thread .t-tip .t-stop { stop-color: var(--sketch); }
+.thread .t-tip .t-halo, .thread .t-tip .t-grain { fill: var(--sketch); stroke: none; }
+.thread .t-tip .t-scratch { stroke-width: .5; }
 @media (prefers-reduced-motion: reduce) { .thread .t-dot { transition: none; } }
 @media print { .thread, html::before { display: none; } }
 
