@@ -578,6 +578,13 @@ section.block::before {
   /* The sheet rides a little above the text, so the gap under it, where the pencil turns, stays short. */
   .sobrio .motif { max-width: 450px; margin-top: -40px; }
 }
+/* Wide screens: the sheet rises higher and its motto stands on the same line as the keywords opposite. */
+@media (min-width: 1000px) {
+  .sobrio .hero .wrap { align-items: end; }
+  .sobrio .hero .chips { margin-bottom: 0; }
+  .sobrio .motif { margin-top: -53px; margin-bottom: 25px; }
+  .sobrio .hero { padding-bottom: 12px; }
+}
 .sobrio .motif::before { display: none; }
 /* No mount round the photo: the drawing frames it, with a circle traced in the same ink. */
 .sobrio .motif .portrait { border: 0; box-shadow: none; }
