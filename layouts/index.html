@@ -348,7 +348,7 @@
       var NS = 'http://www.w3.org/2000/svg';
       var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
       var root = document.documentElement;
-      var svg, line, pen, heading = 180, nodes = [], table = [], total = 0, queued = false;
+      var svg, line, pen, nodes = [], table = [], total = 0, queued = false;
 
       function el(name, attrs, parent) {
         var e = document.createElementNS(NS, name);
@@ -359,17 +359,6 @@
       function box(e) {
         var r = e.getBoundingClientRect(), m = main.getBoundingClientRect();
         return { x: r.left - m.left, y: r.top - m.top, w: r.width, h: r.height };
-      }
-      /* The head of the line, where the graphite is being laid: drawn facing +x and turned along the course.
-         A blunt deposit where the point presses, with graphite crumbs and short scratches behind it. */
-      function tipShape(g) {
-        var seed = 7, rnd = function () { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
-        el('path', { 'class': 't-lead', d: 'M-13 -.7C-9 -1 -4 -1.7 -.6 -1.75C1.2 -1.6 2.3 -.7 2.2 .3C2 1.3 .9 1.75 -.8 1.7C-4.5 1.6 -9 1.1 -13 .75Z' }, g);
-        el('path', { 'class': 't-scratch', d: 'M-15 -1.6L-7 -1.9M-11 2L-3.5 2.2M-5 -2.5L.5 -2.3M-17 .9L-12 1.1' }, g);
-        for (var i = 0; i < 26; i++) {
-          var x = -18 + 20 * rnd();
-          el('circle', { 'class': 't-grain', cx: x.toFixed(2), cy: ((rnd() - .5) * 7 * (1 + x / 26)).toFixed(2), r: (.22 + .38 * rnd()).toFixed(2), opacity: (.3 + .55 * rnd()).toFixed(2) }, g);
-        }
       }
       /* A compass point: a small circle, inked in once the line has reached it. */
       function mark(parent, x, y, r) {
@@ -450,8 +439,7 @@
         var small = W < 700 ? 0.75 : 1;
         heads.forEach(function (h) { var b = box(h); mark(svg, gx, b.y + 14, 4.5 * small); });
         mark(svg, gx, end, 5 * small);
-        pen = el('g', { 'class': 't-tip' }, svg);
-        tipShape(pen);
+        pen = el('circle', { 'class': 't-tip', r: 1.6 }, svg);
 
         total = line.getTotalLength();
         line.style.strokeDasharray = total + ' ' + total;
@@ -470,10 +458,7 @@
         else while (hi - lo > 1) { var mid = (lo + hi) >> 1; if (table[mid][2] <= tip) lo = mid; else hi = mid; }
         var t = table[lo];
         line.style.strokeDashoffset = total - t[0];
-        var back = table[Math.max(0, lo - 3)], fwd = table[Math.min(table.length - 1, lo + 3)];
-        var ax = lo >= 3 ? t[1] - back[1] : fwd[1] - t[1], ay = lo >= 3 ? t[2] - back[2] : fwd[2] - t[2];
-        if (ax || ay) heading = Math.atan2(ay, ax) * 180 / Math.PI;
-        pen.setAttribute('transform', 'translate(' + t[1] + ' ' + t[2] + ') rotate(' + heading + ')');
+        pen.setAttribute('cx', t[1]); pen.setAttribute('cy', t[2]);
         pen.style.display = still || t[0] >= total - 1 ? 'none' : '';
         nodes.forEach(function (n) { n.g.classList.toggle('lit', n.y <= t[2] + 1); });
       }

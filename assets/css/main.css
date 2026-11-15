@@ -450,9 +450,6 @@ section.block::before {
 .thread .t-dot { fill: var(--sketch); opacity: 0; transition: opacity .5s ease; }
 .thread .lit .t-dot { opacity: 1; }
 .thread .t-tip { fill: var(--sketch); }
-.thread .t-tip .t-lead { fill: var(--sketch); stroke: none; opacity: .92; }
-.thread .t-tip .t-grain { fill: var(--sketch); stroke: none; }
-.thread .t-tip .t-scratch { stroke-width: .5; stroke-opacity: .45; }
 @media (prefers-reduced-motion: reduce) { .thread .t-dot { transition: none; } }
 @media print { .thread, html::before { display: none; } }
 
