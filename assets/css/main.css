@@ -567,21 +567,17 @@ section.block::before {
 .sobrio .hero .lead { font-size: 1.2rem; }
 /* With a smaller title the opening is shorter, so Research follows closer behind it. */
 .sobrio .hero { padding-block: clamp(32px, 6vw, 72px) clamp(8px, 2vw, 24px); }
-.sobrio #research { padding-top: clamp(32px, 3.5vw, 48px); }
+.sobrio #research { padding-top: clamp(40px, 5vw, 64px); }
+/* Where the pencil leaves from the corner of the drawn square rather than from under the motto
+   (the page script sets the class when the corner clears the text), Research follows the opening closely. */
+.sobrio.thread-corner .hero { padding-bottom: 8px; }
+.sobrio.thread-corner #research { padding-top: 24px; }
 /* Less empty paper between sections. Below the scene its own fade is the margin. */
 .sobrio section.block { padding-block: clamp(36px, 5vw, 60px); }
 .sobrio #publications { padding-bottom: 0; }
 @media (min-width: 781px) {
   .sobrio .hero .wrap { grid-template-columns: minmax(0, 1fr) minmax(0, min(450px, 38vw)); }
-  /* The sheet rides a little above the text, so the gap under it, where the pencil turns, stays short. */
-  .sobrio .motif { max-width: 450px; margin-top: -40px; }
-}
-/* Wide screens: the sheet rises higher and its motto stands on the same line as the keywords opposite. */
-@media (min-width: 1000px) {
-  .sobrio .hero .wrap { align-items: end; }
-  .sobrio .hero .chips { margin-bottom: 0; }
-  .sobrio .motif { margin-top: -53px; margin-bottom: 25px; }
-  .sobrio .hero { padding-bottom: 12px; }
+  .sobrio .motif { max-width: 450px; }
 }
 .sobrio .motif::before { display: none; }
 /* No mount round the photo: the drawing frames it, with a circle traced in the same ink. */
