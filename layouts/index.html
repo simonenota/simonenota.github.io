@@ -348,7 +348,7 @@
       var NS = 'http://www.w3.org/2000/svg';
       var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
       var root = document.documentElement;
-      var svg, line, second, pen, nodes = [], table = [], total = 0, total2 = 0, queued = false;
+      var svg, line, pen, nodes = [], table = [], total = 0, queued = false;
 
       function el(name, attrs, parent) {
         var e = document.createElementNS(NS, name);
@@ -419,19 +419,16 @@
         svg = el('svg', { 'class': 'thread', width: W, height: end + 40, 'aria-hidden': 'true', focusable: 'false' });
         main.insertBefore(svg, main.firstChild);
         var base = el('path', { d: d }, svg), len = base.getTotalLength();
-        var d1 = hand(base, len, 0.3, 0.9, 0), d2 = hand(base, len, 2.2, 1.1, 0.9);
+        var d1 = hand(base, len, 0.3, 0.9, 0);
         base.remove();
-        el('path', { 'class': 't-route', d: d1 }, svg);
-        second = el('path', { 'class': 't-line t-second', d: d2 }, svg);
         line = el('path', { 'class': 't-line', d: d1 }, svg);
         var small = W < 700 ? 0.75 : 1;
         heads.forEach(function (h) { var b = box(h); mark(svg, gx, b.y + 14, 4.5 * small); });
         mark(svg, gx, end, 5 * small);
         pen = el('circle', { 'class': 't-tip', r: 1.6 }, svg);
 
-        total = line.getTotalLength(); total2 = second.getTotalLength();
+        total = line.getTotalLength();
         line.style.strokeDasharray = total + ' ' + total;
-        second.style.strokeDasharray = total2 + ' ' + total2;
         for (var l = 0; l <= total; l += 6) { var pt = line.getPointAtLength(l); table.push([l, pt.x, pt.y]); }
         var last = line.getPointAtLength(total); table.push([total, last.x, last.y]);
         root.classList.add('thread-on');
@@ -447,7 +444,6 @@
         else while (hi - lo > 1) { var mid = (lo + hi) >> 1; if (table[mid][2] <= tip) lo = mid; else hi = mid; }
         var t = table[lo];
         line.style.strokeDashoffset = total - t[0];
-        second.style.strokeDashoffset = total2 - t[0] * total2 / total;
         pen.setAttribute('cx', t[1]); pen.setAttribute('cy', t[2]);
         pen.style.display = still || t[0] >= total - 1 ? 'none' : '';
         nodes.forEach(function (n) { n.g.classList.toggle('lit', n.y <= t[2] + 1); });
