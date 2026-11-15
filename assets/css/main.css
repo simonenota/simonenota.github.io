@@ -486,19 +486,21 @@ section.block::before {
 #publications .section-head { margin-bottom: 0; }
 /* The paper's glow keeps the line under the title legible where the scene begins. */
 #publications .section-head p { text-shadow: 0 0 6px var(--bg), 0 0 14px var(--bg), 0 0 24px var(--bg); }
-/* At the foot the scene sinks back into the paper the same way, over a shorter span. */
-.stage { --fade: clamp(300px, 46vh, 420px); --fade-b: clamp(150px, 24vh, 230px); margin-top: -150px; background: none;
-  --rise: linear-gradient(180deg, transparent, rgb(0 0 0 / .03) calc(var(--fade) * .2), rgb(0 0 0 / .1) calc(var(--fade) * .4),
-    rgb(0 0 0 / .38) calc(var(--fade) * .6), rgb(0 0 0 / .76) calc(var(--fade) * .8), #000 var(--fade),
+/* At the foot the scene sinks back into the paper the same way, over a shorter span.
+   The rise is complete a little above the first line of the article, so the journal,
+   the year and the prize stand on the dark of the picture, not on its fading edge. */
+.stage { --fade: clamp(250px, 38vh, 350px); --fade-b: clamp(150px, 24vh, 230px); margin-top: -150px; background: none;
+  --rise: linear-gradient(180deg, transparent calc(var(--fade) * .2), rgb(0 0 0 / .03) calc(var(--fade) * .33), rgb(0 0 0 / .1) calc(var(--fade) * .49),
+    rgb(0 0 0 / .38) calc(var(--fade) * .67), rgb(0 0 0 / .76) calc(var(--fade) * .84), #000 var(--fade),
     #000 calc(100% - var(--fade-b)), rgb(0 0 0 / .76) calc(100% - var(--fade-b) * .8), rgb(0 0 0 / .38) calc(100% - var(--fade-b) * .6),
     rgb(0 0 0 / .1) calc(100% - var(--fade-b) * .4), rgb(0 0 0 / .03) calc(100% - var(--fade-b) * .2), transparent);
   /* the darkening veil for the article text comes in a little later than the picture, and leaves a little earlier */
-  --veil: linear-gradient(180deg, transparent calc(var(--fade) * .4), rgb(0 0 0 / .5) calc(var(--fade) * .72), #000 var(--fade),
+  --veil: linear-gradient(180deg, transparent calc(var(--fade) * .45), rgb(0 0 0 / .5) calc(var(--fade) * .76), #000 var(--fade),
     #000 calc(100% - var(--fade-b)), rgb(0 0 0 / .5) calc(100% - var(--fade-b) * .72), transparent calc(100% - var(--fade-b) * .4)); }
 .scene { background: #120D09; }
 .scene { -webkit-mask-image: var(--rise); mask-image: var(--rise); }
 .stage::before { -webkit-mask-image: var(--veil); mask-image: var(--veil); }
-.stage-inner { padding-top: calc(var(--fade) - 40px); padding-bottom: calc(var(--fade-b) * .85 + 16px); }
+.stage-inner { padding-top: calc(var(--fade) + 30px); padding-bottom: calc(var(--fade-b) * .85 + 16px); }
 .stage-text { display: grid; gap: 56px; }
 .stage .pub { display: block; padding: 0; border: 0; }
 .stage .pub:last-child { border: 0; }
@@ -602,6 +604,11 @@ section.block::before {
 .sobrio .strip-frame { inset: 4px; }
 .sobrio .strip-frame::before { box-shadow: inset 0 2px 5px rgb(0 0 0 / .25); }
 .sobrio .award { background: none; color: inherit; border: 1px solid currentColor; }
+/* On the scene the journal and year are in the light of the summary, and the prize stands out
+   in gold, inside a cartouche drawn by hand: an ellipse inscribed in a rectangle. */
+.sobrio .stage .pub .venue { color: rgb(246 238 223 / .86); }
+.sobrio .stage .award { position: relative; border: 0; border-radius: 0; padding: 10px 34px; color: #E6B85C; font-size: .98rem; font-weight: 500; letter-spacing: .04em; }
+.award-frame { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 .sobrio .card-frame { padding: 4px; }
 /* Publications and the owl: the scenes stay, their titles a little quieter. */
 .sobrio .stage .pub h3 { font-size: clamp(1.75rem, 2.8vw, 2.5rem); font-weight: 500; }
