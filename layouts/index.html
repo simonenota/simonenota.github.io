@@ -336,8 +336,9 @@
     })();
   </script>
   <script>
-    /* A golden thread leaves the drawing round the portrait and runs down the page: it is drawn as
-       the reader scrolls, and lights a star beside each section title. */
+    /* A pencil line leaves the drawing round the portrait and runs down the page: a faint
+       construction line first, then the pencil goes over it as the reader scrolls, and marks a
+       compass point beside each section title. */
     (function () {
       var main = document.getElementById('top');
       var motif = document.querySelector('.motif');
@@ -345,11 +346,9 @@
       var owl = document.querySelector('.owl');
       if (!main || !motif || !research || !owl || !document.createElementNS || !window.requestAnimationFrame) return;
       var NS = 'http://www.w3.org/2000/svg';
-      var STAR = 'M0 -1L.18 -.18L1 0L.18 .18L0 1L-.18 .18L-1 0L-.18 -.18ZM.41 -.41L.2 0L.41 .41L0 .2L-.41 .41L-.2 0L-.41 -.41L0 -.2Z';
-      var SPARK = 'M0 -1L.22 -.22L1 0L.22 .22L0 1L-.22 .22L-1 0L-.22 -.22Z';
       var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
       var root = document.documentElement;
-      var svg, line, spark, nodes = [], table = [], total = 0, queued = false;
+      var svg, line, second, pen, nodes = [], table = [], total = 0, total2 = 0, queued = false;
 
       function el(name, attrs, parent) {
         var e = document.createElementNS(NS, name);
@@ -361,11 +360,24 @@
         var r = e.getBoundingClientRect(), m = main.getBoundingClientRect();
         return { x: r.left - m.left, y: r.top - m.top, w: r.width, h: r.height };
       }
-      function star(parent, x, y, r) {
+      /* A compass point: a small circle, inked in once the line has reached it. */
+      function mark(parent, x, y, r) {
         var g = el('g', { 'class': 't-node' }, parent);
-        el('circle', { 'class': 't-halo', cx: x, cy: y, r: r * 1.9 }, g);
-        el('path', { 'class': 't-star', d: STAR, transform: 'translate(' + x + ' ' + y + ') scale(' + r + ')', 'vector-effect': 'non-scaling-stroke' }, g);
+        el('circle', { 'class': 't-ring', cx: x, cy: y, r: r }, g);
+        el('circle', { 'class': 't-dot', cx: x, cy: y, r: r * 0.4 }, g);
         nodes.push({ g: g, y: y });
+      }
+      /* The same course traced by hand: sampled along its length and nudged sideways by a slow tremor. */
+      function hand(base, len, seed, amp, shift) {
+        var pts = [];
+        for (var l = 0; l <= len + 3.9; l += 4) {
+          var at = Math.min(l, len), a = base.getPointAtLength(at);
+          var p = base.getPointAtLength(Math.min(len, at + 1)), q = base.getPointAtLength(Math.max(0, at - 1));
+          var dx = p.x - q.x, dy = p.y - q.y, n = Math.sqrt(dx * dx + dy * dy) || 1;
+          var o = shift + amp * (0.6 * Math.sin(at / 61 + seed) + 0.3 * Math.sin(at / 23 + seed * 2.1) + 0.15 * Math.sin(at / 9.7 + seed * 3.7));
+          pts.push((a.x - dy / n * o).toFixed(1) + ' ' + (a.y + dx / n * o).toFixed(1));
+        }
+        return 'M' + pts.join('L');
       }
 
       function build() {
@@ -405,19 +417,21 @@
         root.classList.toggle('thread-wide', wide);
 
         svg = el('svg', { 'class': 'thread', width: W, height: end + 40, 'aria-hidden': 'true', focusable: 'false' });
-        el('path', { 'class': 't-route', d: d }, svg);
-        line = el('path', { 'class': 't-line', d: d }, svg);
-        var small = W < 700 ? 0.75 : 1;
-        heads.forEach(function (h) { var b = box(h); star(svg, gx, b.y + 14, 5.5 * small); });
-        star(svg, gx, end, 6 * small);
-        spark = el('g', { 'class': 't-spark' }, svg);
-        var tw = el('g', { 'class': 't-twinkle' }, spark);
-        el('circle', { cx: 0, cy: 0, r: 10 * small }, tw);
-        el('path', { d: SPARK, transform: 'scale(' + 7 * small + ')' }, tw);
         main.insertBefore(svg, main.firstChild);
+        var base = el('path', { d: d }, svg), len = base.getTotalLength();
+        var d1 = hand(base, len, 0.3, 0.9, 0), d2 = hand(base, len, 2.2, 1.1, 0.9);
+        base.remove();
+        el('path', { 'class': 't-route', d: d1 }, svg);
+        second = el('path', { 'class': 't-line t-second', d: d2 }, svg);
+        line = el('path', { 'class': 't-line', d: d1 }, svg);
+        var small = W < 700 ? 0.75 : 1;
+        heads.forEach(function (h) { var b = box(h); mark(svg, gx, b.y + 14, 4.5 * small); });
+        mark(svg, gx, end, 5 * small);
+        pen = el('circle', { 'class': 't-tip', r: 1.6 }, svg);
 
-        total = line.getTotalLength();
+        total = line.getTotalLength(); total2 = second.getTotalLength();
         line.style.strokeDasharray = total + ' ' + total;
+        second.style.strokeDasharray = total2 + ' ' + total2;
         for (var l = 0; l <= total; l += 6) { var pt = line.getPointAtLength(l); table.push([l, pt.x, pt.y]); }
         var last = line.getPointAtLength(total); table.push([total, last.x, last.y]);
         root.classList.add('thread-on');
@@ -433,8 +447,9 @@
         else while (hi - lo > 1) { var mid = (lo + hi) >> 1; if (table[mid][2] <= tip) lo = mid; else hi = mid; }
         var t = table[lo];
         line.style.strokeDashoffset = total - t[0];
-        spark.setAttribute('transform', 'translate(' + t[1] + ' ' + t[2] + ')');
-        spark.style.display = still || t[0] >= total - 1 ? 'none' : '';
+        second.style.strokeDashoffset = total2 - t[0] * total2 / total;
+        pen.setAttribute('cx', t[1]); pen.setAttribute('cy', t[2]);
+        pen.style.display = still || t[0] >= total - 1 ? 'none' : '';
         nodes.forEach(function (n) { n.g.classList.toggle('lit', n.y <= t[2] + 1); });
       }
       function later() { if (!queued) { queued = true; requestAnimationFrame(draw); } }
