@@ -8,6 +8,8 @@
   <title>{{ $title }}</title>
   <meta name="description" content="{{ .Params.description }}">
   <meta name="author" content="{{ site.Params.author }}">
+  {{/* Ownership check for Google Search Console. */}}
+  <meta name="google-site-verification" content="baxv03hM65N6aJLa7b2Yw6c6Q7PSwqmtB0YwLXPndT0">
   <link rel="canonical" href="{{ .Permalink }}">
   {{- range .AllTranslations }}
   <link rel="alternate" hreflang="{{ .Language.LanguageCode }}" href="{{ .Permalink }}">
