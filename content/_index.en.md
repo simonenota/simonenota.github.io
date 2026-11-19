@@ -103,7 +103,7 @@ teaching:
   quote: These skills matter not only for a successful academic life but also for
     a more fulfilling human one.
 cv:
-  url: /papers/cv-simone-nota.pdf
+  url: /papers/CV - New Format.pdf
   title: Curriculum Vitae
   text: Education, positions, prizes, talks and teaching.
 aifun:
