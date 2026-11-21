@@ -1,8 +1,8 @@
 ---
 title: Simone Nota
 seo_title: Simone Nota | Philosopher – Kant, Wittgenstein, Metaphysics
-description: Simone Nota, philosopher. Research on transcendental philosophy,
-  metaphysics, Kant and Wittgenstein.
+description: Philosopher working on transcendental philosophy, metaphysics, Kant
+  and Wittgenstein.
 hero:
   eyebrow: Postdoctoral Fellow · Institute of Philosophy, Zagreb
   title: Thinking at the edge of *metaphysics* and transcendental philosophy
