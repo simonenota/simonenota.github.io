@@ -26,7 +26,7 @@ research:
       title: Transcendentalism
       text: >
         I study transcendental philosophy, any outlook aimed at recognizing the
-        **necessary conditions for the possibility of our cognition**. My
+        **necessary conditions for the possibility of our representation**. My
         interest began with the problem of the possibility of **metaphysics**,
         traditionally a systematic inquiry aimed at at **a priori knowledge** of
         the nature of reality.
@@ -35,8 +35,8 @@ research:
         Through the critical lenses of Kant and Wittgenstein, I distinguish
         transcendentalism as a **methodological stance** from **transcendental
         idealism** as a metaphysical doctrine that makes the form of empirical
-        reality depend on our human point of view. Studying the conditions of
-        our cognition can give us self-knowledge without a metaphysical
+        reality depend on our human perspective. Studying the conditions of our
+        representation can give us self-knowledge without a metaphysical
         doctrine: an understanding of metaphysics is not necessarily a
         metaphysical understanding.
       link_label: Read my PhD dissertation (PDF)
@@ -66,7 +66,7 @@ research:
         at two variants: **scientific naturalism**, which takes nature to be
         what science tells us there is, and **humanistic naturalism**, which
         takes human nature and its socio-cultural expressions to be irreducible
-        to science.
+        to that.
   bridge_title: "A bridge: the relativized a priori"
   bridge_text: My long-term aim is to connect transcendentalism and naturalism
     through an a priori that holds only relative to certain scientific paradigms
